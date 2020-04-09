@@ -1,0 +1,2 @@
+# ONLINE AUCTION SYSTEM: eBuy
+ This project is in CPE343/KMUTT
