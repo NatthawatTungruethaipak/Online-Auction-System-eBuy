@@ -93,5 +93,39 @@ public class User {
 
     public boolean addSelling(Auction auction){
         this.sellingList.add(auction);
+        return true;
+    }
+
+    public boolean addBid(Auction auction){
+        this.bidList.add(auction);
+        return true;
+    }
+
+    public boolean checkPassword(String password){
+        if(this.password.equals(password)){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
+    public int getBalance(){
+        return this.balance;
+    }
+
+    public boolean deductMoney(int money){
+        if((this.balance - money) < 0){
+            return false;
+        }
+        else{
+            this.balance = this.balance - money;
+            return true;
+        }
+    }
+
+    public boolean addMoney(int money){
+        this.balance = this.balance + money;
+        return true;
     }
 }
