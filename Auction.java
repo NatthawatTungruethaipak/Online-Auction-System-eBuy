@@ -238,8 +238,8 @@ public class Auction
 		if(user != null && money > minMoney)
 		{
 			Bid createBid = new Bid(user, money);
-			if(!bidList.add(createBid))
-				bCheck = false;
+			if(bidList.add(createBid))
+				bCheck = true;
 		}
 		return bCheck;
 	}
