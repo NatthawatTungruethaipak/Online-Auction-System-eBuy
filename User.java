@@ -12,7 +12,7 @@ public class User {
     private ArrayList<Auction> sellingList;
     
     public User(String username, String password) {
-        if(IOUtils.validateUsername(username))
+        if((IOUtils.validateUsername(username) && IOUtils.validatePassword(password)))
         this.username = username;
         this.password = password;
     }
