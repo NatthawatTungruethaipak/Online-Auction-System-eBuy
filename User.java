@@ -12,7 +12,7 @@ public class User {
     private ArrayList<Auction> sellingList;
     
     public User(String username, String password) {
-        if(validateUsername(username))
+        if(IOUtils.validateUsername(username))
         this.username = username;
         this.password = password;
     }
@@ -67,7 +67,7 @@ public class User {
     }
 
     public boolean setBirth(Date birth){
-        if(validateDateTime(birth)){
+        if(IOUtils.validateDateTime(birth)){
             this.birth = birth;
             return true;
         }
@@ -82,7 +82,7 @@ public class User {
     }
 
     public boolean setEmail(String email){
-        if(validateEmail(email)){
+        if(IOUtils.validateEmail(email)){
             this.email = email;
             return true;
         }
