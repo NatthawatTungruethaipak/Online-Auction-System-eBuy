@@ -30,21 +30,40 @@ public class Bid
         this.dateBid = IOUtils.getCurrentDateTime();
     }
     
+    /**
+     * Get the user who make a bid
+     * @return User that make a bid
+     */
     public User getBidder()
     {
         return this.bidder;
     }
     
+    /**
+     * Get date that this bid was created
+     * @return
+     */
     public Date getDateTime()
     {
         return this.dateBid;
     }
     
+    /**
+     * Get money that bid
+     * @return
+     */
     public int getMoney()
     {
         return this.money;
     }
     
+    /**
+     * CompareTo function for using in bidSet.
+     * @param bid Bid that want to compare
+     * @return Return positive value, if money of this instance is more than.
+     *         Return negative value, if money of this instance is less than.
+     *         Return 0, if both of them are equal.
+     */
     public int compareTo(Bid bid)
     {
         return this.money - bid.getMoney();
