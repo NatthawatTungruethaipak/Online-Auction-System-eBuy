@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Manage, control, and keep all auction.
@@ -8,9 +9,26 @@ import java.util.ArrayList;
  */
 public class AuctionManager
 {
+    /** Keep auctionManager instance, used for singleton **/
     private static AuctionManager auctionManager = new AuctionManager();
     
-    ArrayList <Auction> waitedAuction = new ArrayList<Auction>();
+    /** Auction list that in wait stage **/
+    private ArrayList <Auction> waitedAuction = new ArrayList<Auction>();
+    
+    /** Auction list that in open stage **/
+    private ArrayList <Auction> openedAuction = new ArrayList<Auction>();
+    
+    /** Auction list that in close stage **/
+    private ArrayList <Auction> closedAuction = new ArrayList<Auction>();
+    
+    /** HashMap of auction list that have a key is category */
+    private HashMap<Category, ArrayList<Auction>> auctionMapCategory = new HashMap<Category, ArrayList<Auction>>();
+    
+    /** HashMap of auction list that have a key is item */
+    private HashMap<String, ArrayList<Auction>> auctionMapItem = new HashMap<String, ArrayList<Auction>>();
+    
+    /** HashMap of auction list that have a key is seller */
+    private HashMap<User, ArrayList<Auction>> auctionMapSeller = new HashMap<User, ArrayList<Auction>>();
     
     /**
      * Constructor of auction manager.

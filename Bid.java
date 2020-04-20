@@ -10,13 +10,13 @@ import java.util.Date;
 public class Bid
 {
     /** Bidder of the bid */
-    User bidder;
+    private User bidder;
     
     /** Amount of money that bid **/
-    int money;
+    private int money;
     
     /** Date that bid **/
-    Date dateBid;
+    private Date dateBid;
     
     /** 
      * Constructor of bid for a new bid
