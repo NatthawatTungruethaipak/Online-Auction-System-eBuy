@@ -60,9 +60,9 @@ public class Bid
     /**
      * CompareTo function for using in bidSet.
      * @param bid Bid that want to compare
-     * @return Return positive value, if money of this instance is more than.
-     *         Return negative value, if money of this instance is less than.
-     *         Return 0, if both of them are equal.
+     * @return Positive value, if money of this instance is more than.
+     *         Negative value, if money of this instance is less than.
+     *         Zero, if both of them are equal.
      */
     public int compareTo(Bid bid)
     {
