@@ -41,7 +41,7 @@ public class Bid
     
     /**
      * Get date that this bid was created
-     * @return
+     * @return Created date of bid
      */
     public Date getDateTime()
     {
@@ -50,7 +50,7 @@ public class Bid
     
     /**
      * Get money that bid
-     * @return
+     * @return Bid money
      */
     public int getMoney()
     {
