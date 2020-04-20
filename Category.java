@@ -1,13 +1,15 @@
 
 public class Category {
 
-	public String getCategory() {
-		// TODO Auto-generated method stub
+	public String getCategory()
+	{
+	
 		return null;
 	}
 
-	public static Category findCategory(String category) {
-		// TODO Auto-generated method stub
+	public static Category findCategory(String category)
+	{
+		
 		return null;
 	}
 

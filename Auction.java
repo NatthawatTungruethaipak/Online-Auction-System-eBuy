@@ -53,6 +53,7 @@ public class Auction
 		this.category = Category.findCategory(category);
 		this.seller = seller;
 		this.dateEnd = dateEnd;
+		seller.addSelling(this);
 		this.dateStart = IOUtils.getCurrentDateTime();
 		this.stage = 1;
 	}
@@ -71,6 +72,7 @@ public class Auction
 		this.category = Category.findCategory(category);
 		this.seller = seller;
 		this.dateEnd = dateEnd;
+		seller.addSelling(this);
 		this.dateStart = dateStart;
 		this.stage = 0;
 	}
