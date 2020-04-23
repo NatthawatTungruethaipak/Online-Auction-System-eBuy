@@ -47,7 +47,7 @@ public class Auction
      * @param seller The seller or user that create a new auction
      * @param dateEnd Date that want to close an auction
      */
-    public Auction(String item, String category, User seller, Date dateEnd)
+    public Auction(User seller, String item, String category, Date dateEnd)
     {
         this.item = item;
         this.category = Category.findCategory(category);
@@ -66,7 +66,7 @@ public class Auction
      * @param dateStart Date that want to start an auction
      * @param dateEnd Date that want to close an auction
      */
-    public Auction(String item, String category, User seller, Date dateStart, Date dateEnd)
+    public Auction(User seller, String item, String category, Date dateStart, Date dateEnd)
     {
         this.item = item;
         this.category = Category.findCategory(category);

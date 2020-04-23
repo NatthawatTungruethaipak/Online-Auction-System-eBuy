@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 /**
@@ -67,12 +68,48 @@ public class AuctionManager
      * @param dateEnd End date of an auction
      * @return True if can create the auction. Otherwise, false
      */
-    public boolean createAuction(String item, String category, String picture,
-            int minBid, String dateStart, String dateEnd)
+    public boolean createAuction(User seller, String item, String category,
+            String picture, int minBid, Date dateStart, Date dateEnd)
     {
-        boolean bCheck = false;
+        Auction createdAuction = new Auction(seller, item, category, dateStart, dateEnd);
         
-        return bCheck;
+        /** Add auction to stage list **/
+        if(createdAuction.getStage() == 0)
+            waitedAuction.add(createdAuction);
+        else if(createdAuction.getStage() == 1)
+            openedAuction.add(createdAuction);
+        else
+            return false;
+        
+        /** Add auction to hash map of category **/
+        ArrayList<Auction> auctionCategoryList = auctionMapCategory.get(Category.findCategory(category));
+        if(auctionCategoryList != null)
+            auctionCategoryList.add(createdAuction);
+        else
+            return false;      
+               
+        /** Add auction to hash map of item **/
+        ArrayList<Auction> auctionItemList = auctionMapItem.get(item);
+        if(auctionItemList != null)
+            auctionItemList.add(createdAuction);
+        else /* If don't have a list in hash map, create new one */
+        {
+            auctionItemList = new ArrayList<Auction>();
+            auctionItemList.add(createdAuction);
+            auctionMapItem.put(item, auctionItemList);
+        }
+        
+        /** Add auction to hash map of seller **/
+        ArrayList<Auction> auctionSellerList = auctionMapSeller.get(seller);
+        if(auctionSellerList != null)
+            auctionSellerList.add(createdAuction);
+        else /* If don't have a list in hash map, create new one */
+        {
+            auctionSellerList = new ArrayList<Auction>();
+            auctionSellerList.add(createdAuction);
+            auctionMapSeller.put(seller, auctionSellerList);
+        }
+        return true;
     }
     
     /**
@@ -84,11 +121,47 @@ public class AuctionManager
      * @param dateEnd End date of an auction
      * @return True if can create the auction. Otherwise, false
      */
-    public boolean createAuction(String item, String category, String picture, int minBid, String dateEnd)
+    public boolean createAuction(User seller, String item, String category, String picture, int minBid, Date dateEnd)
     {
-        boolean bCheck = false;
+        Auction createdAuction = new Auction(seller, item, category, dateEnd);
         
-        return bCheck;
+        /** Add auction to stage list **/
+        if(createdAuction.getStage() == 0)
+            waitedAuction.add(createdAuction);
+        else if(createdAuction.getStage() == 1)
+            openedAuction.add(createdAuction);
+        else
+            return false;
+        
+        /** Add auction to hash map of category **/
+        ArrayList<Auction> auctionCategoryList = auctionMapCategory.get(Category.findCategory(category));
+        if(auctionCategoryList != null)
+            auctionCategoryList.add(createdAuction);
+        else
+            return false;      
+               
+        /** Add auction to hash map of item **/
+        ArrayList<Auction> auctionItemList = auctionMapItem.get(item);
+        if(auctionItemList != null)
+            auctionItemList.add(createdAuction);
+        else /* If don't have a list in hash map, create new one */
+        {
+            auctionItemList = new ArrayList<Auction>();
+            auctionItemList.add(createdAuction);
+            auctionMapItem.put(item, auctionItemList);
+        }
+        
+        /** Add auction to hash map of seller **/
+        ArrayList<Auction> auctionSellerList = auctionMapSeller.get(seller);
+        if(auctionSellerList != null)
+            auctionSellerList.add(createdAuction);
+        else /* If don't have a list in hash map, create new one */
+        {
+            auctionSellerList = new ArrayList<Auction>();
+            auctionSellerList.add(createdAuction);
+            auctionMapSeller.put(seller, auctionSellerList);
+        }
+        return true;
     }
     
     /**
@@ -111,6 +184,7 @@ public class AuctionManager
     
     public ArrayList<Auction> searchAuctionByCat(String category)
     {
+        auctionMapCategory.get(Category.findCategory(category));
     }
     
     public ArrayList<Auction> searchAuctionByItem(String item)
