@@ -10,7 +10,6 @@ public class User
 	/**
 	 * User's username
 	 */
-
 	private String username;
 
 	/**
@@ -70,6 +69,16 @@ public class User
 		this.password = password;
 	}
 
+	/**
+	 * Get username of user
+	 * 
+	 * @return User's username
+	 */
+	public String getUsername()
+	{
+		return username;
+	}
+	
 	/**
 	 * Get name of user
 	 * 
