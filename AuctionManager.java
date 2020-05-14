@@ -71,99 +71,59 @@ public class AuctionManager
     public boolean createAuction(User seller, String item, String category,
             String picture, int minBid, Date dateStart, Date dateEnd)
     {
-        Auction createdAuction = new Auction(seller, item, category, dateStart, dateEnd);
+        Auction newAuction = new Auction(seller, item, category, dateStart, dateEnd);
+        
+        /* Set minimum bid of the auction */
+        if(newAuction.setMinBid(minBid) == false)
+        	return false;
+        
+        /* Set picture */
+        if(newAuction.setPicture(picture) == false)
+        	return false;
+        
+        /* Check date start and date end */
+        /* Note to myself in the future, change from create auction at first to check all variable and then create *.
         
         /** Add auction to stage list **/
-        if(createdAuction.getStage() == 0)
-            waitedAuction.add(createdAuction);
-        else if(createdAuction.getStage() == 1)
-            openedAuction.add(createdAuction);
+        if(newAuction.getStage() == 0)
+            waitedAuction.add(newAuction);
+        else if(newAuction.getStage() == 1)
+            openedAuction.add(newAuction);
         else
             return false;
         
         /** Add auction to hash map of category **/
         ArrayList<Auction> auctionCategoryList = auctionMapCategory.get(Category.findCategory(category));
         if(auctionCategoryList != null)
-            auctionCategoryList.add(createdAuction);
+            auctionCategoryList.add(newAuction);
         else
             return false;      
                
         /** Add auction to hash map of item **/
         ArrayList<Auction> auctionItemList = auctionMapItem.get(item);
         if(auctionItemList != null)
-            auctionItemList.add(createdAuction);
+            auctionItemList.add(newAuction);
         else /* If don't have a list in hash map, create new one */
         {
             auctionItemList = new ArrayList<Auction>();
-            auctionItemList.add(createdAuction);
+            auctionItemList.add(newAuction);
             auctionMapItem.put(item, auctionItemList);
         }
         
         /** Add auction to hash map of seller **/
         ArrayList<Auction> auctionSellerList = auctionMapSeller.get(seller);
         if(auctionSellerList != null)
-            auctionSellerList.add(createdAuction);
+            auctionSellerList.add(newAuction);
         else /* If don't have a list in hash map, create new one */
         {
             auctionSellerList = new ArrayList<Auction>();
-            auctionSellerList.add(createdAuction);
+            auctionSellerList.add(newAuction);
             auctionMapSeller.put(seller, auctionSellerList);
         }
         return true;
     }
     
-    /**
-     * Create the auction and add to auction manager
-     * @param item Item name
-     * @param category Category of item
-     * @param picture picture url
-     * @param minBid Minimum money of bid
-     * @param dateEnd End date of an auction
-     * @return True if can create the auction. Otherwise, false
-     */
-    public boolean createAuction(User seller, String item, String category, String picture, int minBid, Date dateEnd)
-    {
-        Auction createdAuction = new Auction(seller, item, category, dateEnd);
-        
-        /** Add auction to stage list **/
-        if(createdAuction.getStage() == 0)
-            waitedAuction.add(createdAuction);
-        else if(createdAuction.getStage() == 1)
-            openedAuction.add(createdAuction);
-        else
-            return false;
-        
-        /** Add auction to hash map of category **/
-        ArrayList<Auction> auctionCategoryList = auctionMapCategory.get(Category.findCategory(category));
-        if(auctionCategoryList != null)
-            auctionCategoryList.add(createdAuction);
-        else
-            return false;      
-               
-        /** Add auction to hash map of item **/
-        ArrayList<Auction> auctionItemList = auctionMapItem.get(item);
-        if(auctionItemList != null)
-            auctionItemList.add(createdAuction);
-        else /* If don't have a list in hash map, create new one */
-        {
-            auctionItemList = new ArrayList<Auction>();
-            auctionItemList.add(createdAuction);
-            auctionMapItem.put(item, auctionItemList);
-        }
-        
-        /** Add auction to hash map of seller **/
-        ArrayList<Auction> auctionSellerList = auctionMapSeller.get(seller);
-        if(auctionSellerList != null)
-            auctionSellerList.add(createdAuction);
-        else /* If don't have a list in hash map, create new one */
-        {
-            auctionSellerList = new ArrayList<Auction>();
-            auctionSellerList.add(createdAuction);
-            auctionMapSeller.put(seller, auctionSellerList);
-        }
-        return true;
-    }
-    
+   
     /**
      * Get the auction list from stage of an auction
      * @param stage Stage of auction (0-waited, 1-opened, 2-closed)
@@ -184,22 +144,28 @@ public class AuctionManager
     
     public ArrayList<Auction> searchAuctionByCat(String category)
     {
-        auctionMapCategory.get(Category.findCategory(category));
+        ArrayList<Auction> auctionLists = auctionMapCategory.get(Category.findCategory(category));
+        return auctionLists;
     }
     
     public ArrayList<Auction> searchAuctionByItem(String item)
     {
-        
+    	ArrayList<Auction> auctionLists = auctionMapItem.get(item);
+        return auctionLists;
     }
     
-    public ArrayList<Auction> searchAuctionBySeller(String seller)
+    public ArrayList<Auction> searchAuctionBySeller(String sellerName)
     {
-        
+    	UserManager userManager = UserManager.getSingletonInstance();
+    	User seller = userManager.findUserByName(sellerName);
+    	ArrayList<Auction> auctionLists = auctionMapItem.get(seller);
+        return auctionLists;
     }
     
     public ArrayList <Auction> searchAuctionByMinPrice(int money)
     {
-        
+    	ArrayList<Auction> auctionLists = new ArrayList<Auction>();
+        return auctionLists;
     }
     
     public ArrayList<Auction> sortAuction(ArrayList auctions)
