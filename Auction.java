@@ -41,25 +41,12 @@ public class Auction
     private TreeSet<Bid> bidSet = new TreeSet<Bid>();
     
     /**
-     * Constructor of Auction for opening auction now.
-     * @param item Item name
-     * @param category Category of an auction
-     * @param seller The seller or user that create a new auction
-     * @param dateEnd Date that want to close an auction
-     */
-    public Auction(User seller, String item, String category, Date dateEnd)
-    {
-        this.item = item;
-        this.category = Category.findCategory(category);
-        this.seller = seller;
-        this.dateEnd = dateEnd;
-        seller.addSelling(this);
-        this.dateStart = IOUtils.getCurrentDateTime();
-        this.stage = 1;
-    }
-    
-    /**
      * Constructor of Auction for opening auction later.
+     * @param dateEnd2 
+     * @param dateStart2 
+     * @param category2 
+     * @param item2 
+     * @param seller2 
      * @param item Item name
      * @param category Category of an auction
      * @param seller The seller or user that create a new auction
