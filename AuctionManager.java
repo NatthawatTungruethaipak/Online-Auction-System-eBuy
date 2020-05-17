@@ -184,12 +184,14 @@ public class AuctionManager
     
     public ArrayList<Auction> searchAuctionByCat(String category)
     {
-        auctionMapCategory.get(Category.findCategory(category));
+        ArrayList <Auction>auctionList = auctionMapCategory.get(Category.findCategory(category));
+        return auctionList;
     }
     
     public ArrayList<Auction> searchAuctionByItem(String item)
     {
-        
+        ArrayList <Auction>auctionList = auctionMapCategory.get(Category.findCategory(category));
+        return auctionList;        
     }
     
     public ArrayList<Auction> searchAuctionBySeller(String seller)
