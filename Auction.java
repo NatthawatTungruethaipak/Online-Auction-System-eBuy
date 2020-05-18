@@ -1,5 +1,6 @@
 import java.util.Date;
 import java.util.TreeSet;
+import java.util.Iterator;
 
 /**
  * Represent the auction object in auction program.
@@ -203,6 +204,7 @@ public class Auction
     
     /**
      * Close the auction. The current stage must be closed auction
+     * Find out the winner and deduct money from account.
      * @return True if can close. Otherwise, false.
      */
     public boolean closeAuction()
@@ -211,6 +213,18 @@ public class Auction
         if(stage == 1)
         {
             stage = 2;
+            Iterator<Bid> bids = bidSet.descendingIterator();
+            while (bids.hasNext())
+            {
+            	Bid bid = bids.next();
+            	User bidder = bid.getBidder();
+            	int bidMoney = bid.getMoney();
+            	if(bidder.deductMoney(bidMoney))
+            	{
+            		winner = bid;
+            		break;
+            	}
+            }
             bCheck = true;
         }
         return bCheck;
