@@ -74,19 +74,22 @@ public class AuctionManager
     {
     	if(seller == null)
     		return null;
-    	if(minBid < 0)
-    		return null;
     	if(dateStart.after(dateEnd))
     		return null;
-    	
+
     	Date currentDate = IOUtils.getCurrentDateTime();
     	if(dateEnd.after(currentDate))
     		return null;
     	
     	Auction auction = new Auction(seller, item, category, dateStart, dateEnd);
+    	if(auction.setMinBid(minBid) == false)
+        	return null;
+        if(auction.setPicture(picture) == false)
+        	return null;
+        
+        /* If date start after current date, open an auction */
     	if(dateStart.after(currentDate))
     		auction.openAuction();
-    	
     	return auction; 
     }
     
@@ -106,17 +109,6 @@ public class AuctionManager
         Auction newAuction = validateAuction(seller, item, category, picture, minBid, dateStart, dateEnd);
         if(newAuction == null)
         	return false;
-        
-        /* Set minimum bid of the auction */
-        if(newAuction.setMinBid(minBid) == false)
-        	return false;
-        
-        /* Set picture */
-        if(newAuction.setPicture(picture) == false)
-        	return false;
-        
-        /* Check date start and date end */
-        /* Note to myself in the future, change from create auction at first to check all variable and then create */
         
         /** Add auction to stage list **/
         if(newAuction.getStage() == 0)
