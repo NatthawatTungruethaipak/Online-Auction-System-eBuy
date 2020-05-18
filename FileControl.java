@@ -8,8 +8,37 @@ import java.io.*;
  */
 public class FileControl
 {
-	private File file;
+	/** File name that going to read/write **/
 	private String fileName;
+	
+	/** Buffer to read **/
+	private BufferedReader reader;
+	
+	/** Buffer to write **/
 	private BufferedWriter writer;
-	private BufferedWriter reader;
+	
+	public FileControl(String fileName)
+	{
+		
+	}
+	
+	public boolean openFile()
+	{
+		
+	}
+	
+	public boolean closeFile()
+	{
+		
+	}
+	
+	public String readLine()
+	{
+		
+	}
+	
+	public boolean writeLine(String line)
+	{
+		
+	}
 }
