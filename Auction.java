@@ -146,6 +146,15 @@ public class Auction
     }
     
     /**
+     * Get the Minimum money to bid of an auction
+     * @return Stage
+     */
+    public int getMinBidMoney()
+    {
+        return this.minBid;
+    }
+    
+    /**
      * Set the picture url of item
      * @param url Link url of picture
      * @return True if can set. Otherwise, false.

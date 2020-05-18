@@ -142,18 +142,33 @@ public class AuctionManager
         return auctions;
     }
     
+    /**
+     * Get the auction list from category of an auction
+     * @param category Category of auction
+     * @return Array List of auction from requiring category.
+     */
     public ArrayList<Auction> searchAuctionByCat(String category)
     {
         ArrayList <Auction>auctionList = auctionMapCategory.get(Category.findCategory(category));
         return auctionList;
     }
     
+    /**
+     * Get the auction list from item name of an auction
+     * @param item Item name of auction
+     * @return Array List of auction from requiring item name.
+     */
     public ArrayList<Auction> searchAuctionByItem(String item)
     {
     	ArrayList<Auction> auctionLists = auctionMapItem.get(item);
         return auctionLists;
     }
     
+    /**
+     * Get the auction list from seller name of an auction
+     * @param sellerName seller name of auction
+     * @return Array List of auction from requiring seller name.
+     */
     public ArrayList<Auction> searchAuctionBySeller(String sellerName)
     {
     	UserManager userManager = UserManager.getSingletonInstance();
@@ -162,19 +177,61 @@ public class AuctionManager
         return auctionLists;
     }
     
-    public ArrayList <Auction> searchAuctionByMinPrice(int money)
+    /**
+     * Get the auction list from lower price to bid of an auction
+     * @param money Min bid money or current highest bid to filter the lower
+     * @return Array List of auction from requiring the lower price.
+     */
+    public ArrayList <Auction> searchAuctionByLowerPrice(int money)
     {
-    	ArrayList<Auction> auctionLists = new ArrayList<Auction>();
+        ArrayList<Auction> auctionLists = new ArrayList<Auction>();
+    	for (Auction auction: openedAuction)
+    	{            
+    	    Bid maxBid = auction.getMaxBid();
+            if(maxBid == null)
+            {
+                if(auction.getMinBidMoney() < money)
+                    auctionLists.add(auction);
+            }
+            else
+            {
+                if(maxBid.getMoney() < money)
+                    auctionLists.add(auction);
+            }
+        }
         return auctionLists;
     }
-    
-    public ArrayList<Auction> sortAuction(ArrayList auctions)
-    {
-        
-    }
-    
+
+    /**
+     * Update the stage of an auction.
+     * @param auction Auction that want to update
+     * @return True if can update. Otherwise, false.
+     */
     public boolean updateAuctionStage(Auction auction)
     {
-        
+        if(auction == null)
+            return false;
+        int stage = auction.getStage();
+        boolean bCheck = false;
+        if(stage == 0)
+        {
+            if(auction.openAuction() == true)
+            {
+                waitedAuction.remove(auction);
+                openedAuction.add(auction);
+                bCheck = true;
+            }
+        }
+        else if(stage == 1)
+        {
+            
+            if(auction.closeAuction() == true)
+            {
+                openedAuction.remove(auction);
+                closedAuction.add(auction);
+                bCheck = true;
+            }
+        }
+        return bCheck;
     }
 }
