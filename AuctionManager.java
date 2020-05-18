@@ -58,14 +58,36 @@ public class AuctionManager
         
     }
  
+    /**
+     * Validate the auction data, create, and check stage.
+     * @param seller Seller of auction
+     * @param item Item name
+     * @param category Category of item
+     * @param picture Picture of item
+     * @param minBid Minimum bid money
+     * @param dateStart Start date of auction
+     * @param dateEnd End date of auction
+     * @return Return auction if the data is valid. Otherwise, false.
+     */
     private Auction validateAuction(User seller, String item, String category,
             String picture, int minBid, Date dateStart, Date dateEnd)
     {
     	if(seller == null)
     		return null;
+    	if(minBid < 0)
+    		return null;
+    	if(dateStart.after(dateEnd))
+    		return null;
     	
+    	Date currentDate = IOUtils.getCurrentDateTime();
+    	if(dateEnd.after(currentDate))
+    		return null;
     	
-    	return new Auction(seller, item, category, dateStart, dateEnd);
+    	Auction auction = new Auction(seller, item, category, dateStart, dateEnd);
+    	if(dateStart.after(currentDate))
+    		auction.openAuction();
+    	
+    	return auction; 
     }
     
     /**
