@@ -41,32 +41,19 @@ public class Auction
     private TreeSet<Bid> bidSet = new TreeSet<Bid>();
     
     /**
-     * Constructor of Auction for opening auction now.
-     * @param item Item name
-     * @param category Category of an auction
-     * @param seller The seller or user that create a new auction
-     * @param dateEnd Date that want to close an auction
-     */
-    public Auction(String item, String category, User seller, Date dateEnd)
-    {
-        this.item = item;
-        this.category = Category.findCategory(category);
-        this.seller = seller;
-        this.dateEnd = dateEnd;
-        seller.addSelling(this);
-        this.dateStart = IOUtils.getCurrentDateTime();
-        this.stage = 1;
-    }
-    
-    /**
      * Constructor of Auction for opening auction later.
+     * @param dateEnd2 
+     * @param dateStart2 
+     * @param category2 
+     * @param item2 
+     * @param seller2 
      * @param item Item name
      * @param category Category of an auction
      * @param seller The seller or user that create a new auction
      * @param dateStart Date that want to start an auction
      * @param dateEnd Date that want to close an auction
      */
-    public Auction(String item, String category, User seller, Date dateStart, Date dateEnd)
+    public Auction(User seller, String item, String category, Date dateStart, Date dateEnd)
     {
         this.item = item;
         this.category = Category.findCategory(category);
@@ -156,6 +143,15 @@ public class Auction
     public int getStage()
     {
         return this.stage;
+    }
+    
+    /**
+     * Get the Minimum money to bid of an auction
+     * @return Stage
+     */
+    public int getMinBidMoney()
+    {
+        return this.minBid;
     }
     
     /**

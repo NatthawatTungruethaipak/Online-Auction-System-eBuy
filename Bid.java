@@ -10,13 +10,13 @@ import java.util.Date;
 public class Bid
 {
     /** Bidder of the bid */
-    User bidder;
+    private User bidder;
     
     /** Amount of money that bid **/
-    int money;
+    private int money;
     
     /** Date that bid **/
-    Date dateBid;
+    private Date dateBid;
     
     /** 
      * Constructor of bid for a new bid
@@ -60,9 +60,9 @@ public class Bid
     /**
      * CompareTo function for using in bidSet.
      * @param bid Bid that want to compare
-     * @return Return positive value, if money of this instance is more than.
-     *         Return negative value, if money of this instance is less than.
-     *         Return 0, if both of them are equal.
+     * @return Positive value, if money of this instance is more than.
+     *         Negative value, if money of this instance is less than.
+     *         Zero, if both of them are equal.
      */
     public int compareTo(Bid bid)
     {
