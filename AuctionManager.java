@@ -57,6 +57,16 @@ public class AuctionManager
     {
         
     }
+ 
+    private Auction validateAuction(User seller, String item, String category,
+            String picture, int minBid, Date dateStart, Date dateEnd)
+    {
+    	if(seller == null)
+    		return null;
+    	
+    	
+    	return new Auction(seller, item, category, dateStart, dateEnd);
+    }
     
     /**
      * Create the auction and add to auction manager
@@ -71,7 +81,9 @@ public class AuctionManager
     public boolean createAuction(User seller, String item, String category,
             String picture, int minBid, Date dateStart, Date dateEnd)
     {
-        Auction newAuction = new Auction(seller, item, category, dateStart, dateEnd);
+        Auction newAuction = validateAuction(seller, item, category, picture, minBid, dateStart, dateEnd);
+        if(newAuction == null)
+        	return false;
         
         /* Set minimum bid of the auction */
         if(newAuction.setMinBid(minBid) == false)
@@ -82,7 +94,7 @@ public class AuctionManager
         	return false;
         
         /* Check date start and date end */
-        /* Note to myself in the future, change from create auction at first to check all variable and then create *.
+        /* Note to myself in the future, change from create auction at first to check all variable and then create */
         
         /** Add auction to stage list **/
         if(newAuction.getStage() == 0)
@@ -120,6 +132,8 @@ public class AuctionManager
             auctionSellerList.add(newAuction);
             auctionMapSeller.put(seller, auctionSellerList);
         }
+        
+        TimeManager.addAuction(newAuction);
         return true;
     }
     
