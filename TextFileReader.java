@@ -1,5 +1,13 @@
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 
+/**
+ * Read file control. Can open, close, and read line from file.
+ * 
+ * Created by Kla & Tong
+ * 19 May 2020
+ */
 public class TextFileReader
 {
 	String fileName = null;
@@ -13,6 +21,7 @@ public class TextFileReader
 	
 	public boolean openFile()
 	{
+		boolean bCheck = false;
 		try
 		{
 			if(reader != null)
@@ -21,18 +30,19 @@ public class TextFileReader
 				reader = null;
 			}
 			reader = new BufferedReader(new FileReader(fileName));
+			bCheck = true;
 		}
 		catch(Exception e)
 		{
 			System.out.println("System: Cannot open the read file");
 			reader = null;
-			return false;
 		}
-		return true;
+		return bCheck;
 	}
 	
 	public boolean closeFile()
 	{
+		boolean bCheck = false;
 		try
 		{
 			if(reader != null)
@@ -40,14 +50,14 @@ public class TextFileReader
 				reader.close();
 				reader = null;
 			}
+			bCheck = true;
 		}
 		catch(Exception e)
 		{
-			System.out.println("System: Cannot close read file, some error occur.");
+			System.out.println("System: Cannot close the read file, some error occur.");
 			reader = null;
-			return false;
 		}
-		return true;
+		return bCheck;
 	}
 	
 	public String readLine()
