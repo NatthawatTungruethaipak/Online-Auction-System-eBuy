@@ -134,7 +134,7 @@ public class Auction
      */
     public String getCategory()
     {
-        return category.getCategory();
+        return category.getCategoryStr();
     }
     
     /**
