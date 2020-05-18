@@ -212,7 +212,6 @@ public class Auction
         boolean bCheck = false;
         if(stage == 1)
         {
-            stage = 2;
             Iterator<Bid> bids = bidSet.descendingIterator();
             while (bids.hasNext())
             {
@@ -225,6 +224,7 @@ public class Auction
             		break;
             	}
             }
+            stage = 2;
             bCheck = true;
         }
         return bCheck;
