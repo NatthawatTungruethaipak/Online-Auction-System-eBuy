@@ -11,10 +11,10 @@ import java.io.IOException;
 public class TextFileReader
 {
 	/** File name to open */
-	String fileName = null;
+	private String fileName = null;
 	
 	/** Read buffer from file **/
-	BufferedReader reader;
+	private BufferedReader reader;
 	
 	/**
 	 * Constructor of TextFileReader. Set the file name
