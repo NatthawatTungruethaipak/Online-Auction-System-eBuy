@@ -106,15 +106,15 @@ public class AuctionFileHandler
              else if(parse[0].equals("STAGE") && IOUtils.validateInteger(parse[1]))
                  stage = Integer.parseInt(parse[1]);
              else if(parse[0].equals("MINBID") && IOUtils.validateInteger(parse[1]))
+             {
             	 minBid = Integer.parseInt(parse[1]);
+            	 if(minBid < 0)
+            		 return null;
+             }
              else
                  return null;
         }
-        Auction auction = new Auction(seller, item, category, dateStart, dateEnd);
-        if(auction.setMinBid(minBid) == false)
-        	return null;
-        if(auction.setPicture(picture) == false)
-        	return null;
+        Auction auction = new Auction(seller, item, category, dateStart, dateEnd, minBid, picture);
         if(stage == 1)
         	auction.openAuction();
         else if(stage == 2)
