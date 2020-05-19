@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 import java.util.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -10,6 +9,15 @@ import java.text.SimpleDateFormat;
  */
 public class IOUtils
 {
+	/**
+	 * Date format for date
+	 */
+	private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
+
+	/**
+	 * DateTime format for date and time
+	 */
+	private static SimpleDateFormat simpleDateTimeFormat = new SimpleDateFormat("dd-MM-yyyy-HH:mm:ss");
 
 	/**
 	 * Check the string is null or not.
@@ -48,9 +56,9 @@ public class IOUtils
 	 * @return difference of date and time in term of integer array. Index 0 is
 	 *         days, index 1 is hours, index 2 is minutes, index 3 is seconds
 	 */
-	public static ArrayList<Integer> diffDateTime(Date date1, Date date2)
+	public static int[] diffDateTime(Date date1, Date date2)
 	{
-		ArrayList<Integer> values = new ArrayList<>();
+		int diffDateTime[] = new int[4];
 		try
 		{
 			// in milliseconds
@@ -61,16 +69,17 @@ public class IOUtils
 			long diffHours = (diff / (60 * 60 * 1000)) % 24;
 			long diffDays = (diff / (24 * 60 * 60 * 1000));
 
-			values.add((int) diffDays);
-			values.add((int) diffHours);
-			values.add((int) diffMinutes);
-			values.add((int) diffSeconds);
+			diffDateTime[0] = (int) diffDays;
+			diffDateTime[1] = (int) diffHours;
+			diffDateTime[2] = (int) diffMinutes;
+			diffDateTime[3] = (int) diffSeconds;
+
 		} catch (Exception e)
 		{
 			e.printStackTrace();
 		}
 
-		return values;
+		return diffDateTime;
 	}
 
 	/**
@@ -79,7 +88,7 @@ public class IOUtils
 	 * @param date that going to create
 	 * @return create data in term of Date class.
 	 */
-	public static Date createTimeInstance(String date)
+	public static Date createDateInstance(String date)
 	{
 		if (isNullStr(date))
 		{
@@ -87,7 +96,6 @@ public class IOUtils
 		}
 		try
 		{
-			SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM-dd-yyyy");
 			simpleDateFormat.setLenient(false);
 			Date javaDate = simpleDateFormat.parse(date);
 			return javaDate;
@@ -101,30 +109,29 @@ public class IOUtils
 	/**
 	 * Create date with time instance
 	 * 
-	 * @param date that going to create
-	 * @param time that going to create
+	 * @param date and time that going to create
 	 * @return create data and time in term of Date class.
 	 */
-	public static Date createTimeInstance(String date, String time)
+	public static Date createDateTimeInstance(String dateTime)
 	{
-		if (isNullStr(date))
+		if (isNullStr(dateTime))
 		{
 			return null;
 		}
 		try
 		{
-			String dateTime = date + "-" + time;
-			SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM-dd-yyyy-HH:mm:ss");
-			simpleDateFormat.setLenient(false);
-			Date javaDate = simpleDateFormat.parse(dateTime);
+			simpleDateTimeFormat.setLenient(false);
+			Date javaDate = simpleDateTimeFormat.parse(dateTime);
 			return javaDate;
 
 		} catch (ParseException e)
 		{
-			System.out.println(date + " is invalid date and time format");
+			System.out.println(dateTime + " is invalid date and time format");
 			return null;
 		}
 	}
+
+	
 
 	/**
 	 * validate the username in pattern of 6-30 characters with consist of alphabet,
@@ -139,6 +146,10 @@ public class IOUtils
 	 */
 	public static boolean validateUsername(String username)
 	{
+		if (isNullStr(username))
+		{
+			return false;
+		}
 		String usernamePattern = "^[aA-zZ]\\w{5,29}$";
 		if (username.matches(usernamePattern))
 		{
@@ -164,6 +175,10 @@ public class IOUtils
 	 */
 	public static boolean validatePassword(String password)
 	{
+		if (isNullStr(password))
+		{
+			return false;
+		}
 		String passwordPattern = "((?=.*[a-z])(?=.*\\d)(?=.*[A-Z])(?=.*[@#$%!]).{8,40})";
 		if (password.matches(passwordPattern))
 		{
@@ -186,6 +201,10 @@ public class IOUtils
 	 */
 	public static boolean validateEmail(String email)
 	{
+		if (isNullStr(email))
+		{
+			return false;
+		}
 		String emailPattern = "^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$";
 		if (email.matches(emailPattern))
 		{
@@ -198,13 +217,81 @@ public class IOUtils
 	}
 
 	/**
-	 * validate integer the string parameter must contain only integer in format of string
+	 * Validate date to check pattern of date in format dd-MM-yyyy
+	 * 
+	 * @param date that going to be validate
+	 * @return True, when date is correct pattern. False, when date is incorrect
+	 *         pattern.
+	 */
+	public static boolean validateDate(String date)
+	{
+		if (isNullStr(date))
+		{
+			return false;
+		}
+		try
+		{
+			simpleDateFormat.setLenient(false);
+			if (simpleDateFormat.parse(date) != null)
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		} catch (ParseException e)
+		{
+			System.out.println(date + " is invalid date format");
+			return false;
+		}
+	}
+
+	/**
+	 * Validate date and time to check pattern of date and time in format
+	 * dd-MM-yyyy-HH:mm:ss
+	 * 
+	 * @param dateTime that going to be validate
+	 * @return True, when date and time is correct pattern. False, when date and
+	 *         time is incorrect pattern.
+	 */
+	public static boolean validateDateTime(String dateTime)
+	{
+		if (isNullStr(dateTime))
+		{
+			return false;
+		}
+		try
+		{
+			simpleDateFormat.setLenient(false);
+			if (simpleDateFormat.parse(dateTime) != null)
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		} catch (ParseException e)
+		{
+			System.out.println(dateTime + " is invalid date format");
+			return false;
+		}
+	}
+	
+	/**
+	 * validate integer the string parameter must contain only integer in format of
+	 * string
 	 * 
 	 * @param string is string to be validate
 	 * @return true, when string is integer. False, when string is not integer.
 	 */
 	public static boolean validateInteger(String string)
 	{
+		if (isNullStr(string))
+		{
+			return false;
+		}
 		try
 		{
 			Integer.parseInt(string);
@@ -213,41 +300,5 @@ public class IOUtils
 		{
 			return false;
 		}
-	}
-
-	public static void main(String args[])
-	{
-		System.out.println("isNullStr " + isNullStr(""));
-		System.out.println("isNullStr " + isNullStr("tong"));
-		System.out.println("now is " + getCurrentDateTime());
-		System.out.println(createTimeInstance("12-29-2016"));
-		System.out.println(createTimeInstance("12-29-2016", "23:33:17"));
-		Date d1 = createTimeInstance("12-29-2016", "23:33:27");
-		Date d2 = createTimeInstance("12-30-2016", "22:33:17");
-		diffDateTime(d1, d2);
-		System.out.println("validateEmail " + validateEmail("natthawat.tungruethaipak@mail.kmutt.ac.th"));
-		System.out.println("validateEmail " + validateEmail("natthawat.tungruethaipakmail.kmutt.ac.th"));
-		System.out.println("validatePassword " + validatePassword("n!k@sn1Kos"));
-		System.out.println("validatePassword " + validatePassword("nsn1Kos"));
-		// Test Case: 1
-		String str1 = "Geeksforgeeks";
-		System.out.println("validateUsername1 " + validateUsername(str1));
-
-		// Test Case: 2
-		String str2 = "1Geeksforgeeks";
-		System.out.println("validateUsername2 " + validateUsername(str2));
-
-		// Test Case: 3
-		String str3 = "Ge";
-		System.out.println("validateUsername3 " + validateUsername(str3));
-
-		// Test Case: 4
-		String str4 = "e22vvb";
-		System.out.println("validateUsername4 " + validateUsername(str4));
-		
-		System.out.println(validateInteger(""));
-		System.out.println(validateInteger("tong"));
-		System.out.println(validateInteger("tong12"));
-		System.out.println(validateInteger("1234"));
 	}
 }
