@@ -166,8 +166,8 @@ public class UserManager
     {
         User newUser = validateUser(username, password, name, surname, birth,
                 address, email);
-        if (userList.add(newUser))
-            return true;
+        if(newUser != null && userList.add(newUser))
+            return false;
         else
             return false;
     }
