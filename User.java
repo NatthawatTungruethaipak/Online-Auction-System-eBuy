@@ -85,6 +85,16 @@ public class User
 	}
 
 	/**
+	 * Get password of user
+	 * 
+	 * @return User's password
+	 */
+	public String getPassword()
+	{
+		return password;
+	}
+	
+	/**
 	 * Get name of user
 	 * 
 	 * @return User's name
