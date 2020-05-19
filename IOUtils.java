@@ -51,7 +51,7 @@ public class IOUtils
 	/**
 	 * Find the difference in date and time from couple of date and time.
 	 * 
-	 * reference from
+	 * Reference from
 	 * https://mkyong.com/java/how-to-calculate-date-time-difference-in-java/
 	 * 
 	 * @param date1 is first date to be compare.
@@ -88,7 +88,7 @@ public class IOUtils
 	/**
 	 * Create date instance
 	 * 
-	 * reference from
+	 * Reference from
 	 * https://mkyong.com/java/how-to-calculate-date-time-difference-in-java/
 	 * 
 	 * @param date that going to create
@@ -115,7 +115,7 @@ public class IOUtils
 	/**
 	 * Create date with time instance
 	 * 
-	 * reference from
+	 * Reference from
 	 * https://mkyong.com/java/how-to-calculate-date-time-difference-in-java/
 	 * 
 	 * @param date and time that going to create
@@ -143,10 +143,10 @@ public class IOUtils
 	
 
 	/**
-	 * validate the username in pattern of 6-30 characters with consist of alphabet,
+	 * Validate the username in pattern of 6-30 characters with consist of alphabet,
 	 * number and underscore. First character can't be number.
 	 * 
-	 * reference from
+	 * Reference from
 	 * https://www.geeksforgeeks.org/how-to-validate-a-username-using-regular-expressions-in-java/
 	 * 
 	 * @param username is username to be validate
@@ -171,11 +171,11 @@ public class IOUtils
 	}
 
 	/**
-	 * validate the password in pattern of 8-40 characters with consist of at least
+	 * Validate the password in pattern of 8-40 characters with consist of at least
 	 * one number, one lower character, one upper character, one special that is [ @
 	 * # $ % ! . ].
 	 * 
-	 * reference from
+	 * Reference from
 	 * https://examples.javacodegeeks.com/core-java/util/regex/matcher/validate-password-with-java-regular-expression-example/
 	 * 
 	 * @param password is password to be validate
@@ -200,9 +200,9 @@ public class IOUtils
 	}
 
 	/**
-	 * validate the email in pattern of email
+	 * Validate the email in pattern of email
 	 * 
-	 * reference from https://www.tutorialspoint.com/validate-email-address-in-java
+	 * Reference from https://www.tutorialspoint.com/validate-email-address-in-java
 	 * 
 	 * @param email is email to be validate
 	 * @return True, when email is in correct pattern. False, when email is not in
@@ -228,7 +228,7 @@ public class IOUtils
 	/**
 	 * Validate date to check pattern of date in format dd-MM-yyyy
 	 * 
-	 * reference from
+	 * Reference from
 	 * https://mkyong.com/java/how-to-calculate-date-time-difference-in-java/
 	 * 
 	 * @param date that going to be validate
@@ -263,7 +263,7 @@ public class IOUtils
 	 * Validate date and time to check pattern of date and time in format
 	 * dd-MM-yyyy-HH:mm:ss
 	 * 
-	 * reference from
+	 * Reference from
 	 * https://mkyong.com/java/how-to-calculate-date-time-difference-in-java/
 	 * 
 	 * @param dateTime that going to be validate
@@ -295,7 +295,7 @@ public class IOUtils
 	}
 	
 	/**
-	 * validate integer the string parameter must contain only integer in format of
+	 * Validate integer the string parameter must contain only integer in format of
 	 * string
 	 * 
 	 * @param string is string to be validate

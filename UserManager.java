@@ -11,7 +11,7 @@ public class UserManager
 	/**
 	 * UserManager that will be Singleton to control user
 	 */
-	private static UserManager userManager = null;
+	private static UserManager userManager = new UserManager();;
 
 	/**
 	 * List of user
@@ -19,35 +19,29 @@ public class UserManager
 	private ArrayList<User> userList = new ArrayList<User>();
 
 	/**
-	 * User that going to find
-	 */
-	private User findUser = null;
-
-	/**
 	 * Constructor of UserManager class for future add-on Make it private to prevent
 	 * to implement singleton.
 	 */
 	private UserManager()
 	{
-
 	}
 
 	/**
-	 * Static method to create instance of UserManager class
+	 * Get instance of UserManager. Implement Singleton
+	 * @return Instance of UserManager
 	 */
 	public static UserManager getSingletonInstance()
 	{
-		if (userManager == null)
-			userManager = new UserManager();
 		return userManager;
 	}
 
 	/**
 	 * Create the ArrayList for userList
+	 * @param userList Initialize user
 	 */
 	public void initialUser(ArrayList<User> userList)
 	{
-		userList = new ArrayList<User>();
+		
 	}
 
 	/**
@@ -65,19 +59,20 @@ public class UserManager
 	private User validateUser(String username, String password, String name, String surname, String birth,
 			String address, String email)
 	{
-		if (IOUtils.validateUsername(username) && IOUtils.validatePassword(password) && IOUtils.validateDate(birth)
-				&& IOUtils.validateEmail(email))
+		if (IOUtils.validateUsername(username) == false)
+			return null;
+		if(IOUtils.validatePassword(password) == false)
+			return null;
+		if(IOUtils.validateDate(birth) == false)
+			return null;
+		if(IOUtils.validateEmail(email) == false)
+			return null;
+		if (findUserByUsername(username) == null)
 		{
-			if (findUserByUsername(username) == null)
-			{
-				Date validatedUserBirth = IOUtils.createDateInstance(birth);
-				User validatedUser = new User(username, password, name, surname, validatedUserBirth, address, email);
-				return validatedUser;
-			}
-			else
-			{
-				return null;
-			}
+			Date birthDate = IOUtils.createDateInstance(birth);
+			User user = new User(username, password, name, surname,
+								  birthDate, address, email);
+			return user;
 		}
 		else
 		{
@@ -87,10 +82,12 @@ public class UserManager
 
 	/**
 	 * Find the user using username
+	 * @param username Username that want to find
+	 * @return User if found. Null if not.
 	 */
 	public User findUserByUsername(String username)
 	{
-		findUser = null;
+		User findUser = null;
 		for (User user : userList)
 		{
 			if (user.getUsername().equals(username))
@@ -104,10 +101,12 @@ public class UserManager
 
 	/**
 	 * Find the user using name
+	 * @param name Name that want to find
+	 * @return User that has name that finding
 	 */
 	public User findUserByName(String name)
 	{
-		findUser = null;
+		User findUser = null;
 		for (User user : userList)
 		{
 			if (user.getName().equals(name))
@@ -120,7 +119,10 @@ public class UserManager
 	}
 
 	/**
-	 * Add user to the list of userList
+	 * Find username and then check the password.
+	 * @param username Username that want to find
+	 * @param password Password that want to check
+	 * @return User if username and password are same. Otherwise, null.
 	 */
 	public User checkLogin(String username, String password)
 	{
@@ -143,16 +145,33 @@ public class UserManager
 		return findUser;
 	}
 
-	public boolean createUser(String username, String password, String name, String surname, String birth,
-			String address, String email)
+	/**
+	 * Create new user and add to user list
+	 * @param username Username of user
+	 * @param password Password of user
+	 * @param name Name of user
+	 * @param surname Surname of user
+	 * @param birth Birth date of user
+	 * @param address Address of user
+	 * @param email Email of user
+	 * @return
+	 */
+	public boolean createUser(String username, String password,	String name,
+			String surname, String birth, String address, String email)
 	{
 		User newUser = validateUser(username, password, name, surname, birth, address, email);
 		if(userList.add(newUser))
-		{
 			return true;
-		}
-		else {
+		else
 			return false;
-		}
+	}
+	
+	/**
+	 * Get all user list. (Used in write file)
+	 * @return All user list.
+	 */
+	public ArrayList<User> getAllUser()
+	{
+		return userList;
 	}
 }
