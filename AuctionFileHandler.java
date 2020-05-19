@@ -15,7 +15,7 @@ public class AuctionFileHandler
 	final String auctionFileName = "auctionData.txt";
 	
 	/** Instance of AuctionFileHandler. Implement singleton **/
-	private AuctionFileHandler auctionFileHandler = new AuctionFileHandler();
+	private static AuctionFileHandler auctionFileHandler = new AuctionFileHandler();
 	
 	/**
 	 * Constructor of AuctionFileHandler.
@@ -31,7 +31,7 @@ public class AuctionFileHandler
 	 */
 	public static AuctionFileHandler getSingletonInstance()
 	{
-		
+		return auctionFileHandler;
 	}
 	
 	/**
@@ -39,7 +39,11 @@ public class AuctionFileHandler
 	 */
 	private void readUsers()
 	{
-		
+		TextFileReader userReader = new TextFileReader(userFileName);
+		if(userReader.openFile() == false)
+			return;
+		userReader.readLine();
+
 	}
 	
 	/**
