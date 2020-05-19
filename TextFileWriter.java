@@ -11,10 +11,10 @@ import java.io.IOException;
 public class TextFileWriter
 {
 	/** File name to open */
-	String fileName = null;
+	private String fileName = null;
 	
 	/** Write buffer from file **/
-	BufferedWriter writer;
+	private BufferedWriter writer;
 	
 	/**
 	 * Constructor of TextFileWriter. Set the file name

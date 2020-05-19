@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 
 /**
  * Manage the Auction file
@@ -317,12 +318,27 @@ public class AuctionFileHandler
      * @param users Users that going to write
      * @return True if don't have any problem.
      */
-    public boolean writeUsers(ArrayList<User> users)
+    public boolean writeUsers(ArrayList<User> userList)
     {
-        if(users != null)
+        if(userList == null)
+        	return false;
+        TextFileWriter writer = new TextFileWriter(userFileName);
+        String line;
+        if(writer.open() == false)
+        	return false;
+        for(User user: userList)
         {
-            
+        	writer.writeLine(tagUser[0] + " " + user.getUsername() + "\n");
+        	writer.writeLine(tagUser[1] + " " + user.getPassword() + "\n");
+        	writer.writeLine(tagUser[2] + " " + user.getName() + "\n");
+        	writer.writeLine(tagUser[3] + " " + user.getSurname() + "\n");
+        	writer.writeLine(tagUser[4] + " " + IOUtils.dateToString(user.getBirth()) + "\n");
+        	writer.writeLine(tagUser[5] + " " + user.getAddress() + "\n");
+        	writer.writeLine(tagUser[6] + " " + user.getEmail() + "\n");
+        	writer.writeLine(tagUser[7] + " " + user.getBalance() + "\n");
         }
+        writer.close();
+        return true;
     }
     
     /**
@@ -330,9 +346,39 @@ public class AuctionFileHandler
      * @param auctions Auctions that going to write
      * @return True if don't have any problem.
      */
-    public boolean writeAuctions(ArrayList<Auction> auctions)
+    public boolean writeAuctions(ArrayList<Auction> auctionList)
     {
-        
+    	if(auctionList == null)
+        	return false;
+        TextFileWriter writer = new TextFileWriter(auctionFileName);
+        String line;
+        if(writer.open() == false)
+        	return false;
+        for(Auction auction: auctionList)
+        {
+        	writer.writeLine(tagAuction[0] + " " + auction.getItem() + "\n");
+        	writer.writeLine(tagAuction[1] + " " + auction.getCategoryStr() + "\n");
+        	writer.writeLine(tagAuction[2] + " " + auction.getPicture() + "\n");
+        	writer.writeLine(tagAuction[3] + " " + auction.getSeller().getUsername() + "\n");
+        	writer.writeLine(tagAuction[4] + " " + IOUtils.dateTimeToString(auction.getDateStart()) + "\n");
+        	writer.writeLine(tagAuction[5] + " " + IOUtils.dateTimeToString(auction.getDateEnd()) + "\n");
+        	writer.writeLine(tagAuction[6] + " " + auction.getStage() + "\n");
+        	writer.writeLine(tagAuction[7] + " " + auction.getMinBidMoney() + "\n");
+        	Iterator<Bid> bids = auction.getBidIterator();
+        	while (bids.hasNext())
+            {
+            	Bid bid = bids.next();
+            	User bidder = bid.getBidder();
+            	if(auction.getWinner() == bid)
+            		writer.writeLine(tagWinner + " " + bid.getBidder().getUsername() + "\n");
+            	else
+            		writer.writeLine(tagBid[0] + " " + bid.getBidder().getUsername() + "\n");
+            	writer.writeLine(tagBid[1] + " " + bid.getMoney() + "\n");
+            	writer.writeLine(tagBid[2] + " " + IOUtils.dateTimeToString(bid.getDateTime()) + "\n");
+            }
+        }
+        writer.close();
+        return true;
     }
     
 }

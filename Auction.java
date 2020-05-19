@@ -132,7 +132,7 @@ public class Auction
      * Get the category of item
      * @return Category
      */
-    public String getCategory()
+    public String getCategoryStr()
     {
         return category.getCategoryStr();
     }
@@ -153,6 +153,11 @@ public class Auction
     public int getMinBidMoney()
     {
         return this.minBid;
+    }
+    
+    public Iterator<Bid> getBidIterator()
+    {
+    	return this.bidSet.iterator();
     }
     
     /**
