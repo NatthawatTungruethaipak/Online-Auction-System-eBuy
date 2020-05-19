@@ -3,7 +3,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 /**
- * Represent the user object in auction program. Contain the user detail.
+ * Represent the utility method in the auction program. Contain the helper method.
  * 
  * Created by Kla & Tong 18 May 2020
  */
@@ -51,6 +51,9 @@ public class IOUtils
 	/**
 	 * Find the difference in date and time from couple of date and time.
 	 * 
+	 * reference from
+	 * https://mkyong.com/java/how-to-calculate-date-time-difference-in-java/
+	 * 
 	 * @param date1 is first date to be compare.
 	 * @param date2 is second date to be compare.
 	 * @return difference of date and time in term of integer array. Index 0 is
@@ -85,6 +88,9 @@ public class IOUtils
 	/**
 	 * Create date instance
 	 * 
+	 * reference from
+	 * https://mkyong.com/java/how-to-calculate-date-time-difference-in-java/
+	 * 
 	 * @param date that going to create
 	 * @return create data in term of Date class.
 	 */
@@ -108,6 +114,9 @@ public class IOUtils
 
 	/**
 	 * Create date with time instance
+	 * 
+	 * reference from
+	 * https://mkyong.com/java/how-to-calculate-date-time-difference-in-java/
 	 * 
 	 * @param date and time that going to create
 	 * @return create data and time in term of Date class.
@@ -219,6 +228,9 @@ public class IOUtils
 	/**
 	 * Validate date to check pattern of date in format dd-MM-yyyy
 	 * 
+	 * reference from
+	 * https://mkyong.com/java/how-to-calculate-date-time-difference-in-java/
+	 * 
 	 * @param date that going to be validate
 	 * @return True, when date is correct pattern. False, when date is incorrect
 	 *         pattern.
@@ -250,6 +262,9 @@ public class IOUtils
 	/**
 	 * Validate date and time to check pattern of date and time in format
 	 * dd-MM-yyyy-HH:mm:ss
+	 * 
+	 * reference from
+	 * https://mkyong.com/java/how-to-calculate-date-time-difference-in-java/
 	 * 
 	 * @param dateTime that going to be validate
 	 * @return True, when date and time is correct pattern. False, when date and
