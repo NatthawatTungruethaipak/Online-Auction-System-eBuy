@@ -20,8 +20,8 @@ public class Bid
     
     /** 
      * Constructor of bid for a new bid
-     * @param user
-     * @param money
+     * @param user User that bid
+     * @param money Amount of money to bid
      */
     public Bid(User user, int money)
     {
@@ -55,6 +55,22 @@ public class Bid
     public int getMoney()
     {
         return this.money;
+    }
+    
+    /**
+     * Set date of bid. (Used in read file)
+     * @param date Date that want to set
+     * @return Return true if can set date. Otherwise, false.
+     */
+    public boolean setDate(Date date)
+    {
+    	boolean bCheck = false;
+    	if(date != null)
+    	{
+    		this.dateBid = date;
+    		bCheck = true;
+    	}
+    	return bCheck;
     }
     
     /**
