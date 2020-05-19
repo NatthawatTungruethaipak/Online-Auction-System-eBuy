@@ -1,4 +1,8 @@
 import java.util.ArrayList;
+import java.util.Date;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 /**
  * Manage the Auction file
@@ -37,19 +41,29 @@ public class AuctionFileHandler
 	/**
 	 * Read user file and add to system.
 	 */
-	private void readUsers()
+	public ArrayList<User> readUsers()
 	{
-		TextFileReader userReader = new TextFileReader(userFileName);
-		if(userReader.openFile() == false)
-			return;
-		userReader.readLine();
-
+		JSONFileReader userReader = new JSONFileReader(userFileName);
+		JSONArray userJSON = userReader.readJSON();
+		return ;		
+	}
+	
+	private User parseUserObject(JSONObject userObj)
+	{
+		String username = (String) userObj.get("username");
+		String password = (String) userObj.get("password");
+		String name = (String) userObj.get("name");
+		String surname = (String) userObj.get(surname);
+		Date birth = (Date) userObj.get();
+		String address;
+		String email;
+		int balance;
 	}
 	
 	/**
 	 * Read auction file and add to system.
 	 */
-	private void readAuctions()
+	public ArrayList<Auction> readAuctions()
 	{
 		
 	}
@@ -61,7 +75,10 @@ public class AuctionFileHandler
 	 */
 	public boolean writeUsers(ArrayList<User> users)
 	{
-		
+		if(users != null)
+		{
+			
+		}
 	}
 	
 	/**
