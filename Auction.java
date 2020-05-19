@@ -252,4 +252,14 @@ public class Auction
         }
         return bCheck;
     }
+    
+    /**
+     * Add bid to auction. Used for read from file
+     * @param bid Bid that want to add
+     */
+    public void addBid (Bid bid)
+    {
+    	if (bid != null)
+    		bidSet.add(bid);
+    }
 }

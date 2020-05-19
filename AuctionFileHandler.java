@@ -58,25 +58,35 @@ public class AuctionFileHandler
         String address = null;
         String email = null;
         int balance = 0;
-        for(int i = 0; i < paraUser; i++)
+        
+        /** Loop through each data and validate tag **/
+        for(int i = 0; i < tagUser.length; i++)
         {
-             String fields[] = parse[i].split(" ", 2);
-             if(parse[0].equals(tagUser[0]) && IOUtils.validateUsername(parse[1]))
-                username = parse[1];
-             else if(parse[0].equals(tagUser[1]) && IOUtils.validatePassword(parse[1]))
-                password = parse[1];
-             else if(parse[0].equals(tagUser[2]) && IOUtils.isNullStr(parse[1]) != true)
-                name = parse[1];
-             else if(parse[0].equals(tagUser[3]) && IOUtils.isNullStr(parse[1]) != true)
-                 surname = parse[1];
-             else if(parse[0].equals(tagUser[4]) && IOUtils.validateDate(parse[1]))
-                 birth = IOUtils.createTimeInstance(parse[1]);
-             else if(parse[0].equals(tagUser[5]))
-                 address = parse[1];
-             else if(parse[0].equals(tagUser[6]) && IOUtils.validateEmail(parse[1]))
-                 email = parse[1];
-             else if(parse[0].equals(tagUser[7]) && IOUtils.validateInteger(parse[1]))
-                 balance = Integer.parseInt(parse[1]);
+             String[] fields = parse[i].split(" ", 2);
+             /** Check username **/
+             if(fields[0].equals(tagUser[0]) && IOUtils.validateUsername(fields[1]))
+                username = fields[1];
+             /** Check password **/
+             else if(fields[0].equals(tagUser[1]) && IOUtils.validatePassword(fields[1]))
+                password = fields[1];
+             /** Check name **/
+             else if(fields[0].equals(tagUser[2]) && IOUtils.isNullStr(fields[1]) == false)
+                name = fields[1];
+             /** Check surname **/
+             else if(fields[0].equals(tagUser[3]) && IOUtils.isNullStr(fields[1]) == false)
+                 surname = fields[1];
+             /** Check birth date **/
+             else if(fields[0].equals(tagUser[4]) && IOUtils.validateDate(fields[1]))
+                 birth = IOUtils.createDateInstance(fields[1]);
+             /** Check address **/
+             else if(fields[0].equals(tagUser[5]))
+                 address = fields[1];
+             /** Check email **/
+             else if(fields[0].equals(tagUser[6]) && IOUtils.validateEmail(fields[1]))
+                 email = fields[1];
+             /** Check balance account **/
+             else if(fields[0].equals(tagUser[7]) && IOUtils.validateInteger(fields[1]))
+                 balance = Integer.parseInt(fields[1]);
              else
                  return null;
         }
@@ -97,39 +107,55 @@ public class AuctionFileHandler
         int minBid = 0;
         
         UserManager userManager = UserManager.getSingletonInstance();
-        for(int i = 0; i < paraAuction; i++)
+        /** Loop through each data and validate tag **/
+        for(int i = 0; i < tagAuction.length; i++)
         {
-             String fields[] = parse[i].split(" ", 2);
-             if(parse[0].equals(tagAuction[0]) && IOUtils.isNullStr(parse[1]) != true)
-                item = parse[1];
-             else if(parse[0].equals(tagAuction[1]) && IOUtils.isNullStr(parse[1]) != true)
-                category = parse[1];
-             else if(parse[0].equals(tagAuction[2]) && IOUtils.isNullStr(parse[1]) != true)
-                picture = parse[1];
-             else if(parse[0].equals(tagAuction[3]))
+             String[] fields = parse[i].split(" ", 2);
+             /** Check item name **/
+             if(fields[0].equals(tagAuction[0]) && IOUtils.isNullStr(fields[1]) != true)
+                item = fields[1];
+             /** Check category **/
+             else if(fields[0].equals(tagAuction[1]) && IOUtils.isNullStr(fields[1]) != true)
+                category = fields[1];
+             /** Check picture **/
+             else if(fields[0].equals(tagAuction[2]) && IOUtils.isNullStr(fields[1]) != true)
+                picture = fields[1];
+             /** Check seller user **/
+             else if(fields[0].equals(tagAuction[3]))
              {
-                 seller = userManager.findUserByUsername(parse[1]);
+                 seller = userManager.findUserByUsername(fields[1]);
                  if(seller == null)
                      return null;
              }
-             else if(parse[0].equals(tagAuction[4]) && IOUtils.validateDateTime(parse[1]))
-                  dateStart = IOUtils.createDateTimeInstance(parse[1]);
-             else if(parse[0].equals(tagAuction[5]) && IOUtils.validateDateTime(parse[1]))
-            	 dateEnd = IOUtils.createDateTimeInstance(parse[1]);
-             else if(parse[0].equals(tagAuction[6]) && IOUtils.validateInteger(parse[1]))
-                 stage = Integer.parseInt(parse[1]);
-             else if(parse[0].equals(tagAuction[7]) && IOUtils.validateInteger(parse[1]))
+             /** Check start date **/
+             else if(fields[0].equals(tagAuction[4]) && IOUtils.validateDateTime(fields[1]))
+                  dateStart = IOUtils.createDateTimeInstance(fields[1]);
+             /** Check close date **/
+             else if(fields[0].equals(tagAuction[5]) && IOUtils.validateDateTime(fields[1]))
+            	 dateEnd = IOUtils.createDateTimeInstance(fields[1]);
+             /** Check stage **/
+             else if(fields[0].equals(tagAuction[6]) && IOUtils.validateInteger(fields[1]))
              {
-            	 minBid = Integer.parseInt(parse[1]);
+                 stage = Integer.parseInt(fields[1]);
+                 if(stage < 0 || stage > 2)
+                	 return null;
+             }
+             /** Check minimum bid money **/
+             else if(fields[0].equals(tagAuction[7]) && IOUtils.validateInteger(fields[1]))
+             {
+            	 minBid = Integer.parseInt(fields[1]);
             	 if(minBid < 0)
             		 return null;
              }
              else
                  return null;
         }
+        /** Check that start date after end date or not **/
         if(dateStart.after(dateEnd))
     		return null;
         Auction auction = new Auction(seller, item, category, dateStart, dateEnd, minBid, picture);
+        
+        /** Update stage **/
         if(stage == 1)
         	auction.openAuction();
         else if(stage == 2)
@@ -144,48 +170,56 @@ public class AuctionFileHandler
     {
     	boolean bWinner = false;
     	boolean bError = false;
-    	User bidder;
-        int money;
-        Date dateBid;
+    	User bidder = null;
+        int money = 0;
+        Date dateBid = null;
         
         UserManager userManager = UserManager.getSingletonInstance();
-        for(int i = 0; i < paraBid; i++)
+        /** Loop through each tag and then get the data **/
+        for(int i = 0; i < tagBid.length; i++)
         {
-             String fields[] = parse[i].split(" ", 2);
-             if(parse[0].equals(tagBid[0]))
+             String[] fields = parse[i].split(" ", 2);
+             /** Get bidder **/
+             if(fields[0].equals(tagBid[0]))
              {
-                 bidder = userManager.findUserByUsername(parse[1]);
+                 bidder = userManager.findUserByUsername(fields[1]);
                  if(bidder == null)
                  {
                 	 bError = true;
                      break;
                  }
              }
-             else if(parse[0].equals(tagWinner))
+             
+             /** Get the winner bidder. */ 
+             else if(fields[0].equals(tagWinner))
              {
             	 bWinner = true;
-                 bidder = userManager.findUserByUsername(parse[1]);
+                 bidder = userManager.findUserByUsername(fields[1]);
                  if(bidder == null)
                  {
                 	 bError = true;
                      break;
                  }
              }
-             else if(parse[0].equals(tagBid[1]) && IOUtils.validateInteger(parse[1]))
+             
+             /** Get bid money**/
+             else if(fields[0].equals(tagBid[1]) && IOUtils.validateInteger(fields[1]))
              {
-            	 money = Integer.parseInt(parse[1]);
+            	 money = Integer.parseInt(fields[1]);
             	 if(money < 0)
             		 bError = true;
              }
-             else if(parse[0].equals(tagBid[2]) && IOUtils.validateDateTime(parse[1]))
-                  dateBid = IOUtils.createDateTimeInstance(parse[1]);
+             
+             /** Get bid date **/
+             else if(fields[0].equals(tagBid[2]) && IOUtils.validateDateTime(fields[1]))
+                  dateBid = IOUtils.createDateTimeInstance(fields[1]);
              else
              {
             	 bError = true;
                  break;
              }
         }
-        if(bError == false)
+        if(bError == false) /** If don't have any error occur **/
         {
         	Bid bid = new Bid(bidder, money);
         	bid.setDate(dateBid);
@@ -193,7 +227,7 @@ public class AuctionFileHandler
         	if(bWinner == true)
         		auction.setWinner(bid);
         }
-        return auction;
+        return;
     }
     
     /**
