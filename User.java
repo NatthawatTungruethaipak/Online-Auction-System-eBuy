@@ -165,99 +165,41 @@ public class User
 	}
 
 	/**
-	 * Set new password to for user if new password is correct format
-	 * 
-	 * @param newPassword will be set as new password
-	 * @return boolean of setting new password if the new password can set will
-	 *         return true
+	 * Editing the profile. Set new password, name, surname, birth, address, email	
+	 * @param password
+	 * @param name
+	 * @param surname
+	 * @param birth
+	 * @param address
+	 * @param email
+	 * @return
 	 */
-	public boolean setPassword(String newPassword)
+	public boolean editProfile(String password, String name, String surname, Date birth,
+			String address, String email)
 	{
-		if (IOUtils.validatePassword(newPassword))
-		{
-			this.password = newPassword;
-			return true;
-		}
-		else
-		{
+		if (IOUtils.validatePassword(password) == false)
 			return false;
-		}
-	}
-
-	/**
-	 * Set name of user
-	 * 
-	 * @param name that will be name of user
-	 * @return true
-	 */
-	public boolean setName(String name)
-	{
+		if(IOUtils.validateEmail(email) == false)
+			return false;
+		if (IOUtils.isNullStr(name) == true)
+			return false;
+		if (IOUtils.isNullStr(surname) == true)
+			return false;
+		if(IOUtils.isNullStr(address) == true)
+			return false;
+		Date currentDate = IOUtils.getCurrentDateTime();
+		if(birth == null || birth.after(currentDate))
+			return false;
+		
+		this.password = password;
 		this.name = name;
-		return true;
-	}
-
-	/**
-	 * Set new surname of user
-	 * 
-	 * @param surname that will be surname of user
-	 * @return true
-	 */
-	public boolean setSurname(String surname)
-	{
 		this.surname = surname;
-		return true;
-	}
-
-	/**
-	 * Set birth of user if birth is in correct format
-	 * 
-	 * @param birth that will be birth of user
-	 * @return true if birth is valid
-	 */
-	public boolean setBirth(Date birth)
-	{
-		Date dateNow = IOUtils.getCurrentDateTime();
-		if (dateNow.after(birth))
-		{
-			this.birth = birth;
-			return true;
-		}
-		else
-		{
-			return false;
-		}
-	}
-
-	/**
-	 * Set the address of the user
-	 * 
-	 * @param address that will be address of user
-	 * @return true
-	 */
-	public boolean setAddress(String address)
-	{
+		this.birth = birth;
 		this.address = address;
+		this.email = email;
 		return true;
 	}
 
-	/**
-	 * Set email of user if email is in correct format
-	 * 
-	 * @param email that will be email of user
-	 * @return if email is valid
-	 */
-	public boolean setEmail(String email)
-	{
-		if (IOUtils.validateEmail(email))
-		{
-			this.email = email;
-			return true;
-		}
-		else
-		{
-			return false;
-		}
-	}
 
 	/**
 	 * Add selling thing of user
@@ -267,14 +209,12 @@ public class User
 	 */
 	public boolean addSelling(Auction auction)
 	{
-		if (this.sellingList.add(auction))
-		{
-			return true;
-		}
-		else
-		{
+		if(auction == null)
 			return false;
-		}
+		if (this.sellingList.add(auction))
+			return true;
+		else
+			return false;
 	}
 
 	/**
@@ -285,12 +225,10 @@ public class User
 	 */
 	public boolean addBid(Auction auction)
 	{
-		if(this.bidList.add(auction)) {
+		if(this.bidList.add(auction))
 			return true;	
-		}
-		else {
+		else
 			return false;
-		}
 	}
 
 	/**
