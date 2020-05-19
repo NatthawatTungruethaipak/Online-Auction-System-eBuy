@@ -278,4 +278,18 @@ public class AuctionManager
         }
         return bCheck;
     }
+    
+    /**
+     * Get all auction. (Used to save file)
+     * @return All auction
+     */
+    public ArrayList<Auction> getAllAuction()
+    {
+    	ArrayList<Auction> allAuction = new ArrayList<Auction>();
+    	allAuction.addAll(waitedAuction);
+    	allAuction.addAll(closedAuction);
+    	allAuction.addAll(openedAuction);
+    	
+    	return allAuction;
+    }
 }
