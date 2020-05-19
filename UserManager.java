@@ -1,7 +1,8 @@
 import java.util.*;
 
 /**
- * Represent the user manager object in auction program. Contain the user manager detail that control user.
+ * Represent the user manager object in auction program. Contain the user
+ * manager detail that control user.
  * 
  * Created by Kla & Tong 23 April 2020
  */
@@ -15,22 +16,18 @@ public class UserManager
 	/**
 	 * List of user
 	 */
-	private ArrayList<User> userList;
+	private ArrayList<User> userList = new ArrayList<User>();
 
-	/**
-	 * Index of userList
-	 */
-	private int count;
-	
 	/**
 	 * User that going to find
 	 */
-	private User findUser;
-	
+	private User findUser = null;
+
 	/**
-	 * Constructor of UserManager class for future add-on
+	 * Constructor of UserManager class for future add-on Make it private to prevent
+	 * to implement singleton.
 	 */
-	public UserManager()
+	private UserManager()
 	{
 
 	}
@@ -54,20 +51,53 @@ public class UserManager
 	}
 
 	/**
+	 * Validate data of new user
+	 * 
+	 * @param username of new user
+	 * @param password of new user
+	 * @param name of new user
+	 * @param surname of new user
+	 * @param birth of new user
+	 * @param address of new user
+	 * @param email of new user
+	 * @return new user with validated
+	 */
+	private User validateUser(String username, String password, String name, String surname, String birth,
+			String address, String email)
+	{
+		if (IOUtils.validateUsername(username) && IOUtils.validatePassword(password) && IOUtils.validateDate(birth)
+				&& IOUtils.validateEmail(email))
+		{
+			if (findUserByUsername(username) == null)
+			{
+				Date validatedUserBirth = IOUtils.createDateInstance(birth);
+				User validatedUser = new User(username, password, name, surname, validatedUserBirth, address, email);
+				return validatedUser;
+			}
+			else
+			{
+				return null;
+			}
+		}
+		else
+		{
+			return null;
+		}
+	}
+
+	/**
 	 * Find the user using username
 	 */
 	public User findUserByUsername(String username)
 	{
-		count = 0;
 		findUser = null;
-		while (userList.size() > count)
+		for (User user : userList)
 		{
-			findUser = userList.get(count);
-			if (findUser.getUsername().equals(username))
+			if (user.getUsername().equals(username))
 			{
-				return findUser;
+				findUser = user;
+				break;
 			}
-			count++;
 		}
 		return findUser;
 	}
@@ -77,16 +107,14 @@ public class UserManager
 	 */
 	public User findUserByName(String name)
 	{
-		count = 0;
 		findUser = null;
-		while (userList.size() > count)
+		for (User user : userList)
 		{
-			findUser = userList.get(count);
-			if (findUser.getName().equals(name))
+			if (user.getName().equals(name))
 			{
-				return findUser;
+				findUser = user;
+				break;
 			}
-			count++;
 		}
 		return findUser;
 	}
@@ -94,9 +122,37 @@ public class UserManager
 	/**
 	 * Add user to the list of userList
 	 */
-	public boolean addUser(User user)
+	public User checkLogin(String username, String password)
 	{
-		userList.add(user);
-		return true;
+		findUser = null;
+		for (User user : userList)
+		{
+			if (user.getUsername().equals(username))
+			{
+				if (user.checkPassword(password))
+				{
+					findUser = user;
+					break;
+				}
+				else
+				{
+					break;
+				}
+			}
+		}
+		return findUser;
+	}
+
+	public boolean createUser(String username, String password, String name, String surname, String birth,
+			String address, String email)
+	{
+		User newUser = validateUser(username, password, name, surname, birth, address, email);
+		if(userList.add(newUser))
+		{
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 }

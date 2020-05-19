@@ -45,17 +45,17 @@ public class User
 	/**
 	 * User's balance
 	 */
-	private int balance;
+	private int balance = 0;
 
 	/**
 	 * User's bidList
 	 */
-	private ArrayList<Auction> bidList;
+	private ArrayList<Auction> bidList = new ArrayList<Auction>();
 
 	/**
 	 * User's sellingList
 	 */
-	private ArrayList<Auction> sellingList;
+	private ArrayList<Auction> sellingList = new ArrayList<Auction>();
 
 	/**
 	 * Constructor for user class that set the username and password of the user
@@ -63,10 +63,15 @@ public class User
 	 * @param username
 	 * @param password
 	 */
-	public User(String username, String password)
+	public User(String username, String password, String name, String surname, Date birth, String address, String email)
 	{
 		this.username = username;
 		this.password = password;
+		this.name = name;
+		this.surname = surname;
+		this.birth = birth;
+		this.address = address;
+		this.email = email;
 	}
 
 	/**
@@ -78,7 +83,7 @@ public class User
 	{
 		return username;
 	}
-	
+
 	/**
 	 * Get name of user
 	 * 
@@ -162,7 +167,8 @@ public class User
 		{
 			this.password = newPassword;
 			return true;
-		} else
+		}
+		else
 		{
 			return false;
 		}
@@ -205,7 +211,8 @@ public class User
 		{
 			this.birth = birth;
 			return true;
-		} else
+		}
+		else
 		{
 			return false;
 		}
@@ -235,7 +242,8 @@ public class User
 		{
 			this.email = email;
 			return true;
-		} else
+		}
+		else
 		{
 			return false;
 		}
@@ -249,8 +257,14 @@ public class User
 	 */
 	public boolean addSelling(Auction auction)
 	{
-		this.sellingList.add(auction);
-		return true;
+		if (this.sellingList.add(auction))
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
 	}
 
 	/**
@@ -261,8 +275,12 @@ public class User
 	 */
 	public boolean addBid(Auction auction)
 	{
-		this.bidList.add(auction);
-		return true;
+		if(this.bidList.add(auction)) {
+			return true;	
+		}
+		else {
+			return false;
+		}
 	}
 
 	/**
@@ -276,7 +294,8 @@ public class User
 		if (this.password.equals(password))
 		{
 			return true;
-		} else
+		}
+		else
 		{
 			return false;
 		}
@@ -304,7 +323,8 @@ public class User
 		if ((this.balance - money) < 0)
 		{
 			return false;
-		} else
+		}
+		else
 		{
 			this.balance = this.balance - money;
 			return true;
