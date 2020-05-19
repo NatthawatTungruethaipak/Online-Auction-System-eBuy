@@ -10,17 +10,26 @@ import java.io.IOException;
  */
 public class TextFileWriter
 {
+	/** File name to open **/
 	String fileName = null;
 	
+	/** Buffer write from file **/
 	BufferedWriter writer;
 	
-	
+	/**
+	 * Constructor of TextFileWriter. Set the file name
+	 * @param fileName
+	 */
 	public TextFileWriter(String fileName)
 	{
 		this.fileName = fileName; 
 	}
 	
-	public boolean openFile()
+	/**
+	 * Open file and set write buffer
+	 * @return Return true if can open. Otherwise, false.
+	 */
+	public boolean open()
 	{
 		boolean bCheck = false;
 		try
@@ -41,7 +50,11 @@ public class TextFileWriter
 		return bCheck;
 	}
 	
-	public boolean closeFile()
+	/**
+	 * Close buffer
+	 * @return Return true if can close. If there are error occur, false
+	 */
+	public boolean close()
 	{
 		boolean bCheck = false;
 		try
@@ -61,6 +74,10 @@ public class TextFileWriter
 		return bCheck;
 	}
 	
+	/**
+	 * Write line to text file
+	 * @return Line Line that want to write to text file
+	 */
 	public boolean writerLine(String line)
 	{
 		boolean bCheck = false;
@@ -71,7 +88,7 @@ public class TextFileWriter
 		catch (IOException e)
 		{
 			System.out.println("System: Error, cannot write file.");
-			closeFile();
+			close();
 		}
 		return bCheck;
 	}
