@@ -85,17 +85,14 @@ public class AuctionManager
     		return null;
     	if(IOUtils.isNullStr(picture))
     		picture = defaultFile;
-    		
+    	if(minBid < 0)
+    		return null;
 
     	Date currentDate = IOUtils.getCurrentDateTime();
     	if(dateEnd.after(currentDate))
     		return null;
     	
-    	Auction auction = new Auction(seller, item, category, dateStart, dateEnd);
-    	if(auction.setMinBid(minBid) == false)
-        	return null;
-        if(auction.setPicture(picture) == false)
-        	return null;
+    	Auction auction = new Auction(seller, item, category, dateStart, dateEnd,minBid, picture);
         
         /* If date start after current date, open an auction */
     	if(dateStart.after(currentDate))

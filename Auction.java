@@ -54,7 +54,8 @@ public class Auction
      * @param dateStart Date that want to start an auction
      * @param dateEnd Date that want to close an auction
      */
-    public Auction(User seller, String item, String category, Date dateStart, Date dateEnd)
+    public Auction(User seller, String item, String category,
+    		Date dateStart, Date dateEnd, int minBid, String picture)
     {
         this.item = item;
         this.category = Category.findCategory(category);
@@ -62,7 +63,8 @@ public class Auction
         this.dateEnd = dateEnd;
         seller.addSelling(this);
         this.dateStart = dateStart;
-        this.stage = 0;
+        this.minBid = minBid;
+        this.picture = picture;
     }
     
     /**
@@ -155,36 +157,15 @@ public class Auction
         return this.minBid;
     }
     
-    /**
-     * Set the picture url of item
-     * @param url Link url of picture
-     * @return True if can set. Otherwise, false.
-     */
-    public boolean setPicture(String url)
+    public boolean setWinner(Bid winner)
     {
-        boolean bCheck = false;
-        if(url != null)
-        {
-            this.picture = url;
-            bCheck = true;
-        }
-        return bCheck;
-    }
-    
-    /**
-     * Set the minimum bid of auction.
-     * @param min Minimum bid
-     * @return True if can set. Otherwise, false.
-     */
-    public boolean setMinBid(int min)
-    {
-        boolean bCheck = false;
-        if(min >= 0)
-        {
-            this.minBid = min;
-            bCheck = true;
-        }
-        return bCheck;
+    	boolean bCheck = false;
+    	if(winner != null)
+    	{
+    		this.winner = winner;
+    		bCheck = true;
+    	}
+    	return bCheck;
     }
     
     /**
