@@ -13,3 +13,5 @@
 /bin/
 /TextFileReader.class
 /TextFileWriter.class
+/JSONFileReader.class
+/JSONFileWriter.class
