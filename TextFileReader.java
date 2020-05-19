@@ -10,15 +10,25 @@ import java.io.IOException;
  */
 public class TextFileReader
 {
+	/** File name to open */
 	String fileName = null;
 	
+	/** Buffer reader from file **/
 	BufferedReader reader;
 	
+	/**
+	 * Constructor of TextFileReader. Set the file name
+	 * @param fileName
+	 */
 	public TextFileReader(String fileName)
 	{
 		this.fileName = fileName; 
 	}
 	
+	/**
+	 * Open file
+	 * @return Return true if can open. Otherwise, false.
+	 */
 	public boolean openFile()
 	{
 		boolean bCheck = false;
@@ -40,6 +50,10 @@ public class TextFileReader
 		return bCheck;
 	}
 	
+	/**
+	 * Close file
+	 * @return Return true if can close. If there are error occur, false
+	 */
 	public boolean closeFile()
 	{
 		boolean bCheck = false;
@@ -60,6 +74,10 @@ public class TextFileReader
 		return bCheck;
 	}
 	
+	/**
+	 * Read line from text file
+	 * @return Line read from text file
+	 */
 	public String readLine()
 	{
 		if(reader == null)
