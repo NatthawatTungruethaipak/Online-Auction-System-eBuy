@@ -58,7 +58,10 @@ public class AuctionManager
      */
     public void initialAuction(ArrayList<Auction> auctionList)
     {
-        
+    	if(auctionList == null)
+    		return;
+        for(Auction auction: auctionList)
+        	storeAuction(auction);
     }
  
     /**
@@ -101,6 +104,51 @@ public class AuctionManager
     }
     
     /**
+     * Store the auction to list and hashmap. Also, put the auction to observer.
+     * @param auction Auction that want to keep
+     */
+    private void storeAuction(Auction auction)
+    {
+    	/** Add auction to stage list **/
+        if(auction.getStage() == 0)
+            waitedAuction.add(auction);
+        else if(auction.getStage() == 1)
+            openedAuction.add(auction);
+        else if(auction.getStage() == 2)
+        	closedAuction.add(auction);
+        
+        /** Add auction to hash map of category **/
+        ArrayList<Auction> auctionCategoryList = auctionMapCategory.get(Category.findCategory(auction.getCategory()));
+        if(auctionCategoryList != null)
+            auctionCategoryList.add(auction);
+               
+        /** Add auction to hash map of item **/
+        ArrayList<Auction> auctionItemList = auctionMapItem.get(auction.getItem());
+        if(auctionItemList != null)
+            auctionItemList.add(auction);
+        else /* If don't have a list in hash map, create new one */
+        {
+            auctionItemList = new ArrayList<Auction>();
+            auctionItemList.add(auction);
+            auctionMapItem.put(auction.getItem(), auctionItemList);
+        }
+        
+        /** Add auction to hash map of seller **/
+        ArrayList<Auction> auctionSellerList = auctionMapSeller.get(auction.getSeller());
+        if(auctionSellerList != null)
+            auctionSellerList.add(auction);
+        else /* If don't have a list in hash map, create new one */
+        {
+            auctionSellerList = new ArrayList<Auction>();
+            auctionSellerList.add(auction);
+            auctionMapSeller.put(auction.getSeller(), auctionSellerList);
+        }
+        
+        if(auction.getStage() < 2)
+        	TimeManager.addAuction(auction);
+    }
+    
+    /**
      * Create the auction and add to auction manager
      * @param item Item name
      * @param category Category of item
@@ -116,49 +164,10 @@ public class AuctionManager
         Auction newAuction = validateAuction(seller, item, category, picture, minBid, dateStart, dateEnd);
         if(newAuction == null)
         	return false;
-        
-        /** Add auction to stage list **/
-        if(newAuction.getStage() == 0)
-            waitedAuction.add(newAuction);
-        else if(newAuction.getStage() == 1)
-            openedAuction.add(newAuction);
-        else
-            return false;
-        
-        /** Add auction to hash map of category **/
-        ArrayList<Auction> auctionCategoryList = auctionMapCategory.get(Category.findCategory(category));
-        if(auctionCategoryList != null)
-            auctionCategoryList.add(newAuction);
-        else
-            return false;      
-               
-        /** Add auction to hash map of item **/
-        ArrayList<Auction> auctionItemList = auctionMapItem.get(item);
-        if(auctionItemList != null)
-            auctionItemList.add(newAuction);
-        else /* If don't have a list in hash map, create new one */
-        {
-            auctionItemList = new ArrayList<Auction>();
-            auctionItemList.add(newAuction);
-            auctionMapItem.put(item, auctionItemList);
-        }
-        
-        /** Add auction to hash map of seller **/
-        ArrayList<Auction> auctionSellerList = auctionMapSeller.get(seller);
-        if(auctionSellerList != null)
-            auctionSellerList.add(newAuction);
-        else /* If don't have a list in hash map, create new one */
-        {
-            auctionSellerList = new ArrayList<Auction>();
-            auctionSellerList.add(newAuction);
-            auctionMapSeller.put(seller, auctionSellerList);
-        }
-        
-        TimeManager.addAuction(newAuction);
+        storeAuction(newAuction);
         return true;
     }
-    
-   
+
     /**
      * Get the auction list from stage of an auction
      * @param stage Stage of auction (0-waited, 1-opened, 2-closed)
