@@ -126,7 +126,7 @@ public class UserManager
 	 */
 	public User checkLogin(String username, String password)
 	{
-		findUser = null;
+		User findUser = null;
 		for (User user : userList)
 		{
 			if (user.getUsername().equals(username))
