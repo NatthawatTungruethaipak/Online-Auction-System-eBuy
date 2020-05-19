@@ -200,7 +200,8 @@ public class User
 	 */
 	public boolean setBirth(Date birth)
 	{
-		if (IOUtils.validateDateTime(birth))
+		Date dateNow = IOUtils.getCurrentDateTime();
+		if (dateNow.after(birth))
 		{
 			this.birth = birth;
 			return true;
