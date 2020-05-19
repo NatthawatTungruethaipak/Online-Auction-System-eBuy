@@ -20,16 +20,16 @@ public class AuctionFileHandler
     
     /** User tag to indicate data type **/
     final private String[] tagUser = {"USERNAME","PASSWORD","NAME","SURNAME","BIRTH","ADDRESS","EMAIL","BALANCE"};
-    
+
     /** Auction tag to indicate data type **/
     final private String[] tagAuction = {"ITEM","CATEGORY","PICTURE","SELLER","DATESTART","DATEEND","STAGE","MINBID"};
-    
+
     /** Bid tag to indicate data type **/
     final private String[] tagBid = {"BIDDER","MONEY","DATE"};
-    
+
     /** Winner tag to indicate the winner of auction **/
     final private String tagWinner = "WINNERBIDDER";
-     
+
     /**
      * Constructor of AuctionFileHandler.
      * Prevent another class can create the instance. Implement for singleton
