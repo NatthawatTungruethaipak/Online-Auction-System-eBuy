@@ -13,7 +13,7 @@ public class TextFileReader
 	/** File name to open */
 	String fileName = null;
 	
-	/** Buffer reader from file **/
+	/** Buffer to read from file **/
 	BufferedReader reader;
 	
 	/**
