@@ -82,8 +82,7 @@ public class JSONFileReader
 	 */
 	public JSONArray readJSON()
 	{
-		open();
-		if(fileReader == null)
+		if(open() == false)
 			return null;
 		JSONParser jsonParser = new JSONParser();
 		Object obj = null;

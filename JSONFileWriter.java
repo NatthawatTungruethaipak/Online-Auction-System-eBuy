@@ -82,9 +82,8 @@ public class JSONFileWriter
 	public boolean writeJSON(JSONArray jsonArray)
 	{
 		boolean bCheck = false;
-		if(jsonArray != null)
+		if(jsonArray != null && open() == true)
 		{
-			open();
 			try
 			{
 				fileWriter.write(jsonArray.toJSONString());
