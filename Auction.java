@@ -40,21 +40,19 @@ public class Auction
     
     /** List of bid **/
     private TreeSet<Bid> bidSet = new TreeSet<Bid>();
-    
+     
     /**
-     * Constructor of Auction for opening auction later.
-     * @param dateEnd2 
-     * @param dateStart2 
-     * @param category2 
-     * @param item2 
-     * @param seller2 
+     * Constructor of Auction.
+     * @param seller Seller who open an auction
      * @param item Item name
      * @param category Category of an auction
-     * @param seller The seller or user that create a new auction
-     * @param dateStart Date that want to start an auction
-     * @param dateEnd Date that want to close an auction
+     * @param dateStart Start date of an auction
+     * @param dateEnd End date of an auction
+     * @param minBid Minimum money to bid
+     * @param picture Picture of item
      */
-    public Auction(User seller, String item, String category, Date dateStart, Date dateEnd)
+    public Auction(User seller, String item, String category,
+    		Date dateStart, Date dateEnd, int minBid, String picture)
     {
         this.item = item;
         this.category = Category.findCategory(category);
@@ -62,7 +60,8 @@ public class Auction
         this.dateEnd = dateEnd;
         seller.addSelling(this);
         this.dateStart = dateStart;
-        this.stage = 0;
+        this.minBid = minBid;
+        this.picture = picture;
     }
     
     /**
@@ -147,7 +146,7 @@ public class Auction
     }
     
     /**
-     * Get the Minimum money to bid of an auction
+     * Get the minimum money to bid of an auction
      * @return Stage
      */
     public int getMinBidMoney()
@@ -156,35 +155,23 @@ public class Auction
     }
     
     /**
-     * Set the picture url of item
-     * @param url Link url of picture
-     * @return True if can set. Otherwise, false.
+     * Set winner of an auction (Used in read file).
+     * Also check that the bid is in the auction before set.  
+     * @param winner The bid that win the auction
+     * @return Return true if can set and found this bid in auction. Otherwise, false.
      */
-    public boolean setPicture(String url)
+    public boolean setWinner(Bid winner)
     {
-        boolean bCheck = false;
-        if(url != null)
-        {
-            this.picture = url;
-            bCheck = true;
-        }
-        return bCheck;
-    }
-    
-    /**
-     * Set the minimum bid of auction.
-     * @param min Minimum bid
-     * @return True if can set. Otherwise, false.
-     */
-    public boolean setMinBid(int min)
-    {
-        boolean bCheck = false;
-        if(min >= 0)
-        {
-            this.minBid = min;
-            bCheck = true;
-        }
-        return bCheck;
+    	boolean bCheck = false;
+    	if(winner != null)
+    	{
+    		if(bidSet.contains(winner) == true)
+    		{
+    			this.winner = winner;
+    			bCheck = true;
+    		}
+    	}
+    	return bCheck;
     }
     
     /**

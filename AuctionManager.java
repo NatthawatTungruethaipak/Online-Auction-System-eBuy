@@ -31,6 +31,9 @@ public class AuctionManager
     /** HashMap of auction list that have a key is seller */
     private HashMap<User, ArrayList<Auction>> auctionMapSeller = new HashMap<User, ArrayList<Auction>>();
     
+    /** Default file if user doesn't upload the picture **/
+    private final String defaultFile = "";
+    
     /**
      * Constructor of auction manager.
      * Make it private to prevent to implement singleton.
@@ -76,16 +79,20 @@ public class AuctionManager
     		return null;
     	if(dateStart.after(dateEnd))
     		return null;
+    	if(IOUtils.isNullStr(item))
+    		return null;
+    	if(IOUtils.isNullStr(category))
+    		return null;
+    	if(IOUtils.isNullStr(picture))
+    		picture = defaultFile;
+    	if(minBid < 0)
+    		return null;
 
     	Date currentDate = IOUtils.getCurrentDateTime();
     	if(dateEnd.after(currentDate))
     		return null;
     	
-    	Auction auction = new Auction(seller, item, category, dateStart, dateEnd);
-    	if(auction.setMinBid(minBid) == false)
-        	return null;
-        if(auction.setPicture(picture) == false)
-        	return null;
+    	Auction auction = new Auction(seller, item, category, dateStart, dateEnd,minBid, picture);
         
         /* If date start after current date, open an auction */
     	if(dateStart.after(currentDate))
