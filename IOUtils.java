@@ -3,8 +3,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 /**
- * Represent the utility method in the auction program. Contain the helper
- * method.
+ * Represent the utility method in the auction program.
+ * Contain the helper method.
  * 
  * Created by Kla & Tong 18 May 2020
  */
@@ -13,12 +13,14 @@ public class IOUtils
     /**
      * Date format for date
      */
-    private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
+    private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
+            "dd-MM-yyyy");
 
     /**
      * DateTime format for date and time
      */
-    private static SimpleDateFormat simpleDateTimeFormat = new SimpleDateFormat("dd-MM-yyyy-HH:mm:ss");
+    private static SimpleDateFormat simpleDateTimeFormat = new SimpleDateFormat(
+            "dd-MM-yyyy-HH:mm:ss");
 
     /**
      * Check the string is null or not.

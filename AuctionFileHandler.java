@@ -50,9 +50,10 @@ public class AuctionFileHandler
     {
         return auctionFileHandler;
     }
-    
+
     /**
      * Get the parse of user, validate, and create user.
+     * 
      * @param parse Parse of command the want to check
      * @return User if the data is valid. Otherwise, null.
      */
@@ -105,6 +106,7 @@ public class AuctionFileHandler
 
     /**
      * Get the parse of auction, validate, and create auction.
+     * 
      * @param parse Parse of command the want to check
      * @return Auction if the data is valid. Otherwise, null.
      */
@@ -181,7 +183,8 @@ public class AuctionFileHandler
 
     /**
      * Get the parse of bid, validate, create bid, and add to auction
-     * @param parse Parse of command that want to check
+     * 
+     * @param parse   Parse of command that want to check
      * @param auction Auction that going to add bid
      */
     private void parseBid(String parse[], Auction auction)
@@ -438,7 +441,8 @@ public class AuctionFileHandler
                 else
                     writer.writeLine(tagBid[0] + " " + bidder.getUsername() + "\n");
                 writer.writeLine(tagBid[1] + " " + bid.getMoney() + "\n");
-                writer.writeLine(tagBid[2] + " " + IOUtils.dateTimeToStr(bid.getDateTime()) + "\n");
+                writer.writeLine(tagBid[2] + " "
+                        + IOUtils.dateTimeToStr(bid.getDateTime()) + "\n");
             }
         }
 

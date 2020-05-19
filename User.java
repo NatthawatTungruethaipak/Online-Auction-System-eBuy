@@ -63,7 +63,8 @@ public class User
      * @param username
      * @param password
      */
-    public User(String username, String password, String name, String surname, Date birth, String address, String email)
+    public User(String username, String password, String name, String surname,
+            Date birth, String address, String email)
     {
         this.username = username;
         this.password = password;
@@ -175,7 +176,8 @@ public class User
      * @param email    New email that want to set
      * @return
      */
-    public boolean editProfile(String password, String name, String surname, Date birth, String address, String email)
+    public boolean editProfile(String password, String name, String surname,
+            Date birth, String address, String email)
     {
         /** Validate **/
         if (IOUtils.validatePassword(password) == false)
