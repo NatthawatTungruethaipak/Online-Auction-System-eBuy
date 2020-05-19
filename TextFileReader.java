@@ -13,7 +13,7 @@ public class TextFileReader
 	/** File name to open */
 	String fileName = null;
 	
-	/** Buffer reader from file **/
+	/** Read buffer from file **/
 	BufferedReader reader;
 	
 	/**
@@ -26,10 +26,10 @@ public class TextFileReader
 	}
 	
 	/**
-	 * Open file
+	 * Open file and setting buffer
 	 * @return Return true if can open. Otherwise, false.
 	 */
-	public boolean openFile()
+	public boolean open()
 	{
 		boolean bCheck = false;
 		try
@@ -51,10 +51,10 @@ public class TextFileReader
 	}
 	
 	/**
-	 * Close file
+	 * Close buffer
 	 * @return Return true if can close. If there are error occur, false
 	 */
-	public boolean closeFile()
+	public boolean close()
 	{
 		boolean bCheck = false;
 		try
@@ -90,7 +90,7 @@ public class TextFileReader
 		catch (IOException e)
 		{
 			System.out.println("System: Error from reading file.");
-			closeFile();
+			close();
 			return null;
 		}
 		return line;
