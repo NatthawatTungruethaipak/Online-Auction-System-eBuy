@@ -101,4 +101,23 @@ public class Category
         else
             return false;
     }
+
+    /**
+     * Check that category contain in list of category or not.
+     * @param category to be check
+     * @return True when category contain in the list of category. Otherwise false.
+     */
+    public boolean contains(String category)
+    {
+        boolean contain = false;
+        for (Category eachCategory : categoryList)
+        {
+            if (eachCategory.equals(category))
+            {
+                contain = true;
+                break;
+            }
+        }
+        return contain;
+    }
 }
