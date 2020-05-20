@@ -7,7 +7,6 @@ import java.util.Date;
  * 
  * Created by Kla & Tong 18 May 2020
  */
-
 public class DateUtils
 {
     /**
