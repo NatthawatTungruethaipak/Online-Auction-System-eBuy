@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Date;
 
 public class UserInterface
 {
@@ -61,7 +62,7 @@ public class UserInterface
         System.out.println("/prev - Go back to previous page of auction list.");
         System.out.println("/first - Go to first page of auction list.");
         System.out.println("/search - Search the auction.");
-        System.out.println("/auction - Select the auction to see or bid.");
+        System.out.println("/auction - Select the auction to display or bid.");
         System.out.println("/register - Register to be new user.");
         System.out.println("/login - Login to the system.");
         System.out.println("/logout - Logout from the system.");
@@ -69,13 +70,14 @@ public class UserInterface
         System.out.println("/makeauction - Make the auction.");
         System.out.println("/aboutus - See about us.");
         System.out.println("/exit - Exit from the program.");
-        
+        System.out.println("\nThe auction program will use auction no. to be key");
+        System.out.println("\nThe auction list that display will not update\n until search or go to home page again");        
     }
 
     public void resetAuctionDisplay(ArrayList<Auction> auctionList)
     {
         if(auctionList == null)
-            auctionDisplay = AuctionProgram.getSingletonInstance().sear;
+            auctionDisplay = AuctionProgram.getSingletonInstance().searchAuction(1, null, 0);
         else
             auctionDisplay = auctionList;
         page = 0;
@@ -96,10 +98,7 @@ public class UserInterface
                 if(auction != null)
                 {
                     System.out.println("\tNo. " + i+1);
-                    System.out.println("\tItem: " + auction.getItem());
-                    System.out.println("\tBy: " + auction.getSeller().getName());
-                    System.out.println("Minimum Bid Money: " + auction.getMinBidMoney());
-                    System.out.println("Current Highest Bid: " + auction.getMaxBid());
+                    displayAuction(auction, false);
                     System.out.println();
                 }
             }
@@ -161,16 +160,101 @@ public class UserInterface
 
     public void searchAuction()
     {
-        // TODO Auto-generated method stub
-
+        int type = 0;
+        int keyInt = 0;
+        String keyStr = null;
+        
+        System.out.println("=========================================================");
+        System.out.println("Select type that want to search");
+        System.out.println("1 - Auction in opened stage");
+        System.out.println("2 - Auction in closed stage");
+        System.out.println("3 - Item");
+        System.out.println("4 - Category");
+        System.out.println("5 - Seller");
+        System.out.println("6 - Auction that has price lower");
+        System.out.println("=========================================================");
+        
+        type = IOUtils.getInteger("Select type number: ", 1, 6);
+        if (type == 3)
+            keyStr = IOUtils.getString("Search item name: ");
+        else if (type == 4)
+        {
+            System.out.println("Select category that want to search")
+            ArrayList<String> categoryList = Category.getAllCategoryStr();
+            for(int i = 0; i < categoryList.size(); i++)
+                System.out.println((i+1) +  " - " + categoryList.get(i));
+            int node = IOUtils.getInteger("Select category number: ",1 , categoryList.size());
+            keyStr = categoryList.get(node-1);
+        }
+        else if (type == 5)
+            keyStr = IOUtils.getString("Search seller name: ");
+        else if (type == 6)
+            keyInt = IOUtils.getInteger("Input lower price that want to find", 0);
+        auctionDisplay = AuctionProgram.getSingletonInstance().searchAuction(type, keyStr, keyInt);
     }
 
-    public void displayAuction()
+    public void displaySelectAuction()
     {
-        // TODO Auto-generated method stub
-
+        int node = IOUtils.getInteger("Select auction no.: ", 1, auctionDisplay.size()) - 1;
+        Auction auction = auctionDisplay.get(node);
+        displayAuction(auction, true);
+        System.out.println("=========================================================");
+        if(IOUtils.getConfirm("Do you want to make a bid?"))
+            displayMakeBid(auction, auction.getStartBidPrice());
+        IOUtils.getString("Press enter to continue..");
+        clearScreen();
+        displayAuctionList();
+            
     }
-
+    
+    private void displayAuction(Auction auction, boolean bFull)
+    {
+        System.out.println("Item: " + auction.getItem());
+        System.out.println("Starting bid price: " + auction.getStartBidPrice() +
+                "("+ auction.getNumberOfBid() +" bid)");
+        Date dateEnd = auction.getDateEnd();
+        if(auction.getStage() == 2)
+            System.out.println("Closed auction");
+        else
+        {
+            int[] diff = IOUtils.diffCurrentDateTime(auction.getDateEnd());
+            if(diff[0] != 0)
+                System.out.println(diff[0]+" Days "+diff[1]+" Hours "+diff[2]+" Minutes");
+            else if(diff[0] == 0)
+                System.out.println(diff[1]+" Hours "+diff[2]+" Minutes "+diff[3]+" Seconds");
+            else if(diff[1] == 0)
+                System.out.println(diff[2] + " Minutes " + diff[3] + " Seconds");
+        }
+        /** See full detail of auction **/
+        if (bFull)
+        {
+            Bid winBid = auction.getWinner();
+            if (auction.getStage() == 2)
+                if(winBid == null)
+                    System.out.println("Winner: Don't have winner");
+                else
+                {
+                    User bidder = winBid.getBidder();
+                    System.out.println("Winner: " + bidder.getName() + " " + bidder.getSurname());
+                }
+            System.out.println("Category: " + auction.getCategoryStr());
+            Date startDate = auction.getDateStart();
+            System.out.println("Started: " + IOUtils.dateToStr(startDate));
+            Date endDate = auction.getDateEnd();
+            System.out.println("Ended: " + IOUtils.dateToStr(endDate));
+            User seller = auction.getSeller();
+            System.out.println("Seller: " + seller.getUsername() + " " + seller.getSurname());
+        }
+    }
+    
+    private void displayMakeBid(Auction auction, int minPrice)
+    {
+        System.out.println("Minimum price to bid: " + minPrice+1);
+        IOUtils.getInteger("Price that want to bid: ");
+        System.out.println("=========================================================");
+        
+    }
+    
     public void displayRegister()
     {
         // TODO Auto-generated method stub
@@ -196,12 +280,6 @@ public class UserInterface
     }
 
     public void displayMakeAuction()
-    {
-        // TODO Auto-generated method stub
-
-    }
-
-    public void displayMakeBid()
     {
         // TODO Auto-generated method stub
 

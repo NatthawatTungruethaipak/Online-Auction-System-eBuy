@@ -39,70 +39,59 @@ public class AuctionProgram
     public static void main(String[] args)
     {
         int command = 1;
-//        System.out.println("TEST");
-        while (command != 13)
+        userInterface.displayHomePage();
+        while (command != 14)
         {
-            /** main page command **/
-            if (command == 1)
-                userInterface.displayHomePage();
-
-            /** help command **/
-            else if (command == 2)
-                userInterface.displayHelp();
-
-            /** next page command **/
-            else if (command == 3)
-                userInterface.displayNextPage();
-
-            /** previous page command **/
-            else if (command == 4)
-                userInterface.displayPrevPage();
-
-            /** first page command **/
-            else if (command == 5)
-                userInterface.displayFirstPage();
-
-            /** search auction command **/
-            else if (command == 6)
-                userInterface.searchAuction();
-
-            /** display auction information **/
-            else if (command == 7)
-                userInterface.displayAuction();
-
-            /** display register **/
-            else if (command == 7)
-                userInterface.displayRegister();
-
-            /** display login **/
-            else if (command == 9)
-                userInterface.displayLogin();
-
-            /** display logout **/
-            else if (command == 10)
-                userInterface.displayLogout();
-
-            /** display user profile **/
-            else if (command == 11)
-                userInterface.displayProfile();
-
-            /** make auction **/
-            else if (command == 12)
-                userInterface.displayMakeAuction();
-
-            /** about us **/
-            else if (command == 13)
-                userInterface.displayAboutUs();
-
-            /** Exit **/
-            else if (command == 14)
-                userInterface.displayEnding();
-
-            /** Error command **/
-            else
-                userInterface.displayGetHelp();
             System.out.println("\nUse command '/help' to see all command");
-//          command = IOUtils.getCommand("command: ");
+            command = IOUtils.getCommand("command: ");
+            switch(command)
+            {
+                case 1: /** main page command **/
+                    userInterface.displayHomePage();
+                    break;
+                case 2: /** help command **/
+                    userInterface.displayHelp();
+                    break;              
+                case 3: /** next page command **/
+                    userInterface.displayNextPage();
+                    break;
+                case 4: /** previous page command **/
+                    userInterface.displayPrevPage();
+                    break;
+                case 5: /** first page command **/
+                    userInterface.displayFirstPage();
+                    break;
+                case 6: /** search auction command **/
+                    userInterface.searchAuction();
+                    break;
+                case 7: /** display auction information **/
+                    userInterface.displaySelectAuction();
+                    break;
+                case 8: /** display register **/
+                    userInterface.displayRegister();
+                    break;
+                case 9: /** display login **/
+                    userInterface.displayLogin();
+                    break;
+                case 10: /** display logout **/
+                    userInterface.displayLogout();
+                    break;
+                case 11: /** display user profile **/
+                    userInterface.displayProfile();
+                    break;
+                case 12: /** make auction **/
+                    userInterface.displayMakeAuction();
+                    break;
+                case 13: /** about us **/
+                    userInterface.displayAboutUs();
+                    break;
+                case 14: /** Exit **/
+                    userInterface.displayEnding();
+                    break;
+                default: /** Error command **/
+                    userInterface.displayGetHelp();
+                    break;
+            }
         }
         AuctionProgram.getSingletonInstance().end();
     }
@@ -269,9 +258,9 @@ public class AuctionProgram
         }
     }
 
-    public ArrayList<Auction> searchAuction(int type, String key)
+    public ArrayList<Auction> searchAuction(int type, String keyStr, int keyInt)
     {
-        ArrayList<Array> retUserList = null;
+        ArrayList<Auction> retUserList = null;
         switch(type)
         {
             case 1:
