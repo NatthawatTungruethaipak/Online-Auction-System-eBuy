@@ -1,8 +1,5 @@
 import java.util.Date;
 import java.util.Scanner;
-import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 
 /**
  * Represent the utility method about input and output in the auction program.
@@ -11,7 +8,6 @@ import java.text.SimpleDateFormat;
  */
 public class IOUtils
 {
-
     /**
      * Check the string is null or not.
      * 
@@ -26,7 +22,6 @@ public class IOUtils
             return false;
     }
 
-    
     /**
      * Validate the username in pattern of 6-30 characters with consist of alphabet,
      * number and underscore. First character can't be number.
@@ -91,8 +86,6 @@ public class IOUtils
         else
             return false;
     }
-
-    
 
     /**
      * Validate integer the string parameter must contain only integer in format of
@@ -269,7 +262,7 @@ public class IOUtils
             System.out.print(print);
             Scanner scanner = new Scanner(System.in);
             String input = scanner.nextLine();
-            while (validateDateStr(input) == false)
+            while (DateUtils.validateDateStr(input) == false)
             {
                 {
                     System.out.println("Format mismatch");
@@ -277,7 +270,9 @@ public class IOUtils
                     input = scanner.nextLine();
                 }
             }
-            dateInput = strToDate(input);
+            dateInput = DateUtils.strToDate(input);
+            if (dateCpr == null)
+                dateCpr = new Date();
             if (after)
             {
                 if (dateInput.after(dateCpr))
@@ -321,7 +316,7 @@ public class IOUtils
             System.out.print(print);
             Scanner scanner = new Scanner(System.in);
             String input = scanner.nextLine();
-            while (validateDateTimeStr(input) == false)
+            while (DateUtils.validateDateTimeStr(input) == false)
             {
                 {
                     System.out.println("Format mismatch");
@@ -329,7 +324,9 @@ public class IOUtils
                     input = scanner.nextLine();
                 }
             }
-            dateInput = strToDateTime(input);
+            dateInput = DateUtils.strToDateTime(input);
+            if (dateCpr == null)
+                dateCpr = new Date();
             if (after)
             {
                 if (dateInput.after(dateCpr))
