@@ -73,7 +73,7 @@ public class AuctionProgram
                     userInterface.displayLogout();
                     break;
                 case 11: /** display user profile **/
-                    userInterface.displayProfile();
+                    userInterface.displayManageProfile();
                     break;
                 case 12: /** make auction **/
                     userInterface.displayMakeAuction();
@@ -275,9 +275,9 @@ public class AuctionProgram
     
     /**
      * Search user from username or name.
-     * @param key
-     * @param bSelect
-     * @return
+     * @param key String name or username to find.
+     * @param bSelect Select to search by name(true) or username(false)
+     * @return User that finding. Return null if can't find.
      */
     public static User searchUser(String key, boolean bSelect)
     {
