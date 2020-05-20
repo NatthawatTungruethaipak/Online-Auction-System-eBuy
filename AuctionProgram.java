@@ -12,11 +12,13 @@ public class AuctionProgram
     /** Keep auctionProgram instance, used for singleton **/
     private static AuctionProgram auctionProgram = new AuctionProgram();
 
-    private static AuctionManager auctionManager = AuctionManager.getSingletonInstance();
+    private static AuctionManager auctionManager = AuctionManager
+            .getSingletonInstance();
 
     private static UserManager userManager = UserManager.getSingletonInstance();
-    
-    private static UserInterface userInterface = UserInterface.getSingletonInstance();
+
+    private static UserInterface userInterface = UserInterface
+            .getSingletonInstance();
 
 //	private GraphicUI gui = GraphicUI
 
@@ -36,58 +38,72 @@ public class AuctionProgram
      */
     public static void main(String[] args)
     {
-        int command[] = new int[]{0,0};
-        auctionProgram.initial();
-        userInterface.displayIntroduction();
-        while(command[0] != 10)
+        int command = 1;
+//        System.out.println("TEST");
+        while (command != 13)
         {
-            command[0] = IOUtils.getCommand("command: ");
-            /** help command **/
-            if(command[0] == 1)
-                userInterface.displayHelp();
             /** main page command **/
-            else if(command[0] == 2)
-            {
-                userInterface.resetAuctionDisplay();
-                userInterface.displayAuction();
-            }
+            if (command == 1)
+                userInterface.displayHomePage();
+
+            /** help command **/
+            else if (command == 2)
+                userInterface.displayHelp();
+
             /** next page command **/
-            else if(command[0] == 3)
+            else if (command == 3)
                 userInterface.displayNextPage();
-            /** prev page command **/
-            else if(command[0] == 4)
+
+            /** previous page command **/
+            else if (command == 4)
                 userInterface.displayPrevPage();
+
             /** first page command **/
-            else if(command[0] == 5)
+            else if (command == 5)
                 userInterface.displayFirstPage();
+
             /** search auction command **/
-            else if(command[0] == 6)
+            else if (command == 6)
                 userInterface.searchAuction();
+
             /** display auction information **/
-            else if(command[0] == 7)
-                userInterface.displayAuction(command[1]);
+            else if (command == 7)
+                userInterface.displayAuction();
+
             /** display register **/
-            else if(command[0] == 7)
+            else if (command == 7)
                 userInterface.displayRegister();
+
             /** display login **/
-            else if(command[0] == 9)
+            else if (command == 9)
                 userInterface.displayLogin();
+
+            /** display logout **/
+            else if (command == 10)
+                userInterface.displayLogout();
+
             /** display user profile **/
-            else if(command[0] == 10)
+            else if (command == 11)
                 userInterface.displayProfile();
-            /** edit user profile **/
-            else if(command[0] == 11)
-                userInterface.displayEditProfile();
+
             /** make auction **/
-            else if(command[0] == 12)
+            else if (command == 12)
                 userInterface.displayMakeAuction();
-            /** make bid **/
-            else if(command[0] == 13)
-                userInterface.displayMakeBid();
-            
-            
+
+            /** about us **/
+            else if (command == 13)
+                userInterface.displayAboutUs();
+
+            /** Exit **/
+            else if (command == 14)
+                userInterface.displayEnding();
+
+            /** Error command **/
+            else
+                userInterface.displayGetHelp();
+            System.out.println("\nUse command '/help' to see all command");
+//          command = IOUtils.getCommand("command: ");
         }
-        userInterface.displayEnding();
         AuctionProgram.getSingletonInstance().end();
     }
 
