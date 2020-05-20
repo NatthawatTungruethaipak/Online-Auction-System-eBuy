@@ -32,24 +32,9 @@ public class IOUtils
     public static boolean isNullStr(String string)
     {
         if (string.trim().equals(""))
-        {
             return true;
-        }
         else
-        {
             return false;
-        }
-    }
-
-    /**
-     * Get current date and time.
-     * 
-     * @return current data and time in term of Date class.
-     */
-    public static Date getCurrentDateTime()
-    {
-        Date dateNow = new Date();
-        return dateNow;
     }
 
     /**
@@ -58,37 +43,35 @@ public class IOUtils
      * @param date to be check with current date.
      * @return true when date is after current date. Otherwise false.
      */
-    public static boolean isAfterCurrentDate(Date date)
+    public static boolean isAfterCurrentDateTime(Date date)
     {
         Date dateNow = new Date();
         if (date.after(dateNow))
-        {
             return true;
-        }
         else
-        {
             return false;
-        }
     }
 
     /**
-     * Find the difference in date and time from couple of date and time.
+     * Find the difference in date and time from current time with date and time from
+     * user.
      * 
      * Reference from
      * https://mkyong.com/java/how-to-calculate-date-time-difference-in-java/
      * 
-     * @param date1 is first date to be compare.
-     * @param date2 is second date to be compare.
+     * @param dateCpr is date to be compare.
      * @return difference of date and time in term of integer array. Index 0 is days,
      *         index 1 is hours, index 2 is minutes, index 3 is seconds
      */
-    public static int[] diffDateTime(Date date1, Date date2)
+    public static int[] diffCurrentDateTime(Date dateCpr)
     {
+        Date dateNow = new Date();
         int diffDateTime[] = new int[4];
+
         try
         {
             // in milliseconds
-            long diff = date2.getTime() - date1.getTime();
+            long diff = Math.abs(dateNow.getTime() - dateCpr.getTime());
 
             long diffSeconds = (diff / 1000) % 60;
             long diffMinutes = (diff / (60 * 1000)) % 60;
@@ -121,9 +104,7 @@ public class IOUtils
     public static Date strToDate(String dateStr)
     {
         if (isNullStr(dateStr))
-        {
             return null;
-        }
         try
         {
             simpleDateFormat.setLenient(false);
@@ -148,9 +129,7 @@ public class IOUtils
     public static Date strToDateTime(String dateTimeStr)
     {
         if (isNullStr(dateTimeStr))
-        {
             return null;
-        }
         try
         {
             simpleDateTimeFormat.setLenient(false);
@@ -210,18 +189,12 @@ public class IOUtils
     public static boolean validateUsername(String username)
     {
         if (isNullStr(username))
-        {
             return false;
-        }
         String usernamePattern = "^[aA-zZ]\\w{5,29}$";
         if (username.matches(usernamePattern))
-        {
             return true;
-        }
         else
-        {
             return false;
-        }
     }
 
     /**
@@ -239,18 +212,12 @@ public class IOUtils
     public static boolean validatePassword(String password)
     {
         if (isNullStr(password))
-        {
             return false;
-        }
         String passwordPattern = "((?=.*[a-z])(?=.*\\d)(?=.*[A-Z])(?=.*[@#$%!]).{8,40})";
         if (password.matches(passwordPattern))
-        {
             return true;
-        }
         else
-        {
             return false;
-        }
     }
 
     /**
@@ -265,18 +232,12 @@ public class IOUtils
     public static boolean validateEmail(String email)
     {
         if (isNullStr(email))
-        {
             return false;
-        }
         String emailPattern = "^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$";
         if (email.matches(emailPattern))
-        {
             return true;
-        }
         else
-        {
             return false;
-        }
     }
 
     /**
@@ -292,20 +253,14 @@ public class IOUtils
     public static boolean validateDateStr(String date)
     {
         if (isNullStr(date))
-        {
             return false;
-        }
         try
         {
             simpleDateFormat.setLenient(false);
             if (simpleDateFormat.parse(date) != null)
-            {
                 return true;
-            }
             else
-            {
                 return false;
-            }
         }
         catch (ParseException e)
         {
@@ -327,20 +282,14 @@ public class IOUtils
     public static boolean validateDateTimeStr(String dateTime)
     {
         if (isNullStr(dateTime))
-        {
             return false;
-        }
         try
         {
             simpleDateFormat.setLenient(false);
             if (simpleDateFormat.parse(dateTime) != null)
-            {
                 return true;
-            }
             else
-            {
                 return false;
-            }
         }
         catch (ParseException e)
         {
@@ -358,9 +307,7 @@ public class IOUtils
     public static boolean validateInteger(String string)
     {
         if (isNullStr(string))
-        {
             return false;
-        }
         try
         {
             Integer.parseInt(string);
@@ -385,13 +332,9 @@ public class IOUtils
         String input = scanner.nextLine();
 
         if (isNullStr(input))
-        {
             return "";
-        }
         else
-        {
             return input.trim();
-        }
     }
 
     /**
@@ -416,8 +359,38 @@ public class IOUtils
             catch (Exception e)
             {
                 System.out.println("Format mismatch");
-                bOk = false;
-                continue;
+            }
+
+        }
+        return input;
+    }
+
+    /**
+     * Print the wording and get integer from user.
+     * 
+     * @param print is wording for print out.
+     * @param min   is minimum value of number from user input.
+     * @return Integer from user input.
+     */
+    public static int getInteger(String print, int min)
+    {
+        System.out.print(print);
+        boolean bOk = false;
+        int input = 0;
+        while (!bOk)
+        {
+            try
+            {
+                Scanner scanner = new Scanner(System.in);
+                input = scanner.nextInt();
+                if (input > min)
+                    bOk = true;
+                else
+                    System.out.println("Number out of range");
+            }
+            catch (Exception e)
+            {
+                System.out.println("Format mismatch");
             }
 
         }
@@ -444,21 +417,14 @@ public class IOUtils
                 Scanner scanner = new Scanner(System.in);
                 input = scanner.nextInt();
                 if ((input > min) && (input < max))
-                {
                     bOk = true;
-                }
                 else
-                {
                     System.out.println("Number out of range");
-                    bOk = false;
-                    continue;
-                }
 
             }
             catch (Exception e)
             {
                 System.out.println("Format mismatch");
-                continue;
             }
 
         }
@@ -483,13 +449,9 @@ public class IOUtils
             input = scanner.nextLine();
         }
         if (input.equalsIgnoreCase("yes"))
-        {
             return true;
-        }
         else if (input.equalsIgnoreCase("no"))
-        {
             return false;
-        }
         return false;
     }
 
@@ -614,90 +576,75 @@ public class IOUtils
             {
                 commandValue = 1;
                 bOk = true;
-                break;
             }
             else if (input.equals("/help"))
             {
                 commandValue = 2;
                 bOk = true;
-                break;
             }
             else if (input.equals("/next"))
             {
                 commandValue = 3;
                 bOk = true;
-                break;
             }
             else if (input.equals("/prev"))
             {
                 commandValue = 4;
                 bOk = true;
-                break;
             }
             else if (input.equals("/first"))
             {
                 commandValue = 5;
                 bOk = true;
-                break;
             }
             else if (input.equals("/search"))
             {
                 commandValue = 6;
                 bOk = true;
-                break;
             }
             else if (input.equals("/auction"))
             {
                 commandValue = 7;
                 bOk = true;
-                break;
             }
             else if (input.equals("/register"))
             {
                 commandValue = 8;
                 bOk = true;
-                break;
             }
             else if (input.equals("/login"))
             {
                 commandValue = 9;
                 bOk = true;
-                break;
             }
             else if (input.equals("/logout"))
             {
                 commandValue = 10;
                 bOk = true;
-                break;
             }
             else if (input.equals("/profile"))
             {
                 commandValue = 11;
                 bOk = true;
-                break;
             }
             else if (input.equals("/makeauction"))
             {
                 commandValue = 12;
                 bOk = true;
-                break;
             }
             else if (input.equals("/aboutus"))
             {
                 commandValue = 13;
                 bOk = true;
-                break;
             }
             else if (input.equals("/exit"))
             {
                 commandValue = 14;
                 bOk = true;
-                break;
             }
             else
             {
                 bOk = false;
-                continue;
             }
         }
         return commandValue;
