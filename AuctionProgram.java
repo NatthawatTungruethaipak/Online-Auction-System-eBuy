@@ -269,17 +269,23 @@ public class AuctionProgram
         }
     }
 
-    /**
-     * View profile of user.
-     */
-    public void viewProfile()
+    public ArrayList<Auction> searchAuction(int type, String key)
     {
-        System.out.println("Name: " + userLogin.getName());
-        System.out.println("Surname: " + userLogin.getUsername());
-        System.out.println("Birth: " + userLogin.getBirth());
-        System.out.println("Address: " + userLogin.getAddress());
-        System.out.println("Email: " + userLogin.getEmail());
-        System.out.println("Balance: " + userLogin.getBalance());
+        ArrayList<Array> retUserList = null;
+        switch(type)
+        {
+            case 1:
+                break;
+            case 2:
+                break;
+            case 3:
+                break;
+            case 4:
+                break;
+            case 5:
+                break;
+        }
+        return retUserList;
     }
 
     /**

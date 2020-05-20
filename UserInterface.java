@@ -75,7 +75,7 @@ public class UserInterface
     public void resetAuctionDisplay(ArrayList<Auction> auctionList)
     {
         if(auctionList == null)
-            auctionDisplay = AuctionManager.getSingletonInstance().searchAuctionByStage(1);
+            auctionDisplay = AuctionProgram.getSingletonInstance().sear;
         else
             auctionDisplay = auctionList;
         page = 0;
@@ -110,22 +110,53 @@ public class UserInterface
 
     public void displayNextPage()
     {
-        if((maxPage * page) > auctionDisplay.size())
+        
+        if(auctionDisplay == null || auctionDisplay.size() == 0)
+        {
+            System.out.println("=========================================================");
+            System.out.println("\n\t\t- Do not found any auction -\n");
+            System.out.println("=========================================================");
+        }
+        else if((maxPage * (page+1)) > auctionDisplay.size())
+        {
+            System.out.println("=========================================================");
             System.out.println("\n\t\t- This is the last page -\n");
-        page++;
+            System.out.println("=========================================================");
+        }
+        else
+        {
+            page++;
+            displayAuctionList();
+        }
         
     }
 
     public void displayPrevPage()
     {
-        // TODO Auto-generated method stub
+        if(auctionDisplay == null || auctionDisplay.size() == 0)
+        {
+            System.out.println("=========================================================");
+            System.out.println("\n\t\t- Do not found any auction -\n");
+            System.out.println("=========================================================");
+        }
+        else if(page-1 < 0)
+        {
+            System.out.println("=========================================================");
+            System.out.println("\n\t\t- This is the first page -\n");
+            System.out.println("=========================================================");
+        }
+        else
+        {
+            page--;
+            displayAuctionList();
+        }
 
     }
 
     public void displayFirstPage()
     {
-        // TODO Auto-generated method stub
-
+        page = 0;
+        displayAuctionList();
     }
 
     public void searchAuction()
