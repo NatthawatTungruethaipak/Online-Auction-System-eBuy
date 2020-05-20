@@ -24,13 +24,15 @@ public class UserInterface
 
     public void displayHomePage()
     {
-        User userLogin = AuctionProgram.getSingletonInstance().getLogin();
         clearScreen();
         System.out.println("=========================================================");
         System.out.println("===================== Auction Program ===================");
         System.out.println("=========================================================");
-        if(userLogin != null)
-            System.out.println("Welcome \"" + userLogin.getName() +"\" to the auction program");
+        if(AuctionProgram.isLogin())
+        {
+            User user = AuctionProgram.getLogin();
+            System.out.println("Welcome \"" + user.getName() +"\" to the auction program");
+        }
         else
         {
             System.out.println("Welcome to the auction program.");
@@ -77,7 +79,7 @@ public class UserInterface
     public void resetAuctionDisplay(ArrayList<Auction> auctionList)
     {
         if(auctionList == null)
-            auctionDisplay = AuctionProgram.getSingletonInstance().searchAuction(1, null, 0);
+            auctionDisplay = AuctionProgram.searchAuction(1, null, 0);
         else
             auctionDisplay = auctionList;
         page = 0;
@@ -190,7 +192,7 @@ public class UserInterface
             keyStr = IOUtils.getString("Search seller name: ");
         else if (type == 6)
             keyInt = IOUtils.getInteger("Input lower price that want to find", 0);
-        auctionDisplay = AuctionProgram.getSingletonInstance().searchAuction(type, keyStr, keyInt);
+        auctionDisplay = AuctionProgram.searchAuction(type, keyStr, keyInt);
     }
 
     public void displaySelectAuction()
@@ -199,12 +201,16 @@ public class UserInterface
         Auction auction = auctionDisplay.get(node);
         displayAuction(auction, true);
         System.out.println("=========================================================");
-        if(IOUtils.getConfirm("Do you want to make a bid?"))
-            displayMakeBid(auction, auction.getStartBidPrice());
-        IOUtils.getString("Press enter to continue..");
-        clearScreen();
-        displayAuctionList();
-            
+        if(AuctionProgram.isLogin())
+        {
+            if(IOUtils.getConfirm("Do you want to make a bid?"))
+                displayMakeBid(auction, auction.getStartBidPrice());
+        }
+        else
+        {
+            System.out.println("Please login to system to bid to the auction.");
+        }
+        refresh();
     }
     
     private void displayAuction(Auction auction, boolean bFull)
@@ -256,14 +262,30 @@ public class UserInterface
     
     public void displayRegister()
     {
-        
-    }
-
-    public void displayLogin()
-    {
-        String username = IOUtils.getString("Username: ");
+        UserManager userManager = UserManager.getSingletonInstance();
+        String username = null;
         String password = IOUtils.getString("Password: ");
-        boolean bCheck = AuctionProgram.getSingletonInstance().login(username,password);
+        boolean bLoop = true;
+        do
+        {
+            username = IOUtils.getString("Username: ");
+            if(userManager.findUserByUsername(username) != null)
+                System.out.println("Username has already been taken");
+            else
+                bLoop = false;
+        }while(bLoop);
+        
+        bLoop = true;
+        do
+        {
+            password = IOUtils.getString("Password: ");
+            if(IOUtils.validatePassword(password) == false)
+                System.out.println("Password is not correct");
+            else
+                bLoop = false;
+        }while(bLoop);
+        
+        boolean bCheck = AuctionProgram.login(username,password);
         if(bCheck)
         {
             System.out.println("=========================================================");
@@ -276,13 +298,49 @@ public class UserInterface
         }
     }
 
-    public void displayProfile()
+    public void displayLogin()
     {
-        // TODO Auto-generated method stub
+        String username = IOUtils.getString("Username: ");
+        String password = IOUtils.getString("Password: ");
 
+        if(AuctionProgram.login(username,password))
+        {
+            System.out.println("=========================================================");
+            System.out.println("\n\t\t- Login success -\n");
+            System.out.println("=========================================================");
+        }
+        else
+        {
+            System.out.println("=========================================================");
+            System.out.println("\n\t- Username or password is not correct -\n");
+            System.out.println("=========================================================");
+        }
+        refresh();        
     }
 
-    public void displayEditProfile()
+    public void displayProfile()
+    {
+        if(AuctionProgram.isLogin())
+        {
+            System.out.println("=========================================================");
+            System.out.println("\n\t\t- Please login first -\n");
+            System.out.println("=========================================================");
+            refresh();
+            return;
+        }
+        
+        User user = AuctionProgram.getLogin();
+        
+    }
+
+    private void refresh()
+    {
+        IOUtils.getString("Press enter to continue..");
+        clearScreen();
+        displayHomePage();
+    }
+    
+    private void displayEditProfile()
     {
         // TODO Auto-generated method stub
 
@@ -290,7 +348,13 @@ public class UserInterface
 
     public void displayMakeAuction()
     {
-        // TODO Auto-generated method stub
+        if(AuctionProgram.isLogin())
+        {
+            System.out.println("=========================================================");
+            System.out.println("\n\t\t- Please login first -\n");
+            System.out.println("=========================================================");
+            return;
+        }
 
     }
 

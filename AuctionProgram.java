@@ -9,11 +9,7 @@ import java.util.Date;
 
 public class AuctionProgram
 {
-    /** Keep auctionProgram instance, used for singleton **/
-    private static AuctionProgram auctionProgram = new AuctionProgram();
-
-    private static AuctionManager auctionManager = AuctionManager
-            .getSingletonInstance();
+    private static AuctionManager auctionManager = AuctionManager.getSingletonInstance();
 
     private static UserManager userManager = UserManager.getSingletonInstance();
 
@@ -22,7 +18,7 @@ public class AuctionProgram
 
 //	private GraphicUI gui = GraphicUI
 
-    private User userLogin;
+    private static User userLogin;
 
     /**
      * Constructor of auction program. Make it private to prevent to implement
@@ -93,17 +89,7 @@ public class AuctionProgram
                     break;
             }
         }
-        AuctionProgram.getSingletonInstance().end();
-    }
-
-    /**
-     * Static method to create instance of AuctionProgram class
-     * 
-     * @return auctionProgram
-     */
-    public static AuctionProgram getSingletonInstance()
-    {
-        return auctionProgram;
+        end();
     }
 
     /**
@@ -111,9 +97,22 @@ public class AuctionProgram
      * 
      * @return user
      */
-    public User getLogin()
+    public static User getLogin()
     {
         return userLogin;
+    }
+    
+    /**
+     * Get login user
+     * 
+     * @return user
+     */
+    public static boolean isLogin()
+    {
+        if(userLogin != null)
+            return true;
+        else
+            return false;
     }
 
     /**
@@ -128,7 +127,7 @@ public class AuctionProgram
      * @param email    of registering account
      * @return True, when can register the account. Otherwise, false.
      */
-    public boolean register(String username, String password, String name,
+    public static boolean register(String username, String password, String name,
             String surname, Date birth, String address, String email)
     {
         if (userManager.createUser(username, password, name, surname, birth, address,
@@ -145,12 +144,12 @@ public class AuctionProgram
      * @param password of user
      * @return True if can login. Otherwise, false.
      */
-    public boolean login(String username, String password)
+    public static boolean login(String username, String password)
     {
         User user = userManager.checkLogin(username, password);
         if (user != null)
         {
-            this.userLogin = user;
+            userLogin = user;
             return true;
         }
         else
@@ -163,7 +162,7 @@ public class AuctionProgram
      * 
      * @return true when user logged in, false when no user logged in.
      */
-    public boolean logout()
+    public static boolean logout()
     {
         if (userLogin != null)
         {
@@ -183,7 +182,7 @@ public class AuctionProgram
      * @param money is amount of money to deposit
      * @return true when can deposit the money to the account. Otherwise false.
      */
-    public boolean deposit(int money)
+    public static boolean deposit(int money)
     {
         if (userLogin.addMoney(money))
         {
@@ -201,7 +200,7 @@ public class AuctionProgram
      * @param money is amount of money to deposit
      * @return true when can withdraw the money from the account. Otherwise false.
      */
-    public boolean withdraw(int money)
+    public static boolean withdraw(int money)
     {
         if (userLogin != null)
         {
@@ -221,7 +220,7 @@ public class AuctionProgram
      * @param money   amount of money in that bid
      * @return true when can make bid. Otherwise false.
      */
-    public boolean makeBid(Auction auction, int money)
+    public static boolean makeBid(Auction auction, int money)
     {
         if(userLogin != null)
             return auction.makeBid(userLogin, money);
@@ -241,7 +240,7 @@ public class AuctionProgram
      * @param dateEnd   of user that want to sell
      * @return true when auction is created successful. Otherwise false.
      */
-    public boolean makeAuction(String item, String category, String picture,
+    public static boolean makeAuction(String item, String category, String picture,
             int minBid, Date dateStart, Date dateEnd)
     {
         return auctionManager.createAuction(userLogin, item, category, picture, minBid,
@@ -255,7 +254,7 @@ public class AuctionProgram
      * @param keyInt Integer value that want to search
      * @return Return user list from search
      */
-    public ArrayList<Auction> searchAuction(int type, String keyStr, int keyInt)
+    public static ArrayList<Auction> searchAuction(int type, String keyStr, int keyInt)
     {
         ArrayList<Auction> retUserList = null;
         switch(type)
@@ -280,7 +279,7 @@ public class AuctionProgram
      * @param bSelect
      * @return
      */
-    public User searchUser(String key, boolean bSelect)
+    public static User searchUser(String key, boolean bSelect)
     {
         if(bSelect)
             return userManager.findUserByName(key);
@@ -300,7 +299,7 @@ public class AuctionProgram
      * @param email    of user that going to be
      * @return true edit profile successful. Otherwise false.
      */
-    public boolean editProfile(String password, String name, String surname,
+    public static boolean editProfile(String password, String name, String surname,
             Date birth, String address, String email)
     {
         if (userLogin != null)
@@ -312,7 +311,7 @@ public class AuctionProgram
     /**
      * 
      */
-    public void readData()
+    public static void readData()
     {
 
     }
@@ -320,7 +319,7 @@ public class AuctionProgram
     /**
      * 
      */
-    public void saveData()
+    public static void saveData()
     {
 
     }
@@ -328,7 +327,7 @@ public class AuctionProgram
     /**
      * 
      */
-    public void initial()
+    public static void initial()
     {
 
     }
@@ -336,7 +335,7 @@ public class AuctionProgram
     /**
      * 
      */
-    public void end()
+    public static void end()
     {
 
     }
