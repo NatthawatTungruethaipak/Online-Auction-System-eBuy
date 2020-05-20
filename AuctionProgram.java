@@ -203,14 +203,15 @@ public class AuctionProgram
      */
     public boolean withdraw(int money)
     {
-        if (userLogin.deductMoney(money))
+        if (userLogin != null)
         {
-            return true;
+            if (userLogin.deductMoney(money))
+                return true;
+            else
+                return false;
         }
         else
-        {
             return false;
-        }
     }
 
     /**
@@ -222,14 +223,10 @@ public class AuctionProgram
      */
     public boolean makeBid(Auction auction, int money)
     {
-        if (auction.makeBid(userLogin, money))
-        {
-            return true;
-        }
+        if(userLogin != null)
+            return auction.makeBid(userLogin, money);
         else
-        {
             return false;
-        }
 
     }
 
@@ -247,17 +244,17 @@ public class AuctionProgram
     public boolean makeAuction(String item, String category, String picture,
             int minBid, Date dateStart, Date dateEnd)
     {
-        if (auctionManager.createAuction(userLogin, item, category, picture, minBid,
-                dateStart, dateEnd))
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        return auctionManager.createAuction(userLogin, item, category, picture, minBid,
+                dateStart, dateEnd);
     }
-
+    
+    /**
+     * Search auction list from stage, category, item, seller, lower price.
+     * @param type Type that want to search
+     * @param keyStr Key that used to search.
+     * @param keyInt Integer value that want to search
+     * @return Return user list from search
+     */
     public ArrayList<Auction> searchAuction(int type, String keyStr, int keyInt)
     {
         ArrayList<Auction> retUserList = null;
@@ -276,6 +273,21 @@ public class AuctionProgram
         }
         return retUserList;
     }
+    
+    /**
+     * Search user from username or name.
+     * @param key
+     * @param bSelect
+     * @return
+     */
+    public User searchUser(String key, boolean bSelect)
+    {
+        if(bSelect)
+            return userManager.findUserByName(key);
+        else
+            return userManager.findUserByUsername(key);
+            
+    }
 
     /**
      * Edit profile of user
@@ -291,14 +303,10 @@ public class AuctionProgram
     public boolean editProfile(String password, String name, String surname,
             Date birth, String address, String email)
     {
-        if (userLogin.editProfile(password, name, surname, birth, address, email))
-        {
-            return true;
-        }
+        if (userLogin != null)
+            return userLogin.editProfile(password, name, surname, birth, address, email);
         else
-        {
             return false;
-        }
     }
 
     /**

@@ -171,7 +171,7 @@ public class UserInterface
         System.out.println("3 - Item");
         System.out.println("4 - Category");
         System.out.println("5 - Seller");
-        System.out.println("6 - Auction that has price lower");
+        System.out.println("6 - Lower start price to bid");
         System.out.println("=========================================================");
         
         type = IOUtils.getInteger("Select type number: ", 1, 6);
@@ -252,19 +252,28 @@ public class UserInterface
         System.out.println("Minimum price to bid: " + minPrice+1);
         IOUtils.getInteger("Price that want to bid: ");
         System.out.println("=========================================================");
-        
     }
     
     public void displayRegister()
     {
-        // TODO Auto-generated method stub
-
+        
     }
 
     public void displayLogin()
     {
-        // TODO Auto-generated method stub
-
+        String username = IOUtils.getString("Username: ");
+        String password = IOUtils.getString("Password: ");
+        boolean bCheck = AuctionProgram.getSingletonInstance().login(username,password);
+        if(bCheck)
+        {
+            System.out.println("=========================================================");
+            System.out.println("\n\t\t- Login success -\n");
+            System.out.println("=========================================================");
+        }
+        else
+        {
+            
+        }
     }
 
     public void displayProfile()
