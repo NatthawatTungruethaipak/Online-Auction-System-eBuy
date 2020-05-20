@@ -3,8 +3,8 @@ import java.util.TreeSet;
 import java.util.Iterator;
 
 /**
- * Represent the auction object in auction program. Contain the auction item,
- * bidder, and seller.
+ * Represent the auction object in auction program. Contain the auction item, bidder,
+ * and seller.
  * 
  * Created by Kla & Tong 14 April 2020
  */
@@ -51,7 +51,8 @@ public class Auction
      * @param minBid    Minimum money to bid
      * @param picture   Picture of item
      */
-    public Auction(User seller, String item, String category, Date dateStart, Date dateEnd, int minBid, String picture)
+    public Auction(User seller, String item, String category, Date dateStart,
+            Date dateEnd, int minBid, String picture)
     {
         this.item = item;
         this.category = Category.findCategory(category);
@@ -124,16 +125,6 @@ public class Auction
     }
 
     /**
-     * Get the current max bid of auction
-     * 
-     * @return Max bid of auction
-     */
-    public Bid getMaxBid()
-    {
-        return bidSet.last();
-    }
-
-    /**
      * Get the category of item
      * 
      * @return Category
@@ -154,18 +145,64 @@ public class Auction
     }
 
     /**
-     * Get the minimum money to bid of an auction
+     * Get current price of this auction
      * 
-     * @return Stage
+     * @return current bid price
      */
-    public int getMinBidMoney()
+    public int getCurrentBidMoney()
+    {
+        int startBidPrice = 0;
+        if (bidSet.last() != null)
+        {
+            startBidPrice = bidSet.last().getMoney();
+        }
+        else 
+        {
+            startBidPrice = minBid;
+        }
+    }
+
+    /**
+     * Minimum bid at start
+     * 
+     * @return minimum bid of the auction at the start of the auction.
+     */
+    public int getMinBid()
     {
         return this.minBid;
     }
 
+    /**
+     * Number of bid in the auction.
+     * 
+     * @return number of bid
+     */
+    public int getNumberOfBid()
+    {
+        return bidSet.size();
+    }
+
+    /**
+     * Iterator of bid
+     * 
+     * @return iterator of bid
+     */
     public Iterator<Bid> getBidIterator()
     {
         return this.bidSet.iterator();
+    }
+
+    /**
+     * Check the auction is it has a bid.
+     * 
+     * @return true when this auction has someone bid on it.
+     */
+    public boolean isBid()
+    {
+        if (bidSet.isEmpty())
+            return false;
+        else
+            return true;
     }
 
     /**
@@ -188,6 +225,23 @@ public class Auction
             }
         }
         return bCheck;
+    }
+
+    /**
+     * Set stage of auction
+     * 
+     * @param stage that will be set to the auction
+     * @return true when stage is between 0-2. Otherwise is false.
+     */
+    public boolean setStage(int stage)
+    {
+        if ((stage >= 0) && (stage <= 2))
+        {
+            this.stage = stage;
+            return true;
+        }
+        else
+            return false;
     }
 
     /**
@@ -246,19 +300,19 @@ public class Auction
     public boolean makeBid(User user, int money)
     {
         boolean bCheck = false;
-        int minMoney = minBid;
+        int startBidPrice = minBid - 1;
 
         /* Check stage is open or not */
         if (stage == 1)
         {
             /*
-             * Check that have anyone bid or not. If have, set minimum money to maximum bid
-             * from bid set instead
+             * Check that have anyone bid or not. If have, set minimum money to
+             * maximum bid from bid set instead
              */
             if (bidSet.last() != null)
-                minMoney = bidSet.last().getMoney();
+                startBidPrice = bidSet.last().getMoney();
 
-            if (user != null && money > minMoney)
+            if (user != null && money > startBidPrice)
             {
                 Bid createBid = new Bid(user, money);
                 /* Add bid to auction and user */
