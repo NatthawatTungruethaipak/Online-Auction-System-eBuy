@@ -171,13 +171,8 @@ public class AuctionFileHandler
         Auction auction = new Auction(seller, item, category, dateStart, dateEnd, minBid, picture);
 
         /** Update stage **/
-        if (stage == 1)
-            auction.openAuction();
-        else if (stage == 2)
-        {
-            auction.openAuction();
-            auction.closeAuction();
-        }
+        if (auction.setStage(stage) == false)
+            return null;
         return auction;
     }
 
@@ -428,7 +423,7 @@ public class AuctionFileHandler
             writer.writeLine(tagAuction[4] + " " + IOUtils.dateTimeToStr(auction.getDateStart()) + "\n");
             writer.writeLine(tagAuction[5] + " " + IOUtils.dateTimeToStr(auction.getDateEnd()) + "\n");
             writer.writeLine(tagAuction[6] + " " + auction.getStage() + "\n");
-            writer.writeLine(tagAuction[7] + " " + auction.getMinBidMoney() + "\n");
+            writer.writeLine(tagAuction[7] + " " + auction.getMinBid() + "\n");
 
             /** Write each bid **/
             Iterator<Bid> bids = auction.getBidIterator();
