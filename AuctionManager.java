@@ -77,16 +77,16 @@ public class AuctionManager
      * @return Return auction if the data is valid. Otherwise, false.
      */
     private Auction validateAuction(User seller, String item, String category,
-            String picture, int minBid, Date dateStart, Date dateEnd)
+            Date dateStart, Date dateEnd, int minBid, String picture)
     {
         if (seller == null)
-            return null;
+            System.out.println("Seller");
         if (dateStart.after(dateEnd))
-            return null;
+            System.out.println("Date End");
         if (IOUtils.isNullStr(item))
-            return null;
+            System.out.println("Item");
         if (IOUtils.isNullStr(category))
-            return null;
+            System.out.println("Category");
         if (IOUtils.isNullStr(picture))
             picture = defaultFile;
         if (minBid < 0)
@@ -167,8 +167,7 @@ public class AuctionManager
     public boolean createAuction(User seller, String item, String category,
             String picture, int minBid, Date dateStart, Date dateEnd)
     {
-        Auction newAuction = validateAuction(seller, item, category, picture, minBid,
-                dateStart, dateEnd);
+        Auction newAuction = validateAuction(seller, item, category, dateStart, dateEnd, minBid, picture);
         if (newAuction == null)
             return false;
         storeAuction(newAuction);
