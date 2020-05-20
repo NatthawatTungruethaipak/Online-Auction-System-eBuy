@@ -85,7 +85,7 @@ public class AuctionFileHandler
             else if (fields[0].equals(tagUser[3]) && IOUtils.isNullStr(fields[1]) == false)
                 surname = fields[1];
             /** Check birth date **/
-            else if (fields[0].equals(tagUser[4]) && IOUtils.validateDate(fields[1]))
+            else if (fields[0].equals(tagUser[4]) && IOUtils.validateDateStr(fields[1]))
                 birth = IOUtils.strToDate(fields[1]);
             /** Check address **/
             else if (fields[0].equals(tagUser[5]))
@@ -143,10 +143,10 @@ public class AuctionFileHandler
                     return null;
             }
             /** Check start date **/
-            else if (fields[0].equals(tagAuction[4]) && IOUtils.validateDateTime(fields[1]))
+            else if (fields[0].equals(tagAuction[4]) && IOUtils.validateDateTimeStr(fields[1]))
                 dateStart = IOUtils.strToDateTime(fields[1]);
             /** Check close date **/
-            else if (fields[0].equals(tagAuction[5]) && IOUtils.validateDateTime(fields[1]))
+            else if (fields[0].equals(tagAuction[5]) && IOUtils.validateDateTimeStr(fields[1]))
                 dateEnd = IOUtils.strToDateTime(fields[1]);
             /** Check stage **/
             else if (fields[0].equals(tagAuction[6]) && IOUtils.validateInteger(fields[1]))
@@ -232,7 +232,7 @@ public class AuctionFileHandler
             }
 
             /** Check bid date **/
-            else if (fields[0].equals(tagBid[2]) && IOUtils.validateDateTime(fields[1]))
+            else if (fields[0].equals(tagBid[2]) && IOUtils.validateDateTimeStr(fields[1]))
                 dateBid = IOUtils.strToDateTime(fields[1]);
             else
             {
