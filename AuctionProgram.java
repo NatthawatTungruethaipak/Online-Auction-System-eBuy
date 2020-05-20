@@ -34,12 +34,13 @@ public class AuctionProgram
      */
     public static void main(String[] args)
     {
-        int command = 1;
+        boolean bLoop = true;
+        initialProgram();
         userInterface.displayHomePage();
-        while (command != 14)
+        while (bLoop)
         {
             System.out.println("\nUse command '/help' to see all command");
-            command = IOUtils.getCommand("command: ");
+            int command = IOUtils.getCommand("command: ");
             switch(command)
             {
                 case 1: /** main page command **/
@@ -82,14 +83,14 @@ public class AuctionProgram
                     userInterface.displayAboutUs();
                     break;
                 case 14: /** Exit **/
-                    userInterface.displayEnding();
+                    bLoop = userInterface.displayEnding();
                     break;
                 default: /** Error command **/
                     userInterface.displayGetHelp();
                     break;
             }
         }
-        end();
+        endProgram();
     }
 
     /**
@@ -327,7 +328,7 @@ public class AuctionProgram
     /**
      * 
      */
-    public static void initial()
+    public static void initialProgram()
     {
 
     }
@@ -335,7 +336,7 @@ public class AuctionProgram
     /**
      * 
      */
-    public static void end()
+    public static void endProgram()
     {
 
     }

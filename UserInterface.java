@@ -516,15 +516,28 @@ public class UserInterface
 
     }
 
-    public void displayEnding()
+    public boolean displayEnding()
     {
-        // TODO Auto-generated method stub
+        if(IOUtils.getConfirm("Are you sure you want to exit?"))
+        {
+            System.out.println("=========================================================\n");
+            System.out.println("                        - Good bye -                     ");
+            System.out.println("\n=========================================================");
+            return false; /** Return false to get out from loop **/
+        }
+        else
+        {
+            displayHomePage();
+            return true; /** Return true to still loop **/
+        }
 
     }
 
     public void displayGetHelp()
     {
-        // TODO Auto-generated method stub
+        System.out.println("=========================================================\n");
+        System.out.println("- Command is not correct. Uses '/help' to see all command -");
+        System.out.println("\n=========================================================");
 
     }
 
