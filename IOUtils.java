@@ -1,10 +1,11 @@
 import java.util.Date;
+import java.util.Scanner;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 /**
- * Represent the utility method in the auction program.
- * Contain the helper method.
+ * Represent the utility method in the auction program. Contain the helper method.
  * 
  * Created by Kla & Tong 18 May 2020
  */
@@ -52,6 +53,25 @@ public class IOUtils
     }
 
     /**
+     * Check the date input that is after current date or not
+     * 
+     * @param date to be check with current date.
+     * @return true when date is after current date. Otherwise false.
+     */
+    public static boolean isAfterCurrentDate(Date date)
+    {
+        Date dateNow = new Date();
+        if (date.after(dateNow))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    /**
      * Find the difference in date and time from couple of date and time.
      * 
      * Reference from
@@ -59,8 +79,8 @@ public class IOUtils
      * 
      * @param date1 is first date to be compare.
      * @param date2 is second date to be compare.
-     * @return difference of date and time in term of integer array. Index 0 is
-     *         days, index 1 is hours, index 2 is minutes, index 3 is seconds
+     * @return difference of date and time in term of integer array. Index 0 is days,
+     *         index 1 is hours, index 2 is minutes, index 3 is seconds
      */
     public static int[] diffDateTime(Date date1, Date date2)
     {
@@ -184,8 +204,8 @@ public class IOUtils
      * https://www.geeksforgeeks.org/how-to-validate-a-username-using-regular-expressions-in-java/
      * 
      * @param username is username to be validate
-     * @return True, when username is in correct pattern. False, when username is
-     *         not in correct pattern.
+     * @return True, when username is in correct pattern. False, when username is not
+     *         in correct pattern.
      */
     public static boolean validateUsername(String username)
     {
@@ -269,7 +289,7 @@ public class IOUtils
      * @return True, when date is correct pattern. False, when date is incorrect
      *         pattern.
      */
-    public static boolean validateDate(String date)
+    public static boolean validateDateStr(String date)
     {
         if (isNullStr(date))
         {
@@ -289,7 +309,6 @@ public class IOUtils
         }
         catch (ParseException e)
         {
-            System.out.println(date + " is invalid date format");
             return false;
         }
     }
@@ -302,10 +321,10 @@ public class IOUtils
      * https://mkyong.com/java/how-to-calculate-date-time-difference-in-java/
      * 
      * @param dateTime that going to be validate
-     * @return True, when date and time is correct pattern. False, when date and
-     *         time is incorrect pattern.
+     * @return True, when date and time is correct pattern. False, when date and time
+     *         is incorrect pattern.
      */
-    public static boolean validateDateTime(String dateTime)
+    public static boolean validateDateTimeStr(String dateTime)
     {
         if (isNullStr(dateTime))
         {
@@ -325,7 +344,6 @@ public class IOUtils
         }
         catch (ParseException e)
         {
-            System.out.println(dateTime + " is invalid date format");
             return false;
         }
     }
@@ -352,5 +370,336 @@ public class IOUtils
         {
             return false;
         }
+    }
+
+    /**
+     * Print the wording and get string from user.
+     * 
+     * @param print is wording for print out.
+     * @return String from user input.
+     */
+    public static String getString(String print)
+    {
+        System.out.print(print);
+        Scanner scanner = new Scanner(System.in);
+        String input = scanner.nextLine();
+
+        if (isNullStr(input))
+        {
+            return "";
+        }
+        else
+        {
+            return input.trim();
+        }
+    }
+
+    /**
+     * Print the wording and get integer from user.
+     * 
+     * @param print is wording for print out.
+     * @return Integer from user input.
+     */
+    public static int getInteger(String print)
+    {
+        System.out.print(print);
+        boolean bOk = false;
+        int input = 0;
+        while (!bOk)
+        {
+            try
+            {
+                Scanner scanner = new Scanner(System.in);
+                input = scanner.nextInt();
+                bOk = true;
+            }
+            catch (Exception e)
+            {
+                System.out.println("Format mismatch");
+                bOk = false;
+                continue;
+            }
+
+        }
+        return input;
+    }
+
+    /**
+     * Print the wording and get integer from user with the range of number.
+     * 
+     * @param print is wording for print out.
+     * @param min   is minimum value of number from user input.
+     * @param max   is maximum value of number from user input.
+     * @return Integer from user input.
+     */
+    public static int getInteger(String print, int min, int max)
+    {
+        System.out.print(print);
+        boolean bOk = false;
+        int input = 0;
+        while (!bOk)
+        {
+            try
+            {
+                Scanner scanner = new Scanner(System.in);
+                input = scanner.nextInt();
+                if ((input > min) && (input < max))
+                {
+                    bOk = true;
+                }
+                else
+                {
+                    System.out.println("Number out of range");
+                    bOk = false;
+                    continue;
+                }
+
+            }
+            catch (Exception e)
+            {
+                System.out.println("Format mismatch");
+                continue;
+            }
+
+        }
+        return input;
+    }
+
+    /**
+     * Print the wording and get boolean from user.
+     * 
+     * @param print is wording for print out.
+     * @return boolean from user input.
+     */
+    public static boolean getConfirm(String print)
+    {
+        System.out.print(print);
+        Scanner scanner = new Scanner(System.in);
+        String input = scanner.nextLine();
+        while (!(input.equalsIgnoreCase("yes") || input.equalsIgnoreCase("no")))
+        {
+            System.out.println("Format mismatch");
+            scanner = new Scanner(System.in);
+            input = scanner.nextLine();
+        }
+        if (input.equalsIgnoreCase("yes"))
+        {
+            return true;
+        }
+        else if (input.equalsIgnoreCase("no"))
+        {
+            return false;
+        }
+        return false;
+    }
+
+    /**
+     * Print the wording and get date from user.
+     * 
+     * @param print   is wording for print out.
+     * @param dateCpr is date that going to be compare.
+     * @param after   is boolean to select before or after.
+     * @return Date from user input.
+     */
+    public static Date getDate(String print, Date dateCpr, boolean after)
+    {
+        boolean bOk = false;
+        Date dateInput = null;
+        while (!bOk)
+        {
+            System.out.print(print);
+            Scanner scanner = new Scanner(System.in);
+            String input = scanner.nextLine();
+            while (validateDateStr(input) == false)
+            {
+                {
+                    System.out.println("Format mismatch");
+                    scanner = new Scanner(System.in);
+                    input = scanner.nextLine();
+                }
+            }
+            dateInput = strToDate(input);
+            if (after)
+            {
+                if (dateInput.after(dateCpr))
+                {
+                    bOk = true;
+                }
+                else
+                {
+                    continue;
+                }
+            }
+            else
+            {
+                if (dateInput.before(dateCpr))
+                {
+                    bOk = true;
+                }
+                else
+                {
+                    continue;
+                }
+            }
+        }
+        return dateInput;
+    }
+
+    /**
+     * Print the wording and get date with time from user.
+     * 
+     * @param print   is wording for print out.
+     * @param dateCpr is date with time that going to be compare.
+     * @param after   is boolean to select before or after.
+     * @return Date with time from user input.
+     */
+    public static Date getDateTime(String print, Date dateCpr, boolean after)
+    {
+        boolean bOk = false;
+        Date dateInput = null;
+        while (!bOk)
+        {
+            System.out.print(print);
+            Scanner scanner = new Scanner(System.in);
+            String input = scanner.nextLine();
+            while (validateDateTimeStr(input) == false)
+            {
+                {
+                    System.out.println("Format mismatch");
+                    scanner = new Scanner(System.in);
+                    input = scanner.nextLine();
+                }
+            }
+            dateInput = strToDateTime(input);
+            if (after)
+            {
+                if (dateInput.after(dateCpr))
+                {
+                    bOk = true;
+                }
+                else
+                {
+                    continue;
+                }
+            }
+            else
+            {
+                if (dateInput.before(dateCpr))
+                {
+                    bOk = true;
+                }
+                else
+                {
+                    continue;
+                }
+            }
+        }
+        return dateInput;
+    }
+
+    /**
+     * Print the wording and get command from user.
+     * 
+     * @param print is wording for print out.
+     * @return command number.
+     */
+    public static int getCommand(String print)
+    {
+        boolean bOk = false;
+        int commandValue = 0;
+        while (!bOk)
+        {
+            String input = getString(print);
+            if (input.equals("/home"))
+            {
+                commandValue = 1;
+                bOk = true;
+                break;
+            }
+            else if (input.equals("/help"))
+            {
+                commandValue = 2;
+                bOk = true;
+                break;
+            }
+            else if (input.equals("/next"))
+            {
+                commandValue = 3;
+                bOk = true;
+                break;
+            }
+            else if (input.equals("/prev"))
+            {
+                commandValue = 4;
+                bOk = true;
+                break;
+            }
+            else if (input.equals("/first"))
+            {
+                commandValue = 5;
+                bOk = true;
+                break;
+            }
+            else if (input.equals("/search"))
+            {
+                commandValue = 6;
+                bOk = true;
+                break;
+            }
+            else if (input.equals("/auction"))
+            {
+                commandValue = 7;
+                bOk = true;
+                break;
+            }
+            else if (input.equals("/register"))
+            {
+                commandValue = 8;
+                bOk = true;
+                break;
+            }
+            else if (input.equals("/login"))
+            {
+                commandValue = 9;
+                bOk = true;
+                break;
+            }
+            else if (input.equals("/logout"))
+            {
+                commandValue = 10;
+                bOk = true;
+                break;
+            }
+            else if (input.equals("/profile"))
+            {
+                commandValue = 11;
+                bOk = true;
+                break;
+            }
+            else if (input.equals("/makeauction"))
+            {
+                commandValue = 12;
+                bOk = true;
+                break;
+            }
+            else if (input.equals("/aboutus"))
+            {
+                commandValue = 13;
+                bOk = true;
+                break;
+            }
+            else if (input.equals("/exit"))
+            {
+                commandValue = 14;
+                bOk = true;
+                break;
+            }
+            else
+            {
+                bOk = false;
+                continue;
+            }
+        }
+        return commandValue;
     }
 }
