@@ -1,5 +1,11 @@
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.Date;
 import java.util.Scanner;
+
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  * Represent the utility method about input and output in the auction program.
@@ -8,6 +14,8 @@ import java.util.Scanner;
  */
 public class IOUtils
 {
+    final static String imgDirectory = "imgFolder";
+    
     /**
      * Check the string is null or not.
      * 
@@ -499,5 +507,55 @@ public class IOUtils
                 bOk = true;
         }
         return userInput;
+    }
+    
+    public static String uploadImage()
+    {
+        int count = 0;
+        /** Upload image **/
+        JFileChooser jfc = new JFileChooser();
+        jfc.setDialogTitle("Select an image");
+        jfc.setAcceptAllFileFilterUsed(false);
+        FileNameExtensionFilter filter = new FileNameExtensionFilter(
+                "jpg or png images", "png", "jpg");
+        jfc.addChoosableFileFilter(filter);
+
+        /** If can't open file, return null **/
+        if (jfc.showOpenDialog(null) != JFileChooser.APPROVE_OPTION)
+            return null;
+        
+        /** Split file name into suffix and prefix and prepare directory path **/
+        String fileName = jfc.getSelectedFile().getName();
+        String directory = System.getProperty("user.dir") + "\\" + imgDirectory +"\\";
+        String[] fileSplit = fileName.split("\\.(?=[^\\.]+$)");
+
+        /** Check that file exists or not, If exists, change file name **/
+        File temp = null;
+        boolean bLoop = true;
+        do {
+            temp = new File(directory + fileName);
+            if(!temp.exists())
+                bLoop = false;
+            else
+            {
+                count++;
+                fileName = fileSplit[0] + "-" + count + "." + fileSplit[1];
+            }
+        } while (bLoop);
+
+        /** Copy file to the image directory of online auction program **/
+        File src = jfc.getSelectedFile();
+        File dest = new File(directory + fileName);
+        try
+        {
+            Files.copy(src.toPath(), dest.toPath());
+        }
+        catch (IOException e)
+        {
+            System.out.println("Error occur, can't upload");
+            return null;
+        }
+
+        return fileName;
     }
 }
