@@ -497,7 +497,7 @@ public class IOUtils
      */
     public static String getImageDir()
     {
-        return System.getProperty("user.dir") + "\\" + imgDirectory + "\\";
+        return System.getProperty("user.dir") + "/" + imgDirectory + "/";
     }
 
     /**
@@ -512,8 +512,7 @@ public class IOUtils
         JFileChooser frameChooseFile = new JFileChooser();
         frameChooseFile.setDialogTitle("Select an image");
         frameChooseFile.setAcceptAllFileFilterUsed(false);
-        FileNameExtensionFilter filter = new FileNameExtensionFilter(
-                "jpg or png images", "png", "jpg");
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("jpg/png images", "png", "jpg");
         frameChooseFile.addChoosableFileFilter(filter);
 
         /** If user doesn't upload image, reset to default **/
