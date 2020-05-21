@@ -39,9 +39,18 @@ public class AuctionTrigger extends Thread
             {
                 int stage = auction.getStage();
                 Date currentDate = DateUtils.getCurrentDateTime();
-                /* For Testing */
-                /* currentDate = new Date(2020, 1, 1); */
-                /* Thread.sleep(30000); /* 30000 = 30 Secs */
+                /**************** For Testing ****************/
+                 currentDate = DateUtils.strToDate("1-1-1998"); 
+                 try
+                {
+                    Thread.sleep(30000);/* 30000 = 30 Secs */
+                }
+                catch (InterruptedException e)
+                {
+                    System.out.println("Thread error problem");
+                } 
+                /********************************************/ 
+                 
                 if (stage == 0)
                 {
                     Date startDate = auction.getDateStart();
