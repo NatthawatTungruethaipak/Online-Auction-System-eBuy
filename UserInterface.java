@@ -459,7 +459,7 @@ public class UserInterface
         System.out.println("/register - Register to be new user.\n");
         System.out.println("/login - Login to the system.\n");
         System.out.println("/logout - Logout from the system.\n");
-        System.out.println("/profile - View the profile info.\n");
+        System.out.println("/profile - View the profile, account, and history bid/selling.\n");
         System.out.println("/makeauction - Make the auction.\n");
         System.out.println("/aboutus - See about us.\n");
         System.out.println("/exit - Exit from the program.\n");
