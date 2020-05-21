@@ -252,15 +252,20 @@ public class AuctionProgram
         ArrayList<Auction> retUserList = null;
         switch(type)
         {
-            case 1:
+            case 1: /* Search opened auction */
+                retUserList = auctionManager.searchAuctionByStage(1);
                 break;
-            case 2:
+            case 2: /* Search closed auction */
+                retUserList = auctionManager.searchAuctionByStage(2);
                 break;
-            case 3:
+            case 3: /* Search auction by item name */
+                retUserList = auctionManager.searchAuctionByItem(keyStr);
                 break;
-            case 4:
+            case 4:/* Search auction by category */
+                retUserList = auctionManager.searchAuctionByCat(keyStr);
                 break;
-            case 5:
+            case 5: /*Search auction by lower price */
+                retUserList = auctionManager.searchAuctionByLowerPrice(keyInt);
                 break;
         }
         return retUserList;

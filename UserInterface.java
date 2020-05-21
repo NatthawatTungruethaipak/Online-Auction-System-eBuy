@@ -185,11 +185,12 @@ public class UserInterface
         int type = 0;
         int keyInt = 0;
         String keyStr = null;
-        
+        clearScreen();
         System.out.println("=========================================================");
         System.out.println("=                     Search Auction                    =");
         System.out.println("=========================================================");
         System.out.println("Select type that want to search");
+        System.out.println("0 - Go back home page");
         System.out.println("1 - Auction in opened stage");
         System.out.println("2 - Auction in closed stage");
         System.out.println("3 - Item");
@@ -198,8 +199,10 @@ public class UserInterface
         System.out.println("6 - Lower start price to bid");
         System.out.println("=========================================================");
         
-        type = IOUtils.getInteger("Select type number: ", 1, 6);
-        if (type == 3)
+        type = IOUtils.getInteger("Select type number: ", 0, 6);
+        if(type == 0)
+            return;
+        else if (type == 3)
             keyStr = IOUtils.getString("Search item name: ");
         else if (type == 4)
             keyStr = IOUtils.getCategory("Select category that want to search");
@@ -208,6 +211,7 @@ public class UserInterface
         else if (type == 6)
             keyInt = IOUtils.getInteger("Start price (Baht): ", 0);
         resetAuctionDisplay(AuctionProgram.searchAuction(type, keyStr, keyInt));
+        clearScreen();
         displayAuctionList();
     }
     
