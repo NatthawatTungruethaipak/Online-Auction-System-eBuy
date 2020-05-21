@@ -1,6 +1,7 @@
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
 
@@ -14,10 +15,12 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  */
 public class IOUtils
 {
+    /** Directory of image **/
     final static String imgDirectory = "imgFolder";
-    
+
+    /** Image name **/
     final static String imgDefault = "default.png";
-    
+
     /**
      * Check the string is null or not.
      * 
@@ -260,10 +263,11 @@ public class IOUtils
      * 
      * @param print   is wording for print out.
      * @param dateCpr is date that going to be compare.
-     * @param after   is boolean to select before or after.
+     * @param command is select before or after compare operation. For command = 1 is
+     *                before, command = 2 is after. Otherwise will not check.
      * @return Date from user input.
      */
-    public static Date getDate(String print, Date dateCpr, boolean after)
+    public static Date getDate(String print, Date dateCpr, int command)
     {
         boolean bOk = false;
         Date dateInput = null;
@@ -283,16 +287,18 @@ public class IOUtils
             dateInput = DateUtils.strToDate(input);
             if (dateCpr == null)
                 dateCpr = new Date();
-            if (after)
+            if (command == 1)
+            {
+                if (dateInput.before(dateCpr))
+                    bOk = true;
+            }
+            else if (command == 2)
             {
                 if (dateInput.after(dateCpr))
                     bOk = true;
             }
             else
-            {
-                if (dateInput.before(dateCpr))
-                    bOk = true;
-            }
+                bOk = true;
         }
         return dateInput;
     }
@@ -301,11 +307,12 @@ public class IOUtils
      * Print the wording and get date with time from user.
      * 
      * @param print   is wording for print out.
-     * @param dateCpr is date with time that going to be compare.
-     * @param after   is boolean to select before or after.
+     * @param dateCpr is date that going to be compare.
+     * @param command is select before or after compare operation. For command = 1 is
+     *                before, command = 2 is after. Otherwise will not check.
      * @return Date with time from user input.
      */
-    public static Date getDateTime(String print, Date dateCpr, boolean after)
+    public static Date getDateTime(String print, Date dateCpr, int command)
     {
         boolean bOk = false;
         Date dateInput = null;
@@ -325,16 +332,18 @@ public class IOUtils
             dateInput = DateUtils.strToDateTime(input);
             if (dateCpr == null)
                 dateCpr = new Date();
-            if (after)
+            if (command == 1)
+            {
+                if (dateInput.before(dateCpr))
+                    bOk = true;
+            }
+            else if (command == 2)
             {
                 if (dateInput.after(dateCpr))
                     bOk = true;
             }
             else
-            {
-                if (dateInput.before(dateCpr))           
-                    bOk = true;
-            }
+                bOk = true;
         }
         return dateInput;
     }
@@ -467,7 +476,7 @@ public class IOUtils
         }
         return userInput;
     }
-    
+
     /**
      * Get the password from user as an input and validate the email.
      * 
@@ -486,7 +495,22 @@ public class IOUtils
         }
         return userInput;
     }
-    
+
+    /**
+     * Get image directory.
+     * 
+     * @return image directory in the system.
+     */
+    public static String getImgDir()
+    {
+        return System.getProperty("user.dir") + "\\" + imgDirectory + "\\";
+    }
+
+    /**
+     * Upload the image to the system.
+     * 
+     * @return filename of the image.
+     */
     public static String uploadImage()
     {
         int count = 0;
@@ -536,5 +560,22 @@ public class IOUtils
         }
 
         return fileName;
+    }
+
+    /**
+     * Select category from category list
+     * 
+     * @param print is wording for print out.
+     * @return category that user selected
+     */
+    public static String getCategory(String print)
+    {
+        System.out.println(print);
+        ArrayList<String> categoryList = Category.getAllCategoryStr();
+        for (int i = 0; i < categoryList.size(); i++)
+            System.out.println((i + 1) + " - " + categoryList.get(i));
+        int node = IOUtils.getInteger("Select category number: ", 1,
+                categoryList.size());
+        return categoryList.get(node - 1);
     }
 }
