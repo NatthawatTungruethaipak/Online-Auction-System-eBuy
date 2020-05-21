@@ -178,19 +178,29 @@ public class IOUtils
     public static int getInteger(String print, int min)
     {
         boolean bOk = false;
-        int input = 0;
+        int returnInt = 0;
         while (!bOk)
         {
             try
             {
                 System.out.print(print);
                 Scanner scanner = new Scanner(System.in);
-                input = scanner.nextInt();
-                if (input >= min)
-                    bOk = true;
+                String input = scanner.nextLine();
+                if (isNullStr(input))
+                {
+                    System.out.println("Input can't be null");
+                }
                 else
-                    System.out.println(
-                            "Input must be number greater than or equal to " + min);
+                {
+                    returnInt = Integer.parseInt(input);
+                    if (returnInt >= min)
+                        bOk = true;
+                    else
+                        System.out.println(
+                                "Input must be number greater than or equal to "
+                                        + min);
+                }
+
             }
             catch (Exception e)
             {
@@ -198,7 +208,7 @@ public class IOUtils
             }
 
         }
-        return input;
+        return returnInt;
     }
 
     /**
@@ -213,20 +223,28 @@ public class IOUtils
     {
 
         boolean bOk = false;
-        int input = 0;
+        int returnInt = 0;
         while (!bOk)
         {
             try
             {
                 System.out.print(print);
                 Scanner scanner = new Scanner(System.in);
-                input = scanner.nextInt();
-                if ((input >= min) && (input <= max))
-                    bOk = true;
+                String input = scanner.nextLine();
+                if (isNullStr(input))
+                {
+                    System.out.println("Input can't be null");
+                }
                 else
-                    System.out.println(
-                            "Input must be number between " + min + " and " + max);
+                {
+                    returnInt = Integer.parseInt(input);
+                    if ((returnInt >= min) && (returnInt <= max))
+                        bOk = true;
+                    else
+                        System.out.println("Input must be number between " + min
+                                + " and " + max);
 
+                }
             }
             catch (Exception e)
             {
@@ -234,7 +252,7 @@ public class IOUtils
             }
 
         }
-        return input;
+        return returnInt;
     }
 
     /**
@@ -245,15 +263,16 @@ public class IOUtils
      */
     public static int getCommand(String print)
     {
-        final String[] command = {"/home", "/help", "/next", "/prev", "/first",
-                "/search", "/auction", "/register", "/login", "/logout", "/profile",
-                "/makeauction", "/aboutus", "/exit"};  
+        final String[] command =
+        { "/home", "/help", "/next", "/prev", "/first", "/search", "/auction",
+                "/register", "/login", "/logout", "/profile", "/makeauction",
+                "/aboutus", "/exit" };
         int commandValue = 0;
         String input = getString(print);
-        for(int i = 0; i < command.length; i ++)
+        for (int i = 0; i < command.length; i++)
         {
-            if(input.equalsIgnoreCase(command[i]))
-                commandValue = i+1;
+            if (input.equalsIgnoreCase(command[i]))
+                commandValue = i + 1;
         }
         return commandValue;
     }
@@ -295,8 +314,8 @@ public class IOUtils
      * 
      * @param print   is wording for print out.
      * @param dateCpr is date that going to be compare.
-     * @param bAfter if true, date input must after dateCpr.
-     *               Otherwise, date input must before dateCpr.
+     * @param bAfter  if true, date input must after dateCpr. Otherwise, date input
+     *                must before dateCpr.
      * @return Date from user input.
      */
     public static Date getDate(String print, Date dateCpr, boolean bAfter)
@@ -321,16 +340,16 @@ public class IOUtils
                     if (dateInput.after(dateCpr))
                         bOk = true;
                     else
-                        System.out.println(
-                                "Input date must after " + DateUtils.dateToStr(dateCpr) + " .");
+                        System.out.println("Input date must after "
+                                + DateUtils.dateToStr(dateCpr) + " .");
                 }
                 else
                 {
                     if (dateInput.before(dateCpr))
                         bOk = true;
                     else
-                        System.out.println(
-                                "Input date must before " + DateUtils.dateToStr(dateCpr) + " .");
+                        System.out.println("Input date must before "
+                                + DateUtils.dateToStr(dateCpr) + " .");
                 }
             }
         }
@@ -342,8 +361,8 @@ public class IOUtils
      * 
      * @param print   is wording for print out.
      * @param dateCpr is date that going to be compare.
-     * @param bAfter if true, date input must after dateCpr.
-     *               Otherwise, date input must before dateCpr.
+     * @param bAfter  if true, date input must after dateCpr. Otherwise, date input
+     *                must before dateCpr.
      * @return Date with time from user input.
      */
     public static Date getDateTime(String print, Date dateCpr, boolean bAfter)
@@ -356,7 +375,7 @@ public class IOUtils
             System.out.print(print);
             Scanner scanner = new Scanner(System.in);
             input = scanner.nextLine();
-            
+
             if (DateUtils.validateDateTimeStr(input) == false)
             {
                 System.out.println(
@@ -373,17 +392,17 @@ public class IOUtils
                     if (dateInput.after(dateCpr))
                         bOk = true;
                     else
-                        System.out.println(
-                                "Input date must after " + DateUtils.dateTimeToStr(dateCpr) + " .");
+                        System.out.println("Input date must after "
+                                + DateUtils.dateTimeToStr(dateCpr) + " .");
                 }
                 else
                 {
                     if (dateInput.before(dateCpr))
                         bOk = true;
                     else
-                        System.out.println(
-                                "Input date must before " + DateUtils.dateTimeToStr(dateCpr) + " .");
-                    
+                        System.out.println("Input date must before "
+                                + DateUtils.dateTimeToStr(dateCpr) + " .");
+
                 }
             }
         }
@@ -485,10 +504,12 @@ public class IOUtils
     {
         int count = 0;
         /** Upload image **/
-        JFileChooser frameChooseFile = new JFileChooser(FileSystemView.getFileSystemView());
+        JFileChooser frameChooseFile = new JFileChooser(
+                FileSystemView.getFileSystemView());
         frameChooseFile.setDialogTitle("Select an image");
         frameChooseFile.setAcceptAllFileFilterUsed(false);
-        FileNameExtensionFilter filter = new FileNameExtensionFilter("jpg/png images", "png", "jpg");
+        FileNameExtensionFilter filter = new FileNameExtensionFilter(
+                "jpg/png images", "png", "jpg");
         frameChooseFile.addChoosableFileFilter(filter);
 
         /** If user doesn't upload image, reset to default **/
@@ -547,5 +568,11 @@ public class IOUtils
         int node = IOUtils.getInteger("Select category number: ", 1,
                 categoryList.size());
         return categoryList.get(node - 1);
+    }
+
+    public static void main(String[] args)
+    {
+        System.out.println(getInteger("euei: ", 5));
+        System.out.println(getInteger("ahha: ",5,15));
     }
 }
