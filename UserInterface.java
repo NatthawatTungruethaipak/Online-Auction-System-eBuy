@@ -1,5 +1,13 @@
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
+
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
 
 public class UserInterface
 {
@@ -220,29 +228,29 @@ public class UserInterface
     private void displayAuction(Auction auction, boolean bFull)
     {
         System.out.println("Item: " + auction.getItem());
-        if(auction.isBid)
+        if(auction.isBid) /** Check that have anyone bid or not, display different text **/
             System.out.print("Current bid: " + auction.getCurrentBidMoney() + " Baht");
         else
             System.out.print("Starting bid price: " + auction.getMinBid() + " Baht");        
         System.out.println(" ("+ auction.getNumberOfBid() +" bid)");
-        Date dateEnd = auction.getDateEnd();
-        if(auction.getStage() == 2)
+        if(auction.getStage() == 2)  /** Print time left before close auction **/
             System.out.println("Closed auction");
         else
         {
             int[] diff = IOUtils.diffCurrentDateTime(auction.getDateEnd());
-            if(diff[0] != 0)
+            if(diff[0] != 0) /** Displaying time **/
                 System.out.println(diff[0]+" Days "+diff[1]+" Hours "+diff[2]+" Minutes");
             else if(diff[0] == 0)
                 System.out.println(diff[1]+" Hours "+diff[2]+" Minutes "+diff[3]+" Seconds");
             else if(diff[1] == 0)
                 System.out.println(diff[2] + " Minutes " + diff[3] + " Seconds");
         }
-        /** See full detail of auction **/
+        
+        /** Print full detail of auction **/
         if (bFull)
         {
             Bid winBid = auction.getWinner();
-            if (auction.getStage() == 2)
+            if (auction.getStage() == 2) /** Print winner **/
                 if(winBid == null)
                     System.out.println("Winner: Don't have winner");
                 else
@@ -360,6 +368,7 @@ public class UserInterface
     
     private void displayProfile(User user)
     {
+        clearScreen();
         System.out.println("=========================================================");
         System.out.println("=                        Profile                        =");
         System.out.println("=========================================================");
@@ -572,6 +581,7 @@ public class UserInterface
 
     public void displayAboutUs()
     {
+        clearScreen();
         System.out.println("=========================================================");
         System.out.println("=                        About us                       =");
         System.out.println("=========================================================");
@@ -588,6 +598,31 @@ public class UserInterface
         System.out.println("2) Natthawat Tungruethaipak 60070503426");
         System.out.println("=========================================================");
         refresh();
+    }
+    
+    public static void displayImage(String imageDir)
+    {
+        JFrame f = new JFrame("image");
+        BufferedImage img = null;
+        try
+        {
+            img = ImageIO.read(new File(imageDir));
+        }
+        catch (IOException e)
+        {
+            System.out.println("Cannot load the image");
+            return;
+        }
+        int width = img.getWidth();
+        int height = img.getHeight();
+        
+        JLabel imageLabel = new JLabel(new ImageIcon(img));
+        imageLabel.setBounds(0, 0, width, height);
+        imageLabel.setVisible(true);
+        
+        f.add(imageLabel);
+        f.setBounds(0, 0, width, height);
+        f.setVisible(true);
     }
     
     private void refresh()
