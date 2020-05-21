@@ -190,7 +190,7 @@ public class User
             return false;
         if (IOUtils.isNullStr(address) == true)
             return false;
-        Date currentDate = IOUtils.getCurrentDateTime();
+        Date currentDate = DateUtils.getCurrentDateTime();
         if (birth == null || birth.after(currentDate))
             return false;
 

@@ -65,7 +65,7 @@ public class UserManager
             return null;
         if (IOUtils.validatePassword(password) == false)
             return null;
-        if (birth.after(IOUtils.getCurrentDateTime()))
+        if (birth.after(DateUtils.getCurrentDateTime()))
             return null;
         if (IOUtils.validateEmail(email) == false)
             return null;
