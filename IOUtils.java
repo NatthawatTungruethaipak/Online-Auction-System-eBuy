@@ -132,13 +132,19 @@ public class IOUtils
         }
     }
 
+    public static void getEnter()
+    {
+        Scanner scanner = new Scanner(System.in);
+        scanner.nextLine();
+    }
+
     /**
      * Print the wording and get string from user.
      * 
      * @param print is wording for print out.
      * @return String from user input.
      */
-    public static String getString(String print, boolean isNullOK)
+    public static String getString(String print)
     {
         String returnString = "";
         boolean bOk = false;
@@ -148,22 +154,14 @@ public class IOUtils
             System.out.print(print);
             Scanner scanner = new Scanner(System.in);
             String input = scanner.nextLine();
-            if (isNullOK)
+            if (isNullStr(input))
             {
-                bOk = true;
-                returnString = input.trim();
+                System.out.println("Input can't be null");
             }
             else
             {
-                if (isNullStr(input))
-                {
-                    System.out.println("Input can't be null");
-                }
-                else
-                {
-                    bOk = true;
-                    returnString = input.trim();
-                }
+                bOk = true;
+                returnString = input.trim();
             }
         }
         return returnString;
@@ -382,7 +380,7 @@ public class IOUtils
     public static int getCommand(String print)
     {
         int commandValue = 0;
-        String input = getString(print, false);
+        String input = getString(print);
         if (input.equals("/home"))
             commandValue = 1;
         else if (input.equals("/help"))
@@ -429,7 +427,7 @@ public class IOUtils
         UserManager userManager = UserManager.getSingletonInstance();
         while (!bOk)
         {
-            userInput = getString(print, false);
+            userInput = getString(print);
             if (validateUsername(userInput))
             {
                 if (userManager.findUserByUsername(userInput) != null)
@@ -461,7 +459,7 @@ public class IOUtils
         String userInput = "";
         while (!bOk)
         {
-            userInput = getString(print, false);
+            userInput = getString(print);
             if (validatePassword(userInput))
                 bOk = true;
             else
@@ -483,7 +481,7 @@ public class IOUtils
         String userInput = "";
         while (!bOk)
         {
-            userInput = getString(print, false);
+            userInput = getString(print);
             if (validateEmail(userInput))
                 bOk = true;
             else
