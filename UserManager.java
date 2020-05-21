@@ -1,8 +1,8 @@
 import java.util.*;
 
 /**
- * Represent the user manager object in auction program. Contain the user
- * manager detail that control user.
+ * Represent the user manager object in auction program. Contain the user manager
+ * detail that control user.
  * 
  * Created by Kla & Tong 23 April 2020
  */
@@ -52,14 +52,13 @@ public class UserManager
      * @param username of new user
      * @param password of new user
      * @param name     of new user
-     * @param surname  of new user
      * @param birth    of new user
      * @param address  of new user
      * @param email    of new user
      * @return new user with validated
      */
     private User validateUser(String username, String password, String name,
-            String surname, Date birth, String address, String email)
+            Date birth, String address, String email)
     {
         if (IOUtils.validateUsername(username) == false)
             return null;
@@ -72,8 +71,7 @@ public class UserManager
 
         /* Create new user */
         if (findUserByUsername(username) == null)
-            return new User(username, password, name, surname, birth, address,
-                    email);
+            return new User(username, password, name, birth, address, email);
         else
             return null;
     }
@@ -152,18 +150,16 @@ public class UserManager
      * @param username Username of user
      * @param password Password of user
      * @param name     Name of user
-     * @param surname  Surname of user
      * @param birth    Birth date of user
      * @param address  Address of user
      * @param email    Email of user
      * @return True, if can create a new user. Otherwise, false.
      */
     public boolean createUser(String username, String password, String name,
-            String surname, Date birth, String address, String email)
+            Date birth, String address, String email)
     {
-        User newUser = validateUser(username, password, name, surname, birth,
-                address, email);
-        if(newUser != null && userList.add(newUser))
+        User newUser = validateUser(username, password, name, birth, address, email);
+        if (newUser != null && userList.add(newUser))
             return true;
         else
             return false;
