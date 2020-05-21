@@ -48,8 +48,9 @@ public class AuctionTrigger extends Thread
         AuctionManager auctionManager = AuctionManager.getSingletonInstance();
         while (bLoop)
         {
-            for (Auction auction : managedAuction)
+            for (int i = 0; i < managedAuction.size(); i ++)
             {
+                Auction auction = managedAuction.get(i);
                 int stage = auction.getStage();
                 Date currentDate = DateUtils.getCurrentDateTime();
                 /**************** For Testing ****************/
@@ -74,10 +75,7 @@ public class AuctionTrigger extends Thread
                 {
                     Date endDate = auction.getDateEnd();
                     if (endDate.before(currentDate))
-                    {
                         auctionManager.updateAuctionStage(auction);
-                        managedAuction.remove(auction);
-                    }
                 }
                 else
                 {
