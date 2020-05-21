@@ -212,6 +212,7 @@ public class UserInterface
         int node = IOUtils.getInteger("Select auction no.: ", 1, auctionDisplay.size()) - 1;
         Auction auction = auctionDisplay.get(node);
         displayAuction(auction, true);
+        displayImage(auction.getPicture());
         System.out.println("=========================================================");
         if(AuctionProgram.isLogin())
         {
@@ -600,17 +601,20 @@ public class UserInterface
         refresh();
     }
     
-    public static void displayImage(String imageDir)
+    public static void displayImage(String imgFileName)
     {
         JFrame f = new JFrame("image");
+        String imgDir = IOUtils.getImgDir() + imgFileName;
         BufferedImage img = null;
         try
         {
-            img = ImageIO.read(new File(imageDir));
+            img = ImageIO.read(new File(imgFileName));
         }
         catch (IOException e)
         {
-            System.out.println("Cannot load the image");
+            System.out.println("=========================================================\n");
+            System.out.println("                  - Cannot load image -                  ");
+            System.out.println("\n=========================================================");
             return;
         }
         int width = img.getWidth();
