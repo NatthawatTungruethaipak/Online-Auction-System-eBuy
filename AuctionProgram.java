@@ -332,6 +332,9 @@ public class AuctionProgram
     {
         /* Create img directory */
         IOUtils.initial();
+        
+        /* Initial category */
+        Category.initial();
 
         /* Read user from file */
         ArrayList<User> userList = fileHandler.readUsers();
