@@ -984,7 +984,7 @@ public class UserInterface
     public static void displayImage(String imgFileName)
     {
         JFrame f = new JFrame("image");
-        String imgDir = IOUtils.getImgDir() + imgFileName;
+        String imgDir = IOUtils.getImageDir() + imgFileName;
         BufferedImage img = null;
         try
         {

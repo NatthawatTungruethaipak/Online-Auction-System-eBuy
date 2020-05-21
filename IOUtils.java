@@ -27,7 +27,7 @@ public class IOUtils
     public static void initial()
     {
         /** Create image directory **/
-        File file = new File(getImgDir());
+        File file = new File(getImageDir());
         if (!file.exists())
             file.mkdir();
     }
@@ -512,7 +512,7 @@ public class IOUtils
      * 
      * @return image directory in the system.
      */
-    public static String getImgDir()
+    public static String getImageDir()
     {
         return System.getProperty("user.dir") + "\\" + imgDirectory + "\\";
     }
@@ -539,7 +539,7 @@ public class IOUtils
 
         /** Split file name into suffix and prefix and prepare directory path **/
         String fileName = frameChooseFile.getSelectedFile().getName();
-        String directory = getImgDir();
+        String directory = getImageDir();
         String[] fileSplit = fileName.split("\\.(?=[^\\.]+$)");
 
         /** Check that file exists or not, If exists, change file name **/
