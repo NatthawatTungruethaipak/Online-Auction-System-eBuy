@@ -49,15 +49,6 @@ public class UserInterface
         
         resetAuctionDisplay(null);
         displayAuctionList();
-        try
-        {
-            Thread.sleep(300000);
-        }
-        catch (InterruptedException e)
-        {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
     }
 
     public void displayHelp()
@@ -274,7 +265,7 @@ public class UserInterface
         int minPrice;
         if(auction.isBid())
         {
-            minPrice = auction.getMaxBidMoney();
+            minPrice = auction.getCurrentBidMoney();
             System.out.println("Current bid: " + minPrice  + " Baht");
         }
         else
@@ -308,42 +299,30 @@ public class UserInterface
     
     public void displayRegister()
     {
-        /** This part is just some prototype **/
-        UserManager userManager = UserManager.getSingletonInstance();
-        String username = null;
-        String password = IOUtils.getString("Password: ");
-        boolean bLoop = true;
-        do
-        {
-            username = IOUtils.getString("Username: ");
-            if(AuctionProgram.searchUser(username,false) != null)
-                System.out.println("Username has already been taken");
-            else
-                bLoop = false;
-        }while(bLoop);
+        System.out.println("=========================================================");
+        System.out.println("=                        Register                       =");
+        System.out.println("=========================================================");
+        String username = IOUtils.getUsername("Username: ");
+        String password = IOUtils.getPassword("Password: ");
+        String name = IOUtils.getString("Name: ");
+        String surname = IOUtils.getString("Surname: ");
+        Date birth = IOUtils.getDate("Date: ",null, false);
+        String address = IOUtils.getString("Address: ");
+        String email = IOUtils.getEmail("Email: ");
         
-        bLoop = true;
-        do
-        {
-            password = IOUtils.getString("Password: ");
-            if(IOUtils.validatePassword(password) == false)
-                System.out.println("Password is not correct");
-            else
-                bLoop = false;
-        }while(bLoop);
-        
-        boolean bCheck = AuctionProgram.login(username,password);
+        boolean bCheck = AuctionProgram.register(username, password, name, surname, birth, address, email);
         if(bCheck)
         {
             System.out.println("=========================================================\n");
-            System.out.println("                    - Login success -                    ");
+            System.out.println("                   - Register success -                  ");
             System.out.println("\n=========================================================");
         }
         else
         {
-            
+            System.out.println("=========================================================\n");
+            System.out.println("                   - Register failure -                  ");
+            System.out.println("\n========================================================="); 
         }
-        /*****************************************/
     }
 
     public void displayLogin()
@@ -369,17 +348,12 @@ public class UserInterface
     
     private void displayProfile(User user)
     {
-        clearScreen();
-        System.out.println("=========================================================");
-        System.out.println("=                        Profile                        =");
-        System.out.println("=========================================================");
         System.out.println("Username: "+user.getUsername());
         System.out.println("Name: "+user.getName());
         System.out.println("Surname: "+user.getSurname());
         System.out.println("Birth: " + IOUtils.dateToStr(user.getBirth()));
         System.out.println("Address: "+user.getAddress());
         System.out.println("Email: "+user.getEmail());
-        System.out.println("=========================================================");
     }
     
     
@@ -394,9 +368,13 @@ public class UserInterface
             return;
         }
         
-        User user = AuctionProgram.getLogin();
         clearScreen();
+        User user = AuctionProgram.getLogin();
+        System.out.println("=========================================================");
+        System.out.println("=                        Profile                        =");
+        System.out.println("=========================================================");
         displayProfile(user);
+        System.out.println("=========================================================");
         int menu = 0;
         do {
             System.out.println("Select menu");
@@ -406,11 +384,16 @@ public class UserInterface
             System.out.println("3 - Deposit");
             System.out.println("4 - Withdraw");
             System.out.println("5 - Bids/Selling History");
-            menu = IOUtils.getInteger("Select menu: ", 1, 5);
+            menu = IOUtils.getInteger("Select menu: ", 0, 5);
             switch(menu)
             {
                 case 1:
                     displayEditProfile(user);
+                    System.out.println("=========================================================");
+                    System.out.println("=                        Profile                        =");
+                    System.out.println("=========================================================");
+                    displayProfile(user);
+                    System.out.println("=========================================================");
                     break;
                 case 2:
                     displayBalance(user);
@@ -421,18 +404,69 @@ public class UserInterface
                 case 4:
                     displayWithdraw(user);
                     break;
-                case 3:
+                case 5:
                     displayHistoryBidSelling(user);
                     break;
             }
-        } while(menu != 4);
+        } while(menu != 0);
         refresh();
     }
 
     private void displayEditProfile(User user)
     {
         
-
+        if(AuctionProgram.isLogin())
+        {
+            System.out.println("=========================================================\n");
+            System.out.println("                   - Please login first -                ");
+            System.out.println("\n=========================================================");
+            refresh();
+            return;
+        }
+        
+        String password = null;
+        String name = null;
+        String surname = null;
+        Date birth = null;
+        String address = null;
+        String email = null;
+        
+        clearScreen();
+        System.out.println("=========================================================");
+        System.out.println("=                      Edit profile                     =");
+        System.out.println("=========================================================");
+        displayProfile(user);
+        
+        if(IOUtils.getConfirm("Do you want to password?: "))
+            password = IOUtils.getPassword("Edit Password: ");
+        if(IOUtils.getConfirm("Do you want to edit name?: "))
+            name = IOUtils.getString("Edit Name: ");
+        if(IOUtils.getConfirm("Do you want to edit surname?: "))
+            surname = IOUtils.getString("Edit Surname: ");
+        if(IOUtils.getConfirm("Do you want to edit birth date?: "))
+            birth = IOUtils.getDate("Edit Date: ",null, false);
+        if(IOUtils.getConfirm("Do you want to edit address?: "))
+            address = IOUtils.getString("Edit Address: ");
+        if(IOUtils.getConfirm("Do you want to edit email?: "))
+            email = IOUtils.getEmail("Edit Email: ");
+        if(IOUtils.getComfirm("Confirm to edit: "))
+        {
+            if(AuctionProgram.editProfile(password, name, surname, birth, address, email))
+            {
+                System.out.println("=========================================================\n");
+                System.out.println("                       - Edit sucess -                   ");
+                System.out.println("\n=========================================================");
+            }
+            else
+            {
+                System.out.println("=========================================================\n");
+                System.out.println("                       - Edit failure -                   ");
+                System.out.println("\n=========================================================");
+            }
+        }
+        else
+            return;
+            
     }
 
     private void displayBalance(User user)
@@ -523,6 +557,15 @@ public class UserInterface
             refresh();
             return;
         }
+        
+        System.out.println("=========================================================");
+        System.out.println("=                   Make Auction                        =");
+        System.out.println("=========================================================");
+        String item = IOUtils.getString();
+        String category = IOUtils.getString();
+        String picture = IOUtils.uploadImage();
+        AuctionProgram.makeAuction(item, category, picture, minBid, dateStart, dateEnd)
+        
 
     }
 
