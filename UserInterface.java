@@ -304,7 +304,10 @@ public class UserInterface
         clearScreen();
         displayBalance(user);
         int money = IOUtils.getInteger("Deposit: ", 0);
-        if (AuctionProgram.deposit(money))
+        boolean ret = AuctionProgram.deposit(money);
+        clearScreen();
+        displayBalance(user);
+        if (ret)
             System.out.println("Money has been deposit to the accuont.");
         else
             System.out
@@ -323,7 +326,10 @@ public class UserInterface
         int balance = user.getBalance();
         displayBalance(user);
         int money = IOUtils.getInteger("Withdraw: ", 0, balance);
-        if (AuctionProgram.withdraw(money))
+        boolean ret = AuctionProgram.withdraw(money);
+        clearScreen();
+        displayBalance(user);
+        if (ret)
             System.out.println("Money has been withdrawn from the accuont.");
         else
             System.out.println(
