@@ -92,15 +92,14 @@ public class AuctionManager
         if (minBid < 0)
             return null;
 
-        Date currentDate = IOUtils.getCurrentDateTime();
-        if (dateEnd.after(currentDate))
+        if (DateUtils.isBeforeCurrentDateTime(dateEnd))
             return null;
 
         Auction auction = new Auction(seller, item, category, dateStart, dateEnd,
                 minBid, picture);
 
         /* If date start after current date, open an auction */
-        if (dateStart.after(currentDate))
+        if (DateUtils.isBeforeCurrentDateTime(dateStart))
             auction.openAuction();
         return auction;
     }
@@ -243,15 +242,14 @@ public class AuctionManager
         ArrayList<Auction> auctionLists = new ArrayList<Auction>();
         for (Auction auction : openedAuction)
         {
-            Bid maxBid = auction.getMaxBid();
-            if (maxBid == null)
+            if (auction.isBid())
             {
-                if (auction.getMinBidMoney() < money)
+                if (auction.getCurrentBidMoney() < money)
                     auctionLists.add(auction);
             }
             else
             {
-                if (maxBid.getMoney() < money)
+                if (auction.getMinBid() < money)
                     auctionLists.add(auction);
             }
         }
