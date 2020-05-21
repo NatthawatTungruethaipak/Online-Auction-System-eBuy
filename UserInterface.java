@@ -35,12 +35,13 @@ public class UserInterface
         System.out.println("Press enter to continue..");
         IOUtils.getEnter();
         clearScreen();
-        if(bHome)
+        if (bHome)
             displayHomePage();
     }
 
     /**
-     * Clear screen.
+     * Clear screen. Reference:
+     * https://stackoverflow.com/questions/2979383/java-clear-the-console
      */
     private static void clearScreen()
     {
@@ -73,10 +74,8 @@ public class UserInterface
     private static void displayAuction(Auction auction, boolean bFull)
     {
         System.out.println("Item: " + auction.getItem());
-        if (auction.isBid()) /**
-                              * Check that have anyone bid or not, display different
-                              * text
-                              **/
+        /** Check that have anyone bid or not, display different text **/
+        if (auction.isBid())
             System.out
                     .print("Current bid: " + auction.getCurrentBidMoney() + " Baht");
         else
@@ -244,7 +243,7 @@ public class UserInterface
         if (IOUtils.getConfirm("Do you want to edit name (yes/no)?: "))
             name = IOUtils.getString("Edit Name: ");
         if (IOUtils.getConfirm("Do you want to edit birth date (yes/no)?: "))
-            birth = IOUtils.getDate("Edit Birth\ndd-mm-yyyy (Ex: 01-10-1998): ",
+            birth = IOUtils.getDate("Edit Birth (dd-mm-yyyy): ",
                     null, 1);
         if (IOUtils.getConfirm("Do you want to edit address (yes/no)?: "))
             address = IOUtils.getString("Edit Address: ");
@@ -357,15 +356,17 @@ public class UserInterface
             if (auction.getStage() == 1)
                 displayAuction(auction, false);
 
-        System.out.println("\n---------------------------------------------------------\n");
-        
+        System.out.println(
+                "\n---------------------------------------------------------\n");
+
         System.out.println("- Offers");
         for (Auction auction : bidList)
             if (auction.getWinner().getBidder() == user)
                 displayAuction(auction, false);
 
-        System.out.println("\n---------------------------------------------------------\n");
-        
+        System.out.println(
+                "\n---------------------------------------------------------\n");
+
         System.out.println("- Didn't Win");
         for (Auction auction : bidList)
             if (auction.getWinner().getBidder() != user)
@@ -382,23 +383,26 @@ public class UserInterface
         for (Auction auction : sellList)
             if (auction.getStage() == 0)
                 displayAuction(auction, false);
-        
-        System.out.println("\n---------------------------------------------------------\n");
-        
+
+        System.out.println(
+                "\n---------------------------------------------------------\n");
+
         System.out.println("- Active");
         for (Auction auction : sellList)
             if (auction.getStage() == 1)
                 displayAuction(auction, false);
 
-        System.out.println("\n---------------------------------------------------------\n");
-        
+        System.out.println(
+                "\n---------------------------------------------------------\n");
+
         System.out.println("- Sold");
         for (Auction auction : sellList)
             if (auction.getStage() == 2 && auction.getWinner() != null)
                 displayAuction(auction, false);
 
-        System.out.println("\n---------------------------------------------------------\n");
-        
+        System.out.println(
+                "\n---------------------------------------------------------\n");
+
         System.out.println("- Unsold");
         for (Auction auction : sellList)
             if (auction.getStage() == 2 && auction.getWinner() == null)
@@ -442,31 +446,74 @@ public class UserInterface
      */
     public static void displayHelp()
     {
+
         clearScreen();
         System.out.println(
                 "=========================================================");
         System.out.println(
-                "=                    See All Command                    =");
+                "=                       How to use                      =");
         System.out.println(
                 "=========================================================");
-        System.out.println("/help - See all command.\n");
-        System.out.println("/home - Home page of auction program.\n");
-        System.out.println("/next - Go to next page of auction list.\n");
-        System.out.println("/prev - Go back to previous page of auction list.\n");
-        System.out.println("/first - Go to first page of auction list.\n");
-        System.out.println("/search - Search the auction.\n");
-        System.out.println("/auction - Select the auction to display or bid.");
-        System.out.println("Uses auction no. that display to be key\n");
-        System.out.println("/register - Register to be new user.\n");
-        System.out.println("/login - Login to the system.\n");
-        System.out.println("/logout - Logout from the system.\n");
-        System.out.println("/profile - View the profile, account, and history bid/selling.\n");
-        System.out.println("/makeauction - Make the auction.\n");
-        System.out.println("/aboutus - See about us.\n");
-        System.out.println("/exit - Exit from the program.\n");
+        System.out.println("");
+        /* First paragraph */
+        System.out.print("  When start the eBuy, it will display the home page ");
+        System.out.print("first. In the\nhome page will display some of auction ");
+        System.out.print("from auction list. You can\ngo to next page (/next) ");
+        System.out.print("or previous page (/prev) to see all auction\nalong the ");
+        System.out.print("list.\nAuction list will not update until you search, ");
+        System.out.print("or go to home page.\n\n");
+        
+        /* Second paragraph */
+        System.out.print("  From the auction that display in a list, there is ");
+        System.out.print("a no. on each\nauction. You can specific auction from ");
+        System.out.print("the list by using no. of\nauction (Use '/auction' and ");
+        System.out.print("then input no. that want to see). And\nwhen seeing each ");
+        System.out.print("auction, you can decide to make a bid but you\nneed to ");
+        System.out.print("login (/login) first. If you don't have any account,\n");
+        System.out.print("you can register to the eBuy ('/register').\n\n");
+        
+        /* Third paragraph */
+        System.out.print("  You can see your information, balance account, withdraw,");
+        System.out.print(" deposit,\nhistory bid/selling through the profile ");
+        System.out.print("(/profile).\n\n");
 
+        /* Fourth paragraph */
+        System.out.print("  After seeing the auction list from eBuy, you could want ");
+        System.out.print("to sell\nsomething on eBuy. So, you can go to make auction ");
+        System.out.print("page (/makeauction)\nand input item information, start date");
+        System.out.print(", end date, and upload the\npicture.\n\n");
+        
+        /* Ending */
         System.out.println(
-                "\nThe auction list that display will not update\n until search or go to home page again");
+                "               Have a good luck with eBuy.               ");
+        System.out.println("");
+        System.out.println(
+                "=========================================================");
+        System.out.println(
+                "=                       All Command                     =");
+        System.out.println(
+                "=========================================================");
+        System.out.println("");
+        System.out.println("/help - See all command.");
+        System.out.println("/home - Home page of auction program.");
+        System.out.println("/next - Go to next page of auction list.");
+        System.out.println("/prev - Go back to previous page of auction list.");
+        System.out.println("/first - Go to first page of auction list.");
+        System.out.println("/search - Search the auction.");
+        System.out.println("/auction - Select the auction to display or bid.");
+        System.out.println("           Uses auction no. that display to be key");
+        System.out.println("/register - Register to be new user.");
+        System.out.println("/login - Login to the system.");
+        System.out.println("/logout - Logout from the system.");
+        System.out.println(
+                "/profile - View the profile, account, and history bid/selling.");
+        System.out.println("/makeauction - Make the auction.");
+        System.out.println("/aboutus - See about us.");
+        System.out.println("/exit - Exit from the program.\n");
+        System.out.println(
+                "=========================================================");
+        
+        
     }
 
     /**
@@ -477,7 +524,7 @@ public class UserInterface
         System.out.println(
                 "=========================================================\n");
         System.out.println(
-                "- Command is not correct. Uses '/help' to see all command -");
+                "-     Wrong command. Uses '/help' to see all command    -");
         System.out.println(
                 "\n=========================================================");
 
@@ -600,17 +647,25 @@ public class UserInterface
     public static void displayAboutUs()
     {
         clearScreen();
-        System.out.println("=========================================================");
-        System.out.println("=                        About us                       =");
-        System.out.println("=========================================================");
-        System.out.println("\n    An online auction system: eBuy is a program that lets");
-        System.out.println("people buy and sell items via auction. This application");
-        System.out.println("will act as a market including many functions which are");
+        System.out.println(
+                "=========================================================");
+        System.out.println(
+                "=                        About us                       =");
+        System.out.println(
+                "=========================================================");
+        System.out.println(
+                "\n    An online auction system: eBuy is a program that lets");
+        System.out
+                .println("people buy and sell items via auction. This application");
+        System.out
+                .println("will act as a market including many functions which are");
         System.out.println("authentication, create the auction, bid the item, sell");
-        System.out.println("the item, deposit money, and withdraw money. In addition,");
+        System.out.println(
+                "the item, deposit money, and withdraw money. In addition,");
         System.out.println("a person who won the auction will automatically");
         System.out.println("deduct the money from an account.\n");
-        System.out.println("      This program was created by Kla & Tong group      ");
+        System.out
+                .println("      This program was created by Kla & Tong group      ");
         System.out.println("Group Member: ");
         System.out.println("1) Nathaphop Sundarabhogin  60070503420");
         System.out.println("2) Natthawat Tungruethaipak 60070503426");
@@ -749,17 +804,15 @@ public class UserInterface
         String category = IOUtils.getCategory("Select category of item");
         String picture = IOUtils.uploadImage();
         int minBid = IOUtils.getInteger("Minimum bid money: ", 0);
-        Date dateStart = IOUtils.getDateTime("Start date of auction: ", null, 0);
-        Date dateEnd = IOUtils.getDateTime("End date of auction: ", dateStart, 2);
+        Date dateStart = IOUtils.getDateTime("Start date (dd-mm-yyyy-hh:mm): ", null, 0);
+        Date dateEnd = IOUtils.getDateTime("End date (dd-mm-yyyy-hh:mm): ", dateStart, 2);
         System.out.println(
                 "=========================================================");
         System.out.println("Item: " + item);
         System.out.println("Category: " + category);
         System.out.println("Minimum bid money: " + minBid);
-        System.out.println("Start date\ndd-mm-yyyy-hh:mm (Ex: 01-10-1998-23:30): "
-                + DateUtils.dateTimeToStr(dateStart));
-        System.out.println("End date\ndd-mm-yyyy-hh:mm (Ex: 01-11-1998-23:30): "
-                + DateUtils.dateTimeToStr(dateEnd));
+        System.out.println("Start date: " + DateUtils.dateTimeToStr(dateStart));
+        System.out.println("End date: "+ DateUtils.dateTimeToStr(dateEnd));
         displayImage(picture);
         System.out.println(
                 "=========================================================");
@@ -881,7 +934,7 @@ public class UserInterface
         String username = IOUtils.getUsername("Username: ");
         String password = IOUtils.getPassword("Password: ");
         String name = IOUtils.getString("Name: ");
-        Date birth = IOUtils.getDate("Birth date\ndd-mm-yyyy (Ex: 01-10-1998): ",
+        Date birth = IOUtils.getDate("Birth date (dd-mm-yyyy): ",
                 null, 1);
         String address = IOUtils.getString("Address: ");
         String email = IOUtils.getEmail("Email: ");
