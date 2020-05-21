@@ -22,6 +22,17 @@ public class IOUtils
     final static String imgDefault = "default.png";
 
     /**
+     * Initial the directory folder for image.
+     */
+    public static void initial()
+    {
+        /** Create image directory **/
+        File file = new File(getImgDir());
+        if (!file.exists())
+            file.mkdir();
+    }
+
+    /**
      * Check the string is null or not.
      * 
      * @param string that will be check.
