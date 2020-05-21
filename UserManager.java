@@ -16,7 +16,7 @@ public class UserManager
     /**
      * List of user
      */
-    private ArrayList<User> userList = new ArrayList<User>();
+    private ArrayList<User> userList = null;
 
     /**
      * Constructor of UserManager class for future add-on Make it private to prevent
@@ -43,7 +43,10 @@ public class UserManager
      */
     public void initialUser(ArrayList<User> userList)
     {
-
+        if(userList != null)
+            this.userList = userList;
+        else
+            this.userList = new ArrayList<User>();
     }
 
     /**
