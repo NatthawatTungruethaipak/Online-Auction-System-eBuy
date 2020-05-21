@@ -346,7 +346,7 @@ public class AuctionProgram
         
         /* Run auction trigger */
         AuctionTrigger auctionTrigger = AuctionTrigger.getSingleInstance();
-        auctionTrigger.run();
+        auctionTrigger.start();
     }
 
     /**
@@ -354,7 +354,7 @@ public class AuctionProgram
      */
     public static void endProgram()
     {
-        /* Interupt thread to stop loop */
+        /* Interrupt thread to stop loop */
         AuctionTrigger auctionTrigger = AuctionTrigger.getSingleInstance();
         auctionTrigger.interrupt();
         
