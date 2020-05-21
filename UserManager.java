@@ -65,20 +65,17 @@ public class UserManager
             return null;
         if (IOUtils.validatePassword(password) == false)
             return null;
-        if (birth.after(DateUtils.getCurrentDateTime()))
+        if (DateUtils.isAfterCurrentDateTime(birth))
             return null;
         if (IOUtils.validateEmail(email) == false)
             return null;
+        
+        /* Create new user */
         if (findUserByUsername(username) == null)
-        {
-            User user = new User(username, password, name, surname, birth, address,
+            return new User(username, password, name, surname, birth, address,
                     email);
-            return user;
-        }
         else
-        {
             return null;
-        }
     }
 
     /**
