@@ -8,69 +8,49 @@ import java.util.Date;
  */
 public class User
 {
-    /**
-     * User's username
-     */
+    /** User's username **/
     private String username;
 
-    /**
-     * User's password
-     */
+    /** User's password **/
     private String password;
 
-    /**
-     * User's name
-     */
+    /** User's name **/
     private String name;
 
-    /**
-     * User's surname
-     */
-    private String surname;
-
-    /**
-     * User's birth
-     */
+    /** User's birth **/
     private Date birth;
 
-    /**
-     * User's address
-     */
+    /** User's address **/
     private String address;
 
-    /**
-     * User's email
-     */
+    /** User's email **/
     private String email;
 
-    /**
-     * User's balance
-     */
+    /** User's balance **/
     private int balance = 0;
 
-    /**
-     * User's bidList
-     */
+    /** User's bidList **/
     private ArrayList<Auction> bidList = new ArrayList<Auction>();
 
-    /**
-     * User's sellingList
-     */
+    /** User's sellingList **/
     private ArrayList<Auction> sellingList = new ArrayList<Auction>();
 
     /**
-     * Constructor for user class that set the username and password of the user
+     * Constructor for user class
      * 
-     * @param username
-     * @param password
+     * @param username Username of user
+     * @param password Password of user
+     * @param name     Name of user
+     * @param birth    Birth of user
+     * @param address  Address of user
+     * @param email    mail of user
      */
-    public User(String username, String password, String name, String surname,
-            Date birth, String address, String email)
+    public User(String username, String password, String name, Date birth,
+            String address, String email)
     {
         this.username = username;
         this.password = password;
         this.name = name;
-        this.surname = surname;
         this.birth = birth;
         this.address = address;
         this.email = email;
@@ -104,16 +84,6 @@ public class User
     public String getName()
     {
         return name;
-    }
-
-    /**
-     * Get surname of user
-     * 
-     * @return User's surname
-     */
-    public String getSurname()
-    {
-        return surname;
     }
 
     /**
@@ -171,14 +141,13 @@ public class User
      * 
      * @param password New password that want to set
      * @param name     New name that want to set
-     * @param surname  New surname that want to set
      * @param birth    New birth that want to set
      * @param address  New address that want to set
      * @param email    New email that want to set
      * @return
      */
-    public boolean editProfile(String password, String name, String surname,
-            Date birth, String address, String email)
+    public boolean editProfile(String password, String name, Date birth,
+            String address, String email)
     {
         /** Validate **/
         if (IOUtils.validatePassword(password) == false)
@@ -186,8 +155,6 @@ public class User
         if (IOUtils.validateEmail(email) == false)
             return false;
         if (IOUtils.isNullStr(name) == true)
-            return false;
-        if (IOUtils.isNullStr(surname) == true)
             return false;
         if (IOUtils.isNullStr(address) == true)
             return false;
@@ -198,7 +165,6 @@ public class User
         /** Set to user **/
         this.password = password;
         this.name = name;
-        this.surname = surname;
         this.birth = birth;
         this.address = address;
         this.email = email;
@@ -209,7 +175,7 @@ public class User
      * Add selling thing of user
      * 
      * @param auction The auction that user sell
-     * @return true
+     * @return true if can add the auction to list. Otherwise, false.
      */
     public boolean addSelling(Auction auction)
     {
@@ -224,8 +190,8 @@ public class User
     /**
      * Add buying thing that user bid
      * 
-     * @param auction The auction that use bid
-     * @return true
+     * @param auction The auction that user bid
+     * @return true if can add auction that user bid to list. Otherwise, false.
      */
     public boolean addBid(Auction auction)
     {
@@ -244,13 +210,9 @@ public class User
     public boolean checkPassword(String password)
     {
         if (this.password.equals(password))
-        {
             return true;
-        }
         else
-        {
             return false;
-        }
     }
 
     /**
