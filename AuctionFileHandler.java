@@ -376,7 +376,8 @@ public class AuctionFileHandler
         TextFileWriter writer = new TextFileWriter(userFileName);
         if (writer.open() == false)
             return false;
-
+        
+        writer.writeLine(userList.size()+"\n");
         /** Write each user **/
         for (User user : userList)
         {
@@ -407,7 +408,7 @@ public class AuctionFileHandler
         TextFileWriter writer = new TextFileWriter(auctionFileName);
         if (writer.open() == false)
             return false;
-
+        writer.writeLine(auctionList.size()+"\n");
         /** Write each auction **/
         for (Auction auction : auctionList)
         {
@@ -419,9 +420,10 @@ public class AuctionFileHandler
             writer.writeLine(tagAuction[5] + " " + DateUtils.dateTimeToStr(auction.getDateEnd()) + "\n");
             writer.writeLine(tagAuction[6] + " " + auction.getStage() + "\n");
             writer.writeLine(tagAuction[7] + " " + auction.getMinBid() + "\n");
-
+            
             /** Write each bid **/
             Iterator<Bid> bids = auction.getBidIterator();
+            writer.writeLine(auction.getNumberOfBid() +"\n");
             while (bids.hasNext())
             {
                 Bid bid = bids.next();

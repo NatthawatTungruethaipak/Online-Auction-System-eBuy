@@ -27,12 +27,15 @@ public class UserInterface
 
     /**
      * Clear screen and go to home page.
+     * 
+     * @param bHome Indicate to go to home page or not
      */
-    private static void refresh()
+    private static void refresh(boolean bHome)
     {
         IOUtils.getString("Press enter to continue..");
         clearScreen();
-        displayHomePage();
+        if(bHome)
+            displayHomePage();
     }
 
     /**
@@ -57,7 +60,7 @@ public class UserInterface
         else
             auctionDisplay = auctionList;
         page = 0;
-    
+
     }
 
     /**
@@ -92,7 +95,7 @@ public class UserInterface
             else if (diff[1] == 0)
                 System.out.println(diff[2] + " Minutes " + diff[3] + " Seconds");
         }
-    
+
         /** Print full detail of auction **/
         if (bFull)
         {
@@ -133,7 +136,7 @@ public class UserInterface
             minPrice = auction.getMinBid() - 1;
             System.out.println("Starting bid: " + auction.getMinBid() + " Baht");
         }
-    
+
         int money = 0;
         boolean bLoop = true;
         do
@@ -206,7 +209,7 @@ public class UserInterface
      */
     private static void displayEditProfile(User user)
     {
-    
+
         if (!AuctionProgram.isLogin())
         {
             System.out.println(
@@ -215,10 +218,10 @@ public class UserInterface
                     "                   - Please login first -                ");
             System.out.println(
                     "\n=========================================================");
-            refresh();
+            refresh(true);
             return;
         }
-    
+
         clearScreen();
         System.out.println(
                 "=========================================================");
@@ -227,7 +230,8 @@ public class UserInterface
         System.out.println(
                 "=========================================================");
         displayProfile(user);
-    
+        System.out.println(
+                "=========================================================\n");
         String password = user.getPassword();
         String name = user.getName();
         Date birth = user.getBirth();
@@ -271,8 +275,7 @@ public class UserInterface
                         "\n=========================================================");
             }
         }
-        refresh();
-    
+        refresh(true);
     }
 
     /**
@@ -283,12 +286,12 @@ public class UserInterface
     private static void displayBalance(User user)
     {
         int balance = user.getBalance();
+        clearScreen();
         System.out.println(
                 "=========================================================");
         System.out.println("\tBalance: " + balance);
         System.out.println(
                 "=========================================================");
-    
     }
 
     /**
@@ -298,14 +301,18 @@ public class UserInterface
      */
     private static void displayDeposit(User user)
     {
-        int balance = user.getBalance();
+        clearScreen();
         displayBalance(user);
-        int money = IOUtils.getInteger("Withdraw: ", 0, balance);
-        if (AuctionProgram.deposit(money))
+        int money = IOUtils.getInteger("Deposit: ", 0);
+        boolean ret = AuctionProgram.deposit(money);
+        clearScreen();
+        displayBalance(user);
+        if (ret)
             System.out.println("Money has been deposit to the accuont.");
         else
             System.out
                     .println("Problem occur, cannot deposit money to the account.");
+        refresh(false);
     }
 
     /**
@@ -315,13 +322,19 @@ public class UserInterface
      */
     private static void displayWithdraw(User user)
     {
+        clearScreen();
+        int balance = user.getBalance();
         displayBalance(user);
-        int money = IOUtils.getInteger("Withdraw: ", 0);
-        if (AuctionProgram.withdraw(money))
+        int money = IOUtils.getInteger("Withdraw: ", 0, balance);
+        boolean ret = AuctionProgram.withdraw(money);
+        clearScreen();
+        displayBalance(user);
+        if (ret)
             System.out.println("Money has been withdrawn from the accuont.");
         else
             System.out.println(
                     "Problem occur, cannot withdraw money from the account.");
+        refresh(false);
     }
 
     /**
@@ -342,17 +355,21 @@ public class UserInterface
         for (Auction auction : bidList)
             if (auction.getStage() == 1)
                 displayAuction(auction, false);
-    
+
+        System.out.println("\n---------------------------------------------------------\n");
+        
         System.out.println("- Offers");
         for (Auction auction : bidList)
             if (auction.getWinner().getBidder() == user)
                 displayAuction(auction, false);
-    
+
+        System.out.println("\n---------------------------------------------------------\n");
+        
         System.out.println("- Didn't Win");
         for (Auction auction : bidList)
             if (auction.getWinner().getBidder() != user)
                 displayAuction(auction, false);
-    
+
         System.out.println(
                 "=========================================================");
         System.out.println(
@@ -364,22 +381,30 @@ public class UserInterface
         for (Auction auction : sellList)
             if (auction.getStage() == 0)
                 displayAuction(auction, false);
-    
+        
+        System.out.println("\n---------------------------------------------------------\n");
+        
         System.out.println("- Active");
         for (Auction auction : sellList)
             if (auction.getStage() == 1)
                 displayAuction(auction, false);
-    
+
+        System.out.println("\n---------------------------------------------------------\n");
+        
         System.out.println("- Sold");
         for (Auction auction : sellList)
             if (auction.getStage() == 2 && auction.getWinner() != null)
                 displayAuction(auction, false);
-    
+
+        System.out.println("\n---------------------------------------------------------\n");
+        
         System.out.println("- Unsold");
         for (Auction auction : sellList)
             if (auction.getStage() == 2 && auction.getWinner() == null)
                 displayAuction(auction, false);
-    
+        System.out.println(
+                "=========================================================");
+        refresh(false);
     }
 
     /**
@@ -443,7 +468,6 @@ public class UserInterface
                 "\nThe auction list that display will not update\n until search or go to home page again");
     }
 
-
     /**
      * Displaying when a command is wrong.
      */
@@ -465,7 +489,7 @@ public class UserInterface
      */
     public static boolean displayEnding()
     {
-        if (IOUtils.getConfirm("Are you sure you want to exit?"))
+        if (IOUtils.getConfirm("Are you sure you want to exit? (yes/no): "))
         {
             System.out.println(
                     "=========================================================\n");
@@ -483,7 +507,6 @@ public class UserInterface
 
     }
 
-
     /**
      * Display login UI and send username and password to login.
      */
@@ -497,6 +520,7 @@ public class UserInterface
                     "               - Have been login already -               ");
             System.out.println(
                     "\n=========================================================");
+            return;
         }
         clearScreen();
         System.out.println(
@@ -525,9 +549,9 @@ public class UserInterface
             System.out.println(
                     "\n=========================================================");
         }
-        refresh();
+        refresh(true);
     }
-    
+
     /**
      * Display logout
      */
@@ -541,7 +565,7 @@ public class UserInterface
                     "                   - Please login first -                ");
             System.out.println(
                     "\n=========================================================");
-            refresh();
+            refresh(true);
             return;
         }
         else if (AuctionProgram.logout())
@@ -552,7 +576,7 @@ public class UserInterface
                     "                     - Logout success -                  ");
             System.out.println(
                     "\n=========================================================");
-            refresh();
+            refresh(true);
             return;
         }
         else
@@ -563,7 +587,7 @@ public class UserInterface
                     "       - Logout occurs problem, please try again -       ");
             System.out.println(
                     "\n=========================================================");
-            refresh();
+            refresh(true);
             return;
         }
 
@@ -598,12 +622,9 @@ public class UserInterface
         System.out.println("2) Natthawat Tungruethaipak 60070503426");
         System.out.println(
                 "=========================================================");
-        refresh();
+        refresh(true);
     }
 
-
-    
-    
     /**
      * Display auction in a list. In one page will display an auction follow number
      * of maxPage.
@@ -706,7 +727,7 @@ public class UserInterface
         clearScreen();
         displayAuctionList();
     }
-    
+
     /**
      * Display make auction and send data to make auction
      */
@@ -720,7 +741,7 @@ public class UserInterface
                     "                   - Please login first -                ");
             System.out.println(
                     "\n=========================================================");
-            refresh();
+            refresh(true);
             return;
         }
         clearScreen();
@@ -770,9 +791,8 @@ public class UserInterface
                         "\n=========================================================");
             }
         }
-        refresh();
+        refresh(true);
     }
-
 
     /**
      * Search auction UI. Let user to select type and input key.
@@ -830,7 +850,7 @@ public class UserInterface
                     "                 - Do not found any auction -            ");
             System.out.println(
                     "\n=========================================================");
-            refresh();
+            refresh(true);
             return;
         }
         int node = IOUtils.getInteger("Select auction no.: ", 1,
@@ -849,7 +869,7 @@ public class UserInterface
         {
             System.out.println("Please login to system to bid to the auction.");
         }
-        refresh();
+        refresh(true);
     }
 
     /**
@@ -899,7 +919,7 @@ public class UserInterface
                         "\n=========================================================");
             }
         }
-        refresh();
+        refresh(true);
     }
 
     /**
@@ -915,24 +935,25 @@ public class UserInterface
                     "                   - Please login first -                ");
             System.out.println(
                     "\n=========================================================");
-            refresh();
+            refresh(true);
             return;
         }
 
-        clearScreen();
-        User user = AuctionProgram.getLogin();
-        System.out.println(
-                "=========================================================");
-        System.out.println(
-                "=                        Profile                        =");
-        System.out.println(
-                "=========================================================");
-        displayProfile(user);
-        System.out.println(
-                "=========================================================");
         int menu = 0;
         do
         {
+            clearScreen();
+            User user = AuctionProgram.getLogin();
+            System.out.println(
+                    "=========================================================");
+            System.out.println(
+                    "=                        Profile                        =");
+            System.out.println(
+                    "=========================================================");
+            displayProfile(user);
+            System.out.println(
+                    "=========================================================");
+
             System.out.println("Select menu");
             System.out.println("0 - Go back to home page");
             System.out.println("1 - Edit profile");
@@ -945,19 +966,11 @@ public class UserInterface
                 case 1:
                     /** Edit profile **/
                     displayEditProfile(user);
-                    System.out.println(
-                            "=========================================================");
-                    System.out.println(
-                            "=                        Profile                        =");
-                    System.out.println(
-                            "=========================================================");
-                    displayProfile(user);
-                    System.out.println(
-                            "=========================================================");
                     break;
                 case 2:
                     /** See balance **/
                     displayBalance(user);
+                    refresh(false);
                     break;
                 case 3:
                     /** Deposit **/
@@ -973,7 +986,7 @@ public class UserInterface
                     break;
             }
         } while (menu != 0);
-        refresh();
+        refresh(true);
     }
 
     /**
@@ -1011,5 +1024,5 @@ public class UserInterface
         f.setBounds(0, 0, width, height);
         f.setVisible(true);
     }
-    
+
 }
