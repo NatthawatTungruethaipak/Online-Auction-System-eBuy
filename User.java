@@ -1,4 +1,5 @@
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Represent the user object in auction program. Contain the user detail.
