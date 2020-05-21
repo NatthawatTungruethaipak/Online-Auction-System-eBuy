@@ -85,8 +85,8 @@ public class AuctionFileHandler
             else if (fields[0].equals(tagUser[3]) && IOUtils.isNullStr(fields[1]) == false)
                 surname = fields[1];
             /** Check birth date **/
-            else if (fields[0].equals(tagUser[4]) && IOUtils.validateDate(fields[1]))
-                birth = IOUtils.strToDate(fields[1]);
+            else if (fields[0].equals(tagUser[4]) && DateUtils.validateDateStr(fields[1]))
+                birth = DateUtils.strToDate(fields[1]);
             /** Check address **/
             else if (fields[0].equals(tagUser[5]))
                 address = fields[1];
@@ -143,11 +143,11 @@ public class AuctionFileHandler
                     return null;
             }
             /** Check start date **/
-            else if (fields[0].equals(tagAuction[4]) && IOUtils.validateDateTime(fields[1]))
-                dateStart = IOUtils.strToDateTime(fields[1]);
+            else if (fields[0].equals(tagAuction[4]) && DateUtils.validateDateTimeStr(fields[1]))
+                dateStart = DateUtils.strToDateTime(fields[1]);
             /** Check close date **/
-            else if (fields[0].equals(tagAuction[5]) && IOUtils.validateDateTime(fields[1]))
-                dateEnd = IOUtils.strToDateTime(fields[1]);
+            else if (fields[0].equals(tagAuction[5]) && DateUtils.validateDateTimeStr(fields[1]))
+                dateEnd = DateUtils.strToDateTime(fields[1]);
             /** Check stage **/
             else if (fields[0].equals(tagAuction[6]) && IOUtils.validateInteger(fields[1]))
             {
@@ -171,13 +171,8 @@ public class AuctionFileHandler
         Auction auction = new Auction(seller, item, category, dateStart, dateEnd, minBid, picture);
 
         /** Update stage **/
-        if (stage == 1)
-            auction.openAuction();
-        else if (stage == 2)
-        {
-            auction.openAuction();
-            auction.closeAuction();
-        }
+        if (auction.setStage(stage) == false)
+            return null;
         return auction;
     }
 
@@ -232,8 +227,8 @@ public class AuctionFileHandler
             }
 
             /** Check bid date **/
-            else if (fields[0].equals(tagBid[2]) && IOUtils.validateDateTime(fields[1]))
-                dateBid = IOUtils.strToDateTime(fields[1]);
+            else if (fields[0].equals(tagBid[2]) && DateUtils.validateDateTimeStr(fields[1]))
+                dateBid = DateUtils.strToDateTime(fields[1]);
             else
             {
                 bError = true;
@@ -393,7 +388,7 @@ public class AuctionFileHandler
             writer.writeLine(tagUser[1] + " " + user.getPassword() + "\n");
             writer.writeLine(tagUser[2] + " " + user.getName() + "\n");
             writer.writeLine(tagUser[3] + " " + user.getSurname() + "\n");
-            writer.writeLine(tagUser[4] + " " + IOUtils.dateToStr(user.getBirth()) + "\n");
+            writer.writeLine(tagUser[4] + " " + DateUtils.dateToStr(user.getBirth()) + "\n");
             writer.writeLine(tagUser[5] + " " + user.getAddress() + "\n");
             writer.writeLine(tagUser[6] + " " + user.getEmail() + "\n");
             writer.writeLine(tagUser[7] + " " + user.getBalance() + "\n");
@@ -425,10 +420,10 @@ public class AuctionFileHandler
             writer.writeLine(tagAuction[1] + " " + auction.getCategoryStr() + "\n");
             writer.writeLine(tagAuction[2] + " " + auction.getPicture() + "\n");
             writer.writeLine(tagAuction[3] + " " + auction.getSeller().getUsername() + "\n");
-            writer.writeLine(tagAuction[4] + " " + IOUtils.dateTimeToStr(auction.getDateStart()) + "\n");
-            writer.writeLine(tagAuction[5] + " " + IOUtils.dateTimeToStr(auction.getDateEnd()) + "\n");
+            writer.writeLine(tagAuction[4] + " " + DateUtils.dateTimeToStr(auction.getDateStart()) + "\n");
+            writer.writeLine(tagAuction[5] + " " + DateUtils.dateTimeToStr(auction.getDateEnd()) + "\n");
             writer.writeLine(tagAuction[6] + " " + auction.getStage() + "\n");
-            writer.writeLine(tagAuction[7] + " " + auction.getMinBidMoney() + "\n");
+            writer.writeLine(tagAuction[7] + " " + auction.getMinBid() + "\n");
 
             /** Write each bid **/
             Iterator<Bid> bids = auction.getBidIterator();
@@ -442,7 +437,7 @@ public class AuctionFileHandler
                     writer.writeLine(tagBid[0] + " " + bidder.getUsername() + "\n");
                 writer.writeLine(tagBid[1] + " " + bid.getMoney() + "\n");
                 writer.writeLine(tagBid[2] + " "
-                        + IOUtils.dateTimeToStr(bid.getDateTime()) + "\n");
+                        + DateUtils.dateTimeToStr(bid.getDateTime()) + "\n");
             }
         }
 

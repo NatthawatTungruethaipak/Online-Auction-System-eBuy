@@ -77,30 +77,29 @@ public class AuctionManager
      * @return Return auction if the data is valid. Otherwise, false.
      */
     private Auction validateAuction(User seller, String item, String category,
-            String picture, int minBid, Date dateStart, Date dateEnd)
+            Date dateStart, Date dateEnd, int minBid, String picture)
     {
         if (seller == null)
-            return null;
+            System.out.println("Seller");
         if (dateStart.after(dateEnd))
-            return null;
+            System.out.println("Date End");
         if (IOUtils.isNullStr(item))
-            return null;
+            System.out.println("Item");
         if (IOUtils.isNullStr(category))
-            return null;
+            System.out.println("Category");
         if (IOUtils.isNullStr(picture))
             picture = defaultFile;
         if (minBid < 0)
             return null;
 
-        Date currentDate = IOUtils.getCurrentDateTime();
-        if (dateEnd.after(currentDate))
+        if (DateUtils.isBeforeCurrentDateTime(dateEnd))
             return null;
 
         Auction auction = new Auction(seller, item, category, dateStart, dateEnd,
                 minBid, picture);
 
         /* If date start after current date, open an auction */
-        if (dateStart.after(currentDate))
+        if (DateUtils.isBeforeCurrentDateTime(dateStart))
             auction.openAuction();
         return auction;
     }
@@ -167,8 +166,7 @@ public class AuctionManager
     public boolean createAuction(User seller, String item, String category,
             String picture, int minBid, Date dateStart, Date dateEnd)
     {
-        Auction newAuction = validateAuction(seller, item, category, picture, minBid,
-                dateStart, dateEnd);
+        Auction newAuction = validateAuction(seller, item, category, dateStart, dateEnd, minBid, picture);
         if (newAuction == null)
             return false;
         storeAuction(newAuction);
@@ -244,15 +242,14 @@ public class AuctionManager
         ArrayList<Auction> auctionLists = new ArrayList<Auction>();
         for (Auction auction : openedAuction)
         {
-            Bid maxBid = auction.getMaxBid();
-            if (maxBid == null)
+            if (auction.isBid())
             {
-                if (auction.getMinBidMoney() < money)
+                if (auction.getCurrentBidMoney() < money)
                     auctionLists.add(auction);
             }
             else
             {
-                if (maxBid.getMoney() < money)
+                if (auction.getMinBid() < money)
                     auctionLists.add(auction);
             }
         }

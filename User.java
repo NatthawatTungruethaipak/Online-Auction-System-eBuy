@@ -1,4 +1,5 @@
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Represent the user object in auction program. Contain the user detail.
@@ -190,7 +191,7 @@ public class User
             return false;
         if (IOUtils.isNullStr(address) == true)
             return false;
-        Date currentDate = IOUtils.getCurrentDateTime();
+        Date currentDate = DateUtils.getCurrentDateTime();
         if (birth == null || birth.after(currentDate))
             return false;
 

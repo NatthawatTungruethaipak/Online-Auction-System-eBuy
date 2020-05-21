@@ -38,9 +38,9 @@ public class TimeManager extends Thread
             for (Auction auction : managedAuction)
             {
                 int stage = auction.getStage();
-                Date currentDate = IOUtils.getCurrentDateTime();
+                Date currentDate = DateUtils.getCurrentDateTime();
                 /* For Testing */
-                /* currentDate = new Date(2020, 5, 18); */
+                /* currentDate = new Date(2020, 1, 1); */
                 /* Thread.sleep(30000); /* 30000 = 30 Secs */
                 if (stage == 0)
                 {
