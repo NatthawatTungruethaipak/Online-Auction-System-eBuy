@@ -286,24 +286,12 @@ public class IOUtils
             if (after)
             {
                 if (dateInput.after(dateCpr))
-                {
                     bOk = true;
-                }
-                else
-                {
-                    continue;
-                }
             }
             else
             {
                 if (dateInput.before(dateCpr))
-                {
                     bOk = true;
-                }
-                else
-                {
-                    continue;
-                }
             }
         }
         return dateInput;
@@ -340,24 +328,12 @@ public class IOUtils
             if (after)
             {
                 if (dateInput.after(dateCpr))
-                {
                     bOk = true;
-                }
-                else
-                {
-                    continue;
-                }
             }
             else
             {
-                if (dateInput.before(dateCpr))
-                {
+                if (dateInput.before(dateCpr))           
                     bOk = true;
-                }
-                else
-                {
-                    continue;
-                }
             }
         }
         return dateInput;
