@@ -20,7 +20,7 @@ public class AuctionFileHandler
 
     /** User tag to indicate data type **/
     final private String[] tagUser =
-    { "USERNAME", "PASSWORD", "NAME", "SURNAME", "BIRTH", "ADDRESS", "EMAIL", "BALANCE" };
+    { "USERNAME", "PASSWORD", "NAME", "BIRTH", "ADDRESS", "EMAIL", "BALANCE" };
 
     /** Auction tag to indicate data type **/
     final private String[] tagAuction =
@@ -62,7 +62,6 @@ public class AuctionFileHandler
         String username = null;
         String password = null;
         String name = null;
-        String surname = null;
         Date birth = null;
         String address = null;
         String email = null;
@@ -81,25 +80,22 @@ public class AuctionFileHandler
             /** Check name **/
             else if (fields[0].equals(tagUser[2]) && IOUtils.isNullStr(fields[1]) == false)
                 name = fields[1];
-            /** Check surname **/
-            else if (fields[0].equals(tagUser[3]) && IOUtils.isNullStr(fields[1]) == false)
-                surname = fields[1];
             /** Check birth date **/
-            else if (fields[0].equals(tagUser[4]) && DateUtils.validateDateStr(fields[1]))
+            else if (fields[0].equals(tagUser[3]) && DateUtils.validateDateStr(fields[1]))
                 birth = DateUtils.strToDate(fields[1]);
             /** Check address **/
-            else if (fields[0].equals(tagUser[5]))
+            else if (fields[0].equals(tagUser[4]))
                 address = fields[1];
             /** Check email **/
-            else if (fields[0].equals(tagUser[6]) && IOUtils.validateEmail(fields[1]))
+            else if (fields[0].equals(tagUser[5]) && IOUtils.validateEmail(fields[1]))
                 email = fields[1];
             /** Check balance account **/
-            else if (fields[0].equals(tagUser[7]) && IOUtils.validateInteger(fields[1]))
+            else if (fields[0].equals(tagUser[6]) && IOUtils.validateInteger(fields[1]))
                 balance = Integer.parseInt(fields[1]);
             else
                 return null;
         }
-        User user = new User(username, password, name, surname, birth, address, email);
+        User user = new User(username, password, name, birth, address, email);
         user.addMoney(balance);
         return user;
     }
@@ -387,11 +383,10 @@ public class AuctionFileHandler
             writer.writeLine(tagUser[0] + " " + user.getUsername() + "\n");
             writer.writeLine(tagUser[1] + " " + user.getPassword() + "\n");
             writer.writeLine(tagUser[2] + " " + user.getName() + "\n");
-            writer.writeLine(tagUser[3] + " " + user.getSurname() + "\n");
-            writer.writeLine(tagUser[4] + " " + DateUtils.dateToStr(user.getBirth()) + "\n");
-            writer.writeLine(tagUser[5] + " " + user.getAddress() + "\n");
-            writer.writeLine(tagUser[6] + " " + user.getEmail() + "\n");
-            writer.writeLine(tagUser[7] + " " + user.getBalance() + "\n");
+            writer.writeLine(tagUser[3] + " " + DateUtils.dateToStr(user.getBirth()) + "\n");
+            writer.writeLine(tagUser[4] + " " + user.getAddress() + "\n");
+            writer.writeLine(tagUser[5] + " " + user.getEmail() + "\n");
+            writer.writeLine(tagUser[6] + " " + user.getBalance() + "\n");
         }
         writer.close();
         return true;
