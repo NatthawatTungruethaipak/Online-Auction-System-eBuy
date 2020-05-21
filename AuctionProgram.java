@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 /**
- * Represent the user object in auction program. Contain the user detail.
+ * Facade of auction program. Contain main method in this class.
  * 
  * Created by Kla & Tong 18 May 2020
  */
