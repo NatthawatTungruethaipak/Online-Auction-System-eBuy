@@ -4,9 +4,10 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
-
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.filechooser.FileSystemView;
 
 /**
  * Utility method about input and output in the auction program.
@@ -509,14 +510,15 @@ public class IOUtils
     {
         int count = 0;
         /** Upload image **/
-        JFileChooser frameChooseFile = new JFileChooser();
+        JFileChooser frameChooseFile = new JFileChooser(FileSystemView.getFileSystemView());
         frameChooseFile.setDialogTitle("Select an image");
         frameChooseFile.setAcceptAllFileFilterUsed(false);
         FileNameExtensionFilter filter = new FileNameExtensionFilter("jpg/png images", "png", "jpg");
         frameChooseFile.addChoosableFileFilter(filter);
 
         /** If user doesn't upload image, reset to default **/
-        if (frameChooseFile.showOpenDialog(null) != JFileChooser.APPROVE_OPTION)
+        int ret = frameChooseFile.showOpenDialog(null);
+        if (ret != JFileChooser.APPROVE_OPTION)
             return imgDefault;
 
         /** Split file name into suffix and prefix and prepare directory path **/
