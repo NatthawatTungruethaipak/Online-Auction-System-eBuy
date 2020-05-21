@@ -47,7 +47,7 @@ public class IOUtils
     /**
      * Validate the password in pattern of 8-40 characters with consist of at least
      * one number, one lower character, one upper character, one special that is [ @
-     * # $ % ! . ].
+     * # $ % ! . _ -].
      * 
      * Reference from
      * https://examples.javacodegeeks.com/core-java/util/regex/matcher/validate-password-with-java-regular-expression-example/
@@ -60,7 +60,7 @@ public class IOUtils
     {
         if (isNullStr(password))
             return false;
-        String passwordPattern = "((?=.*[a-z])(?=.*\\d)(?=.*[A-Z])(?=.*[@#$%!]).{8,40})";
+        String passwordPattern = "((?=.*[a-z])(?=.*\\d)(?=.*[A-Z])(?=.*[@#$%!_-]).{8,40})";
         if (password.matches(passwordPattern))
             return true;
         else
@@ -442,5 +442,62 @@ public class IOUtils
             }
         }
         return commandValue;
+    }
+
+    /**
+     * Get the username from user as an input and validate the username.
+     * 
+     * @param print is wording for print out.
+     * @return String that will be the username of the user.
+     */
+    public static String getUsername(String print)
+    {
+        boolean bOk = false;
+        String userInput = "";
+        while (!bOk)
+        {
+            userInput = getString(print);
+            if (validateUsername(userInput))
+                bOk = true;
+        }
+        return userInput;
+    }
+
+    /**
+     * Get the password from user as an input and validate the password.
+     * 
+     * @param print is wording for print out.
+     * @return String that will be the password of the user.
+     */
+    public static String getPassword(String print)
+    {
+        boolean bOk = false;
+        String userInput = "";
+        while (!bOk)
+        {
+            userInput = getString(print);
+            if (validatePassword(userInput))
+                bOk = true;
+        }
+        return userInput;
+    }
+    
+    /**
+     * Get the password from user as an input and validate the email.
+     * 
+     * @param print is wording for print out.
+     * @return String that will be the email of the user.
+     */
+    public static String getEmail(String print)
+    {
+        boolean bOk = false;
+        String userInput = "";
+        while (!bOk)
+        {
+            userInput = getString(print);
+            if (validateEmail(userInput))
+                bOk = true;
+        }
+        return userInput;
     }
 }
