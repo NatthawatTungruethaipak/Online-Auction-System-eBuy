@@ -416,7 +416,7 @@ public class UserInterface
         System.out.println(
                 "=========================================================");
         System.out.println(
-                "=                         eBuy                          =");
+                "=             Online Auction Program: eBuy              =");
         System.out.println(
                 "=========================================================");
         System.out.println("");
@@ -599,24 +599,17 @@ public class UserInterface
     public static void displayAboutUs()
     {
         clearScreen();
-        System.out.println(
-                "=========================================================");
-        System.out.println(
-                "=                        About us                       =");
-        System.out.println(
-                "=========================================================");
-        System.out.println(
-                "\n    An online auction system: eBuy is a program that lets");
-        System.out
-                .println("people buy and sell items via auction. This application");
-        System.out
-                .println("will act as a market including many functions which are");
+        System.out.println("=========================================================");
+        System.out.println("=                        About us                       =");
+        System.out.println("=========================================================");
+        System.out.println("\n    An online auction system: eBuy is a program that lets");
+        System.out.println("people buy and sell items via auction. This application");
+        System.out.println("will act as a market including many functions which are");
         System.out.println("authentication, create the auction, bid the item, sell");
-        System.out.println("the item, deposit money, and withdraw money.");
-        System.out.println("    In addition, a person who won the auction will ");
-        System.out.println("automatically deduct the money from an account.\n");
-        System.out
-                .println("      This program was created by Kla & Tong group      ");
+        System.out.println("the item, deposit money, and withdraw money. In addition,");
+        System.out.println("a person who won the auction will automatically");
+        System.out.println("deduct the money from an account.\n");
+        System.out.println("      This program was created by Kla & Tong group      ");
         System.out.println("Group Member: ");
         System.out.println("1) Nathaphop Sundarabhogin  60070503420");
         System.out.println("2) Natthawat Tungruethaipak 60070503426");
