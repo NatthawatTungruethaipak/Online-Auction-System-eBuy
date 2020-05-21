@@ -200,7 +200,7 @@ public class UserInterface
         if (type == 3)
             keyStr = IOUtils.getString("Search item name: ");
         else if (type == 4)
-            keyStr = getCategory("Select category that want to search");
+            keyStr = IOUtils.getCategory("Select category that want to search");
         else if (type == 5)
             keyStr = IOUtils.getString("Search seller name: ");
         else if (type == 6)
@@ -240,7 +240,7 @@ public class UserInterface
     private void displayAuction(Auction auction, boolean bFull)
     {
         System.out.println("Item: " + auction.getItem());
-        if(auction.isBid) /** Check that have anyone bid or not, display different text **/
+        if(auction.isBid()) /** Check that have anyone bid or not, display different text **/
             System.out.print("Current bid: " + auction.getCurrentBidMoney() + " Baht");
         else
             System.out.print("Starting bid price: " + auction.getMinBid() + " Baht");        
@@ -249,7 +249,7 @@ public class UserInterface
             System.out.println("Closed auction");
         else
         {
-            int[] diff = IOUtils.diffCurrentDateTime(auction.getDateEnd());
+            int[] diff = DateUtils.diffCurrentDateTime(auction.getDateEnd());
             if(diff[0] != 0) /** Displaying time **/
                 System.out.println(diff[0]+" Days "+diff[1]+" Hours "+diff[2]+" Minutes");
             else if(diff[0] == 0)
@@ -272,9 +272,9 @@ public class UserInterface
                 }
             System.out.println("Category: " + auction.getCategoryStr());
             Date startDate = auction.getDateStart();
-            System.out.println("Started: " + IOUtils.dateToStr(startDate));
+            System.out.println("Started: " + DateUtils.dateToStr(startDate));
             Date endDate = auction.getDateEnd();
-            System.out.println("Ended: " + IOUtils.dateToStr(endDate));
+            System.out.println("Ended: " + DateUtils.dateToStr(endDate));
             User seller = auction.getSeller();
             System.out.println("Seller: " + seller.getUsername() + " " + seller.getSurname());
         }
@@ -333,7 +333,7 @@ public class UserInterface
         String password = IOUtils.getPassword("Password: ");
         String name = IOUtils.getString("Name: ");
         String surname = IOUtils.getString("Surname: ");
-        Date birth = IOUtils.getDate("Date: ",null, 1);
+        Date birth = DateUtils.getDate("Date: ",null, 1);
         String address = IOUtils.getString("Address: ");
         String email = IOUtils.getEmail("Email: ");
         
@@ -383,7 +383,7 @@ public class UserInterface
         System.out.println("Username: "+user.getUsername());
         System.out.println("Name: "+user.getName());
         System.out.println("Surname: "+user.getSurname());
-        System.out.println("Birth: " + IOUtils.dateToStr(user.getBirth()));
+        System.out.println("Birth: " + DateUtils.dateToStr(user.getBirth()));
         System.out.println("Address: "+user.getAddress());
         System.out.println("Email: "+user.getEmail());
     }
