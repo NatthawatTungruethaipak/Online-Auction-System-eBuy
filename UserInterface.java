@@ -32,7 +32,7 @@ public class UserInterface
      */
     private static void refresh(boolean bHome)
     {
-        IOUtils.getString("Press enter to continue..");
+        IOUtils.getEnter("Press enter to continue..");
         clearScreen();
         if(bHome)
             displayHomePage();
