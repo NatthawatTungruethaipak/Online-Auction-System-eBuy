@@ -21,7 +21,7 @@ public class AuctionProgram
             .getSingletonInstance();
 
     /** User login **/
-    private static User userLogin;
+    private static User userLogin = null;
 
     /**
      * Constructor of auction program. Make it private to prevent to implement
@@ -343,6 +343,10 @@ public class AuctionProgram
         /* Read auction from file */
         ArrayList<Auction> auctionList = fileHandler.readAuctions();
         auctionManager.initialAuction(auctionList);
+        
+        /* Run auction trigger */
+        AuctionTrigger auctionTrigger = AuctionTrigger.getSingleInstance();
+        auctionTrigger.run();
     }
 
     /**
@@ -350,6 +354,10 @@ public class AuctionProgram
      */
     public static void endProgram()
     {
+        /* Interupt thread to stop loop */
+        AuctionTrigger auctionTrigger = AuctionTrigger.getSingleInstance();
+        auctionTrigger.interrupt();
+        
         /* Save user to file */
         ArrayList<User> userList = userManager.getAllUser();
         fileHandler.writeUsers(userList);

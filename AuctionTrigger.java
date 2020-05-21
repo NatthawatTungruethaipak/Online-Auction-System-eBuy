@@ -9,6 +9,19 @@ import java.util.Date;
 public class AuctionTrigger extends Thread
 {
     private static ArrayList<Auction> managedAuction = new ArrayList<Auction>();
+    
+    private static AuctionTrigger auctionTrigger = new AuctionTrigger();
+    
+    private boolean bLoop = true; 
+    
+    private AuctionTrigger()
+    {
+    }
+    
+    public static AuctionTrigger getSingleInstance()
+    {
+        return auctionTrigger;
+    }
 
     /**
      * Add auction to managed list to observe and update stage.
@@ -33,7 +46,7 @@ public class AuctionTrigger extends Thread
     public void run()
     {
         AuctionManager auctionManager = AuctionManager.getSingletonInstance();
-        while (true)
+        while (bLoop)
         {
             for (Auction auction : managedAuction)
             {
@@ -73,5 +86,10 @@ public class AuctionTrigger extends Thread
             }
         }
     }
-
+    
+    public void interrupt()
+    {
+        /* Stop loop */
+        bLoop = false;
+    }
 }
