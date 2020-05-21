@@ -166,10 +166,7 @@ public class AuctionProgram
             return true;
         }
         else
-        {
             return false;
-        }
-
     }
 
     /**

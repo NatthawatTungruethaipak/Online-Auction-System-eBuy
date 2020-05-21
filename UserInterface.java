@@ -342,23 +342,26 @@ public class UserInterface
         String password = IOUtils.getPassword("Password: ");
         String name = IOUtils.getString("Name: ");
         String surname = IOUtils.getString("Surname: ");
-        Date birth = IOUtils.getDate("Date: ",null, 1);
+        Date birth = IOUtils.getDate("Date dd-mm-yyyy (Ex: 01-10-1998): ",null, 1);
         String address = IOUtils.getString("Address: ");
         String email = IOUtils.getEmail("Email: ");
-        
-        boolean bCheck = AuctionProgram.register(username, password, name, surname, birth, address, email);
-        if(bCheck)
+        if(IOUtils.getConfirm("Are you sure to register?: "))
         {
-            System.out.println("=========================================================\n");
-            System.out.println("                   - Register success -                  ");
-            System.out.println("\n=========================================================");
+            boolean bCheck = AuctionProgram.register(username, password, name, surname, birth, address, email);
+            if(bCheck)
+            {
+                System.out.println("=========================================================\n");
+                System.out.println("                   - Register success -                  ");
+                System.out.println("\n=========================================================");
+            }
+            else
+            {
+                System.out.println("=========================================================\n");
+                System.out.println("                   - Register failure -                  ");
+                System.out.println("\n========================================================="); 
+            }
         }
-        else
-        {
-            System.out.println("=========================================================\n");
-            System.out.println("                   - Register failure -                  ");
-            System.out.println("\n========================================================="); 
-        }
+        refresh();
     }
     
     /**
@@ -695,7 +698,7 @@ public class UserInterface
      */
     public static void displayLogout()
     {
-        if(AuctionProgram.isLogin())
+        if(!AuctionProgram.isLogin())
         {
             System.out.println("=========================================================\n");
             System.out.println("                   - Please login first -                ");
