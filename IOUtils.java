@@ -301,7 +301,7 @@ public class IOUtils
                         bOk = true;
                     else
                         System.out.println(
-                                "Input must be date before date to compare.");
+                                "Input date must before " + DateUtils.dateToStr(dateCpr) + " .");
                 }
                 else if (command == 2)
                 {
@@ -309,7 +309,7 @@ public class IOUtils
                         bOk = true;
                     else
                         System.out.println(
-                                "Input must be date after date to compare.");
+                                "Input date must after " + DateUtils.dateToStr(dateCpr) + " .");
                 }
                 else
                     bOk = true;
@@ -354,7 +354,7 @@ public class IOUtils
                         bOk = true;
                     else
                         System.out.println(
-                                "Input must be date before date to compare.");
+                                "Input date must before " + DateUtils.dateTimeToStr(dateCpr) + " .");
                 }
 
                 else if (command == 2)
@@ -363,7 +363,7 @@ public class IOUtils
                         bOk = true;
                     else
                         System.out.println(
-                                "Input must be date after date to compare.");
+                                "Input date must after " + DateUtils.dateTimeToStr(dateCpr) + " .");
                 }
                 else
                     bOk = true;
@@ -465,7 +465,7 @@ public class IOUtils
                 bOk = true;
             else
                 System.out.println(
-                        "Username must between 8-40 characters.Password must contain at least one lower alphbet, one upper and one number.");
+                        "Password must between 8-40 characters. Password must contain at least one lower alphbet, one upper and one number.");
         }
         return userInput;
     }
