@@ -238,6 +238,27 @@ public class IOUtils
     }
 
     /**
+     * Print the wording and get command from user.
+     * 
+     * @param print is wording for print out.
+     * @return command number.
+     */
+    public static int getCommand(String print)
+    {
+        final String[] command = {"/home", "/help", "/next", "/prev", "/first",
+                "/search", "/auction", "/register", "/login", "/logout", "/profile",
+                "/makeauction", "/aboutus", "/exit"};  
+        int commandValue = 0;
+        String input = getString(print);
+        for(int i = 0; i < command.length; i ++)
+        {
+            if(input.equalsIgnoreCase(command[i]))
+                commandValue = i+1;
+        }
+        return commandValue;
+    }
+
+    /**
      * Print the wording and get boolean from user.
      * 
      * @param print is wording for print out.
@@ -370,49 +391,6 @@ public class IOUtils
             }
         }
         return dateInput;
-    }
-
-    /**
-     * Print the wording and get command from user.
-     * 
-     * @param print is wording for print out.
-     * @return command number.
-     */
-    public static int getCommand(String print)
-    {
-        int commandValue = 0;
-        String input = getString(print);
-        if (input.equals("/home"))
-            commandValue = 1;
-        else if (input.equals("/help"))
-            commandValue = 2;
-        else if (input.equals("/next"))
-            commandValue = 3;
-        else if (input.equals("/prev"))
-            commandValue = 4;
-        else if (input.equals("/first"))
-            commandValue = 5;
-        else if (input.equals("/search"))
-            commandValue = 6;
-        else if (input.equals("/auction"))
-            commandValue = 7;
-        else if (input.equals("/register"))
-            commandValue = 8;
-        else if (input.equals("/login"))
-            commandValue = 9;
-        else if (input.equals("/logout"))
-            commandValue = 10;
-        else if (input.equals("/profile"))
-            commandValue = 11;
-        else if (input.equals("/makeauction"))
-            commandValue = 12;
-        else if (input.equals("/aboutus"))
-            commandValue = 13;
-        else if (input.equals("/exit"))
-            commandValue = 14;
-        else
-            commandValue = 0;
-        return commandValue;
     }
 
     /**
