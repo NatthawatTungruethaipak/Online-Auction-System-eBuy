@@ -70,7 +70,32 @@ need to use command that we provide to use the program such as '/help' or '/logi
     Run the eBuy
 
 
-## Command inside program ##
+## How to use? ##
+
+      When start the eBuy, it will display the home page first. In the
+    home page will display some of auction from auction list. You can
+    go to next page (/next) or previous page (/prev) to see all auction
+    along the list.
+      Auction list will not update until you search, or go to home page.
+    
+      From the auction that display in a list, there is a no. on each
+    auction. You can specific auction from the list by using no. of
+    auction (Use '/auction' and then input no. that want to see). And
+    when seeing each auction, you can decide to make a bid but you
+    need to login (/login) first. If you don't have any account,
+    you can register to the eBuy ('/register').
+
+      You can see your information, balance account, withdraw, deposit,
+    history bid/selling through the profile(/profile).
+
+      After seeing the auction list from eBuy, you could want to sell
+    something on eBuy. So, you can go to make auction page (/makeauction)
+    and input item information, start date, end date, and upload the
+    picture.
+      Have a good luck with eBuy.
+
+
+## All command ##
 
 /help
   See all command.
