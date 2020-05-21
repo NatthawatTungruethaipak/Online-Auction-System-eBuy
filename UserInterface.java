@@ -9,27 +9,26 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
+/**
+ * User Interface of online auction program.
+ * 
+ * Created by Kla & Tong 18 May 2020
+ */
 public class UserInterface
 {
-
-    private static UserInterface userInterface = new UserInterface();
     
+    /** Auction list to display **/
     private ArrayList<Auction> auctionDisplay = new ArrayList<Auction>();
     
+    /** Current page **/
     private int page = 0;
     
     /** Max number of auction in one page **/
     private final int maxPage = 5; 
  
-    private UserInterface()
-    {
-    }
-
-    public static UserInterface getSingletonInstance()
-    {
-        return userInterface;
-    }
-
+    /**
+     * Home page of auction program.
+     */
     public void displayHomePage()
     {
         clearScreen();
@@ -50,7 +49,10 @@ public class UserInterface
         resetAuctionDisplay(null);
         displayAuctionList();
     }
-
+    
+    /**
+     * Displaying help command
+     */
     public void displayHelp()
     {
         clearScreen();
@@ -76,6 +78,10 @@ public class UserInterface
         System.out.println("\nThe auction list that display will not update\n until search or go to home page again");        
     }
 
+    /**
+     * Reset the auction list.
+     * @param auctionList Set auction list to display and reset. if null, set auction list to opened auction.
+     */
     private void resetAuctionDisplay(ArrayList<Auction> auctionList)
     {
         if(auctionList == null)
@@ -85,11 +91,14 @@ public class UserInterface
         page = 0;
 
     }
-
+    
+    /**
+     * Display auction in a list. In one page will display an auction follow number of maxPage. 
+     */
     public void displayAuctionList()
     {
         System.out.println("=========================================================");
-        if(auctionDisplay == null || auctionDisplay.size() == 0)
+        if(auctionDisplay == null || auctionDisplay.size() == 0) /** Don't have any auction **/
             System.out.println("\n\t\t- Do not found any auction -\n");
         else
         {
@@ -106,13 +115,15 @@ public class UserInterface
             }
         }
         System.out.println("======================== Page "+ (page+1) +" =========================");
-
     }
 
+    /**
+     * Display next page of auction list.
+     */
     public void displayNextPage()
     {
         
-        if(auctionDisplay == null || auctionDisplay.size() == 0)
+        if(auctionDisplay == null || auctionDisplay.size() == 0) /** Don't have any auction **/
         {
             System.out.println("=========================================================");
             System.out.println("\n\t\t- Do not found any auction -\n");
@@ -131,10 +142,13 @@ public class UserInterface
         }
         
     }
-
+    
+    /**
+     * Display previous page of auction list
+     */
     public void displayPrevPage()
     {
-        if(auctionDisplay == null || auctionDisplay.size() == 0)
+        if(auctionDisplay == null || auctionDisplay.size() == 0) /** Don't have any auction **/
         {
             System.out.println("=========================================================");
             System.out.println("\n\t\t- Do not found any auction -\n");
@@ -153,13 +167,17 @@ public class UserInterface
         }
 
     }
-
+    
+    /** Display the first page of auction list **/
     public void displayFirstPage()
     {
         page = 0;
         displayAuctionList();
     }
-
+    
+    /**
+     * Search auction UI. Let user to select type and input key. 
+     * **/
     public void searchAuction()
     {
         int type = 0;
@@ -182,14 +200,7 @@ public class UserInterface
         if (type == 3)
             keyStr = IOUtils.getString("Search item name: ");
         else if (type == 4)
-        {
-            System.out.println("Select category that want to search")
-            ArrayList<String> categoryList = Category.getAllCategoryStr();
-            for(int i = 0; i < categoryList.size(); i++)
-                System.out.println((i+1) +  " - " + categoryList.get(i));
-            int node = IOUtils.getInteger("Select category number: ",1 , categoryList.size());
-            keyStr = categoryList.get(node-1);
-        }
+            keyStr = getCategory("Select category that want to search");
         else if (type == 5)
             keyStr = IOUtils.getString("Search seller name: ");
         else if (type == 6)
@@ -197,7 +208,11 @@ public class UserInterface
         resetAuctionDisplay(AuctionProgram.searchAuction(type, keyStr, keyInt));
         displayAuctionList();
     }
-
+    
+    
+    /**
+     * Display all info of an auction and let user to select the auction that want to see or bid.
+     */
     public void displaySelectAuction()
     {
         int node = IOUtils.getInteger("Select auction no.: ", 1, auctionDisplay.size()) - 1;
@@ -217,6 +232,11 @@ public class UserInterface
         refresh();
     }
     
+    /**
+     * Display auction info.
+     * @param auction Auction that want to display
+     * @param bFull To select that see full information or not
+     */
     private void displayAuction(Auction auction, boolean bFull)
     {
         System.out.println("Item: " + auction.getItem());
@@ -260,6 +280,10 @@ public class UserInterface
         }
     }
     
+    /**
+     * Display make bid page to the auction  and send the information to make bid
+     * @param auction Auction that want to make bid
+     */
     private void displayMakeBid(Auction auction)
     {
         int minPrice;
@@ -292,11 +316,14 @@ public class UserInterface
         else
         {
             System.out.println("=========================================================\n");
-            System.out.println("     - Cannot make bid, please check auction stage -     ");
+            System.out.println("                     - Make bid fail -                   ");
             System.out.println("\n=========================================================");
-        }
+        }       
     }
     
+    /**
+     * Display the register page and send the information to register
+     */
     public void displayRegister()
     {
         System.out.println("=========================================================");
@@ -306,7 +333,7 @@ public class UserInterface
         String password = IOUtils.getPassword("Password: ");
         String name = IOUtils.getString("Name: ");
         String surname = IOUtils.getString("Surname: ");
-        Date birth = IOUtils.getDate("Date: ",null, false);
+        Date birth = IOUtils.getDate("Date: ",null, 1);
         String address = IOUtils.getString("Address: ");
         String email = IOUtils.getEmail("Email: ");
         
@@ -324,7 +351,10 @@ public class UserInterface
             System.out.println("\n========================================================="); 
         }
     }
-
+    
+    /**
+     * Display login UI and send username and password to login.
+     */
     public void displayLogin()
     {
         String username = IOUtils.getString("Username: ");
@@ -345,7 +375,9 @@ public class UserInterface
         refresh();        
     }
     
-    
+    /**
+     * Display info of user
+     */
     private void displayProfile(User user)
     {
         System.out.println("Username: "+user.getUsername());
@@ -357,6 +389,9 @@ public class UserInterface
     }
     
     
+    /**
+     * Display and have the mini menu of user to manage
+     */
     public void displayManageProfile()
     {
         if(AuctionProgram.isLogin())
@@ -387,7 +422,7 @@ public class UserInterface
             menu = IOUtils.getInteger("Select menu: ", 0, 5);
             switch(menu)
             {
-                case 1:
+                case 1: /** Edit profile **/
                     displayEditProfile(user);
                     System.out.println("=========================================================");
                     System.out.println("=                        Profile                        =");
@@ -395,16 +430,16 @@ public class UserInterface
                     displayProfile(user);
                     System.out.println("=========================================================");
                     break;
-                case 2:
+                case 2: /** See balance **/
                     displayBalance(user);
                     break;
-                case 3:
+                case 3: /** Deposit **/
                     displayDeposit(user);
                     break;
-                case 4:
+                case 4: /** Withdraw **/
                     displayWithdraw(user);
                     break;
-                case 5:
+                case 5: /** Display history bid/selling **/
                     displayHistoryBidSelling(user);
                     break;
             }
@@ -412,6 +447,10 @@ public class UserInterface
         refresh();
     }
 
+    /**
+     * Display edit page of user and send data to edit.
+     * @param user User that want to edit
+     */
     private void displayEditProfile(User user)
     {
         
@@ -424,19 +463,19 @@ public class UserInterface
             return;
         }
         
-        String password = null;
-        String name = null;
-        String surname = null;
-        Date birth = null;
-        String address = null;
-        String email = null;
-        
         clearScreen();
         System.out.println("=========================================================");
         System.out.println("=                      Edit profile                     =");
         System.out.println("=========================================================");
         displayProfile(user);
         
+        String password = user.getPassword();
+        String name = user.getName();
+        String surname = user.getSurname();
+        Date birth = user.getBirth();
+        String address = user.getAddress();
+        String email = user.getEmail();
+        /** Ask user want to edit each data */
         if(IOUtils.getConfirm("Do you want to password?: "))
             password = IOUtils.getPassword("Edit Password: ");
         if(IOUtils.getConfirm("Do you want to edit name?: "))
@@ -444,7 +483,7 @@ public class UserInterface
         if(IOUtils.getConfirm("Do you want to edit surname?: "))
             surname = IOUtils.getString("Edit Surname: ");
         if(IOUtils.getConfirm("Do you want to edit birth date?: "))
-            birth = IOUtils.getDate("Edit Date: ",null, false);
+            birth = IOUtils.getDate("Edit Date: ",null, 1);
         if(IOUtils.getConfirm("Do you want to edit address?: "))
             address = IOUtils.getString("Edit Address: ");
         if(IOUtils.getConfirm("Do you want to edit email?: "))
@@ -464,11 +503,14 @@ public class UserInterface
                 System.out.println("\n=========================================================");
             }
         }
-        else
-            return;
+        refresh();
             
     }
 
+    /**
+     * Display balance of user
+     * @param user User that want to display balance
+     */
     private void displayBalance(User user)
     {
         int balance = user.getBalance();
@@ -478,6 +520,10 @@ public class UserInterface
         
     }
     
+    /**
+     * Display deposit page and send data to deposit
+     * @param user User that want to deposit 
+     */
     private void displayDeposit(User user)
     {
         int balance = user.getBalance();
@@ -489,6 +535,10 @@ public class UserInterface
             System.out.println("Problem occur, cannot deposit money to the account.");
     }
     
+    /**
+     * Display withdraw page  and send data to withdraw
+     * @param user User that want to deposit
+     */    
     private void displayWithdraw(User user)
     {
         int balance = user.getBalance();
@@ -500,6 +550,10 @@ public class UserInterface
             System.out.println("Problem occur, cannot withdraw money from the account.");
     }
     
+    /**
+     * Display history bid/selling of user
+     * @param user User that want to see history
+     */
     private void displayHistoryBidSelling(User user)
     {
         System.out.println("=========================================================");
@@ -546,7 +600,10 @@ public class UserInterface
                 displayAuction(auction, false);
         
     }
-
+    
+    /**
+     * Display make auction and send data to make auction
+     */
     public void displayMakeAuction()
     {
         if(AuctionProgram.isLogin())
@@ -561,14 +618,42 @@ public class UserInterface
         System.out.println("=========================================================");
         System.out.println("=                   Make Auction                        =");
         System.out.println("=========================================================");
-        String item = IOUtils.getString();
-        String category = IOUtils.getString();
+        String item = IOUtils.getString("Item name: ");
+        String category = getCategory("Select category of item");
         String picture = IOUtils.uploadImage();
-        AuctionProgram.makeAuction(item, category, picture, minBid, dateStart, dateEnd)
-        
-
+        int minBid = IOUtils.getInteger("Minimum bid money: ", 0);
+        Date dateStart = IOUtils.getDateTime("Start date of auction: ", null, 0);
+        Date dateEnd = IOUtils.getDateTime("End date of auction: ", dateStart, 2);
+        System.out.println("=========================================================");
+        System.out.println("Item: "+item);
+        System.out.println("Category: " + category);
+        System.out.println("Minimum bid money: " + minBid);
+        System.out.println("Start date: " + IOUtils.dateTimeToStr(dateStart));
+        System.out.println("End date: " + IOUtils.dateTimeToStr(dateEnd));
+        displayImage(picture);
+        System.out.println("=========================================================");
+        if(IOUtils.getConfirm("Confirm create auction: "))
+        {
+            if(AuctionProgram.makeAuction(item, category, picture, minBid, dateStart, dateEnd))
+            {
+                System.out.println("=========================================================\n");
+                System.out.println("                 - Create auction success -               ");
+                System.out.println("\n=========================================================");
+            }
+            else
+            {
+                System.out.println("=========================================================\n");
+                System.out.println("                - Create auction failure -                 ");
+                System.out.println("\n=========================================================");
+            }
+        }
+        refresh();
     }
-
+    
+    /**
+     * Let a user confirm to exit or not. Then display ending program.
+     * @return Return false, if user want to exit. Otherwise, true.
+     */
     public boolean displayEnding()
     {
         if(IOUtils.getConfirm("Are you sure you want to exit?"))
@@ -585,7 +670,10 @@ public class UserInterface
         }
 
     }
-
+    
+    /**
+     * Displaying when a command is wrong.
+     */
     public void displayGetHelp()
     {
         System.out.println("=========================================================\n");
@@ -593,7 +681,10 @@ public class UserInterface
         System.out.println("\n=========================================================");
 
     }
-
+    
+    /**
+     * Display logout
+     */
     public void displayLogout()
     {
         if(AuctionProgram.isLogin())
@@ -623,6 +714,9 @@ public class UserInterface
 
     }
 
+    /**
+     * Display about us information.
+     */
     public void displayAboutUs()
     {
         clearScreen();
@@ -644,6 +738,10 @@ public class UserInterface
         refresh();
     }
     
+    /**
+     * Display image
+     * @param imgFileName Image file name that want to display.
+     */
     public static void displayImage(String imgFileName)
     {
         JFrame f = new JFrame("image");
@@ -672,6 +770,9 @@ public class UserInterface
         f.setVisible(true);
     }
     
+    /**
+     * Clear screen and go to home page.
+     */
     private void refresh()
     {
         IOUtils.getString("Press enter to continue..");
@@ -679,6 +780,9 @@ public class UserInterface
         displayHomePage();
     }
     
+    /**
+     * Clear screen.
+     */
     private void clearScreen()
     {
         System.out.print("\033[H\033[2J");  
