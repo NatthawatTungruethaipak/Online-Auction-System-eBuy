@@ -69,7 +69,7 @@ public class UserManager
             return null;
         if (IOUtils.validateEmail(email) == false)
             return null;
-        
+
         /* Create new user */
         if (findUserByUsername(username) == null)
             return new User(username, password, name, surname, birth, address,
@@ -156,7 +156,7 @@ public class UserManager
      * @param birth    Birth date of user
      * @param address  Address of user
      * @param email    Email of user
-     * @return
+     * @return True, if can create a new user. Otherwise, false.
      */
     public boolean createUser(String username, String password, String name,
             String surname, Date birth, String address, String email)
@@ -164,7 +164,7 @@ public class UserManager
         User newUser = validateUser(username, password, name, surname, birth,
                 address, email);
         if(newUser != null && userList.add(newUser))
-            return false;
+            return true;
         else
             return false;
     }
