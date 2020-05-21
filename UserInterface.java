@@ -333,7 +333,7 @@ public class UserInterface
         String password = IOUtils.getPassword("Password: ");
         String name = IOUtils.getString("Name: ");
         String surname = IOUtils.getString("Surname: ");
-        Date birth = DateUtils.getDate("Date: ",null, 1);
+        Date birth = IOUtils.getDate("Date: ",null, 1);
         String address = IOUtils.getString("Address: ");
         String email = IOUtils.getEmail("Email: ");
         
@@ -488,7 +488,7 @@ public class UserInterface
             address = IOUtils.getString("Edit Address: ");
         if(IOUtils.getConfirm("Do you want to edit email?: "))
             email = IOUtils.getEmail("Edit Email: ");
-        if(IOUtils.getComfirm("Confirm to edit: "))
+        if(IOUtils.getConfirm("Confirm to edit: "))
         {
             if(AuctionProgram.editProfile(password, name, surname, birth, address, email))
             {
@@ -541,7 +541,6 @@ public class UserInterface
      */    
     private void displayWithdraw(User user)
     {
-        int balance = user.getBalance();
         displayBalance(user);
         int money = IOUtils.getInteger("Withdraw: ", 0);
         if(AuctionProgram.withdraw(money))
@@ -619,7 +618,7 @@ public class UserInterface
         System.out.println("=                   Make Auction                        =");
         System.out.println("=========================================================");
         String item = IOUtils.getString("Item name: ");
-        String category = getCategory("Select category of item");
+        String category = IOUtils.getCategory("Select category of item");
         String picture = IOUtils.uploadImage();
         int minBid = IOUtils.getInteger("Minimum bid money: ", 0);
         Date dateStart = IOUtils.getDateTime("Start date of auction: ", null, 0);
@@ -628,8 +627,8 @@ public class UserInterface
         System.out.println("Item: "+item);
         System.out.println("Category: " + category);
         System.out.println("Minimum bid money: " + minBid);
-        System.out.println("Start date: " + IOUtils.dateTimeToStr(dateStart));
-        System.out.println("End date: " + IOUtils.dateTimeToStr(dateEnd));
+        System.out.println("Start date: " + DateUtils.dateTimeToStr(dateStart));
+        System.out.println("End date: " + DateUtils.dateTimeToStr(dateEnd));
         displayImage(picture);
         System.out.println("=========================================================");
         if(IOUtils.getConfirm("Confirm create auction: "))
@@ -749,7 +748,7 @@ public class UserInterface
         BufferedImage img = null;
         try
         {
-            img = ImageIO.read(new File(imgFileName));
+            img = ImageIO.read(new File(imgDir));
         }
         catch (IOException e)
         {
