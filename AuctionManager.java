@@ -270,7 +270,7 @@ public class AuctionManager
         boolean bCheck = false;
         if (stage == 0)
         {
-            if (auction.openAuction() == true)
+            if (auction.openAuction())
             {
                 waitedAuction.remove(auction);
                 openedAuction.add(auction);
@@ -280,7 +280,7 @@ public class AuctionManager
         else if (stage == 1)
         {
 
-            if (auction.closeAuction() == true)
+            if (auction.closeAuction())
             {
                 openedAuction.remove(auction);
                 closedAuction.add(auction);

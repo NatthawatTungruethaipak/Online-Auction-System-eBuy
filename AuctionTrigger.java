@@ -54,13 +54,13 @@ public class AuctionTrigger extends Thread
                 if (stage == 0)
                 {
                     Date startDate = auction.getDateStart();
-                    if (startDate.after(currentDate))
+                    if (startDate.before(currentDate))
                         auctionManager.updateAuctionStage(auction);
                 }
                 else if (stage == 1)
                 {
                     Date endDate = auction.getDateEnd();
-                    if (endDate.after(currentDate))
+                    if (endDate.before(currentDate))
                     {
                         auctionManager.updateAuctionStage(auction);
                         managedAuction.remove(auction);
