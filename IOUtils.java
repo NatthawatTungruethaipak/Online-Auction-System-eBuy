@@ -295,11 +295,11 @@ public class IOUtils
      * 
      * @param print   is wording for print out.
      * @param dateCpr is date that going to be compare.
-     * @param command is select before or after compare operation. For command = 1 is
-     *                before, command = 2 is after. Otherwise will not check.
+     * @param bAfter if true, date input must after dateCpr.
+     *               Otherwise, date input must before dateCpr.
      * @return Date from user input.
      */
-    public static Date getDate(String print, Date dateCpr, int command)
+    public static Date getDate(String print, Date dateCpr, boolean bAfter)
     {
         boolean bOk = false;
         Date dateInput = null;
@@ -316,15 +316,7 @@ public class IOUtils
                 dateInput = DateUtils.strToDate(input);
                 if (dateCpr == null)
                     dateCpr = new Date();
-                if (command == 1)
-                {
-                    if (dateInput.before(dateCpr))
-                        bOk = true;
-                    else
-                        System.out.println(
-                                "Input date must before " + DateUtils.dateToStr(dateCpr) + " .");
-                }
-                else if (command == 2)
+                if (bAfter)
                 {
                     if (dateInput.after(dateCpr))
                         bOk = true;
@@ -333,7 +325,13 @@ public class IOUtils
                                 "Input date must after " + DateUtils.dateToStr(dateCpr) + " .");
                 }
                 else
-                    bOk = true;
+                {
+                    if (dateInput.before(dateCpr))
+                        bOk = true;
+                    else
+                        System.out.println(
+                                "Input date must before " + DateUtils.dateToStr(dateCpr) + " .");
+                }
             }
         }
         return dateInput;
@@ -344,20 +342,21 @@ public class IOUtils
      * 
      * @param print   is wording for print out.
      * @param dateCpr is date that going to be compare.
-     * @param command is select before or after compare operation. For command = 1 is
-     *                before, command = 2 is after. Otherwise will not check.
+     * @param bAfter if true, date input must after dateCpr.
+     *               Otherwise, date input must before dateCpr.
      * @return Date with time from user input.
      */
-    public static Date getDateTime(String print, Date dateCpr, int command)
+    public static Date getDateTime(String print, Date dateCpr, boolean bAfter)
     {
         boolean bOk = false;
         Date dateInput = null;
         String input = null;
-        while (!bOk)
+        while (!bOk) /** Loop until date is valid **/
         {
             System.out.print(print);
             Scanner scanner = new Scanner(System.in);
             input = scanner.nextLine();
+            
             if (DateUtils.validateDateTimeStr(input) == false)
             {
                 System.out.println(
@@ -369,16 +368,7 @@ public class IOUtils
                 System.out.println(dateInput);
                 if (dateCpr == null)
                     dateCpr = new Date();
-                if (command == 1)
-                {
-                    if (dateInput.before(dateCpr))
-                        bOk = true;
-                    else
-                        System.out.println(
-                                "Input date must before " + DateUtils.dateTimeToStr(dateCpr) + " .");
-                }
-
-                else if (command == 2)
+                if (bAfter)
                 {
                     if (dateInput.after(dateCpr))
                         bOk = true;
@@ -387,7 +377,14 @@ public class IOUtils
                                 "Input date must after " + DateUtils.dateTimeToStr(dateCpr) + " .");
                 }
                 else
-                    bOk = true;
+                {
+                    if (dateInput.before(dateCpr))
+                        bOk = true;
+                    else
+                        System.out.println(
+                                "Input date must before " + DateUtils.dateTimeToStr(dateCpr) + " .");
+                    
+                }
             }
         }
         return dateInput;
