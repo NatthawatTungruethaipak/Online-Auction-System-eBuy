@@ -67,7 +67,7 @@ public class AuctionProgram
                     break;
                 case 6:
                     /** search auction command **/
-                    UserInterface.searchAuction();
+                    UserInterface.displaySearchAuction();
                     break;
                 case 7:
                     /** display auction information **/

@@ -349,66 +349,107 @@ public class UserInterface
         System.out.println(
                 "=                     Bid History                       =");
         System.out.println(
-                "=========================================================");
+                "=========================================================\n");
         ArrayList<Auction> bidList = user.getBidList();
-        System.out.println("- Bidding");
+        System.out.println(
+                "---------------------------------------------------------");
+        System.out.println("\t\tBidding");
+        System.out.println(
+                "---------------------------------------------------------");
+        
         for (Auction auction : bidList)
             if (auction.getStage() == 1)
+            {
                 displayAuction(auction, false);
+                System.out.println();
+            }
 
+        System.out.println();
         System.out.println(
-                "\n---------------------------------------------------------\n");
-
-        System.out.println("- Offers");
+                "---------------------------------------------------------");
+        System.out.println("\t\tOffers");
+        System.out.println(
+                "---------------------------------------------------------");
         for (Auction auction : bidList)
             if (auction.getWinner().getBidder() == user)
+            {
                 displayAuction(auction, false);
+                System.out.println();
+            }
 
+        System.out.println();
         System.out.println(
-                "\n---------------------------------------------------------\n");
-
-        System.out.println("- Didn't Win");
+                "---------------------------------------------------------");
+        System.out.println("\t\tDidn't Win");
+        System.out.println(
+                "---------------------------------------------------------");
         for (Auction auction : bidList)
             if (auction.getWinner().getBidder() != user)
+            {
                 displayAuction(auction, false);
+                System.out.println();
+            }
 
         System.out.println(
-                "=========================================================");
+                "\n=========================================================");
         System.out.println(
                 "=                 Selling History                       =");
         System.out.println(
-                "=========================================================");
+                "=========================================================\n");
         ArrayList<Auction> sellList = user.getSellingList();
-        System.out.println("- Waiting");
+        System.out.println(
+                "---------------------------------------------------------");
+        System.out.println("\t\tWaiting");
+        System.out.println(
+                "---------------------------------------------------------");
         for (Auction auction : sellList)
             if (auction.getStage() == 0)
+            {
                 displayAuction(auction, false);
-
+                System.out.println();
+            }
+        
+        System.out.println();
         System.out.println(
-                "\n---------------------------------------------------------\n");
+                "---------------------------------------------------------");
 
-        System.out.println("- Active");
+        System.out.println("\t\tActive");
+        System.out.println(
+                "---------------------------------------------------------");
         for (Auction auction : sellList)
             if (auction.getStage() == 1)
+            {
                 displayAuction(auction, false);
+                System.out.println();
+            }
 
+        System.out.println();
         System.out.println(
-                "\n---------------------------------------------------------\n");
-
-        System.out.println("- Sold");
+                "---------------------------------------------------------");
+        System.out.println("\t\tSold");
+        System.out.println(
+                "---------------------------------------------------------");
         for (Auction auction : sellList)
             if (auction.getStage() == 2 && auction.getWinner() != null)
+            {
                 displayAuction(auction, false);
+                System.out.println();
+            }
 
+        System.out.println();
         System.out.println(
-                "\n---------------------------------------------------------\n");
-
-        System.out.println("- Unsold");
+                "---------------------------------------------------------");
+        System.out.println("\t\tUnsold");
+        System.out.println(
+                "---------------------------------------------------------");
         for (Auction auction : sellList)
             if (auction.getStage() == 2 && auction.getWinner() == null)
+            {
                 displayAuction(auction, false);
+                System.out.println();
+            }
         System.out.println(
-                "=========================================================");
+                "\n=========================================================");
         refresh(false);
     }
 
@@ -670,7 +711,7 @@ public class UserInterface
         System.out.println("1) Nathaphop Sundarabhogin  60070503420");
         System.out.println("2) Natthawat Tungruethaipak 60070503426");
         System.out.println(
-                "=========================================================");
+                "\n=========================================================");
         refresh(true);
     }
 
@@ -688,8 +729,10 @@ public class UserInterface
                     "                 - Do not found any auction -            ");
         else
         {
-
-            for (int i = 0 + (page * maxPage); i < maxPage; i++)
+            
+            for (int i=0+(page*maxPage), count = 0;
+                    i < auctionDisplay.size() && count < maxPage;
+                    i++, count++)
             {
                 Auction auction = auctionDisplay.get(i);
                 if (auction != null)
@@ -844,7 +887,7 @@ public class UserInterface
     /**
      * Search auction UI. Let user to select type and input key.
      **/
-    public static void searchAuction()
+    public static void displaySearchAuction()
     {
         int type = 0;
         int keyInt = 0;
@@ -869,7 +912,10 @@ public class UserInterface
 
         type = IOUtils.getInteger("Select type number: ", 0, 6);
         if (type == 0)
+        {
+            displayHomePage();
             return;
+        }
         else if (type == 3)
             keyStr = IOUtils.getString("Search item name: ");
         else if (type == 4)
@@ -1033,7 +1079,7 @@ public class UserInterface
                     break;
             }
         } while (menu != 0);
-        refresh(true);
+        displayHomePage();
     }
 
     /**
