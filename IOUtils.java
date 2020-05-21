@@ -381,86 +381,38 @@ public class IOUtils
      */
     public static int getCommand(String print)
     {
-        boolean bOk = false;
         int commandValue = 0;
-        while (!bOk)
-        {
-            String input = getString(print, false);
-            if (input.equals("/home"))
-            {
-                commandValue = 1;
-                bOk = true;
-            }
-            else if (input.equals("/help"))
-            {
-                commandValue = 2;
-                bOk = true;
-            }
-            else if (input.equals("/next"))
-            {
-                commandValue = 3;
-                bOk = true;
-            }
-            else if (input.equals("/prev"))
-            {
-                commandValue = 4;
-                bOk = true;
-            }
-            else if (input.equals("/first"))
-            {
-                commandValue = 5;
-                bOk = true;
-            }
-            else if (input.equals("/search"))
-            {
-                commandValue = 6;
-                bOk = true;
-            }
-            else if (input.equals("/auction"))
-            {
-                commandValue = 7;
-                bOk = true;
-            }
-            else if (input.equals("/register"))
-            {
-                commandValue = 8;
-                bOk = true;
-            }
-            else if (input.equals("/login"))
-            {
-                commandValue = 9;
-                bOk = true;
-            }
-            else if (input.equals("/logout"))
-            {
-                commandValue = 10;
-                bOk = true;
-            }
-            else if (input.equals("/profile"))
-            {
-                commandValue = 11;
-                bOk = true;
-            }
-            else if (input.equals("/makeauction"))
-            {
-                commandValue = 12;
-                bOk = true;
-            }
-            else if (input.equals("/aboutus"))
-            {
-                commandValue = 13;
-                bOk = true;
-            }
-            else if (input.equals("/exit"))
-            {
-                commandValue = 14;
-                bOk = true;
-            }
-            else
-            {
-                commandValue = 0;
-            }
-        }
+        String input = getString(print, false);
+        if (input.equals("/home"))
+            commandValue = 1;
+        else if (input.equals("/help"))
+            commandValue = 2;
+        else if (input.equals("/next"))
+            commandValue = 3;
+        else if (input.equals("/prev"))
+            commandValue = 4;
+        else if (input.equals("/first"))
+            commandValue = 5;
+        else if (input.equals("/search"))
+            commandValue = 6;
+        else if (input.equals("/auction"))
+            commandValue = 7;
+        else if (input.equals("/register"))
+            commandValue = 8;
+        else if (input.equals("/login"))
+            commandValue = 9;
+        else if (input.equals("/logout"))
+            commandValue = 10;
+        else if (input.equals("/profile"))
+            commandValue = 11;
+        else if (input.equals("/makeauction"))
+            commandValue = 12;
+        else if (input.equals("/aboutus"))
+            commandValue = 13;
+        else if (input.equals("/exit"))
+            commandValue = 14;
+        else
+            commandValue = 0;
         return commandValue;
     }
 
