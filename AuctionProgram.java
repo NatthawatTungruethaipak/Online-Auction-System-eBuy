@@ -108,6 +108,7 @@ public class AuctionProgram
             }
         }
         endProgram();
+        System.exit(0);
     }
 
     /**
