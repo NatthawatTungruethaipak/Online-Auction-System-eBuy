@@ -154,11 +154,11 @@ public class Auction
         int startBidPrice = 0;
         if (bidSet.last() != null)
         {
-            startBidPrice = bidSet.last().getMoney();
+            return startBidPrice = bidSet.last().getMoney();
         }
         else 
         {
-            startBidPrice = minBid;
+            return startBidPrice = minBid;
         }
     }
 
