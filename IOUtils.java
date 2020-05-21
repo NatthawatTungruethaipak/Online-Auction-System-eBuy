@@ -16,6 +16,8 @@ public class IOUtils
 {
     final static String imgDirectory = "imgFolder";
     
+    final static String imgDefault = "default.png";
+    
     /**
      * Check the string is null or not.
      * 
@@ -513,28 +515,29 @@ public class IOUtils
     {
         int count = 0;
         /** Upload image **/
-        JFileChooser jfc = new JFileChooser();
-        jfc.setDialogTitle("Select an image");
-        jfc.setAcceptAllFileFilterUsed(false);
+        JFileChooser frameChooseFile = new JFileChooser();
+        frameChooseFile.setDialogTitle("Select an image");
+        frameChooseFile.setAcceptAllFileFilterUsed(false);
         FileNameExtensionFilter filter = new FileNameExtensionFilter(
                 "jpg or png images", "png", "jpg");
-        jfc.addChoosableFileFilter(filter);
+        frameChooseFile.addChoosableFileFilter(filter);
 
-        /** If can't open file, return null **/
-        if (jfc.showOpenDialog(null) != JFileChooser.APPROVE_OPTION)
-            return null;
-        
+        /** If user doesn't upload image, reset to default **/
+        if (frameChooseFile.showOpenDialog(null) != JFileChooser.APPROVE_OPTION)
+            return imgDefault;
+
         /** Split file name into suffix and prefix and prepare directory path **/
-        String fileName = jfc.getSelectedFile().getName();
-        String directory = System.getProperty("user.dir") + "\\" + imgDirectory +"\\";
+        String fileName = frameChooseFile.getSelectedFile().getName();
+        String directory = getImgDir();
         String[] fileSplit = fileName.split("\\.(?=[^\\.]+$)");
 
         /** Check that file exists or not, If exists, change file name **/
         File temp = null;
         boolean bLoop = true;
-        do {
+        do
+        {
             temp = new File(directory + fileName);
-            if(!temp.exists())
+            if (!temp.exists())
                 bLoop = false;
             else
             {
@@ -544,7 +547,7 @@ public class IOUtils
         } while (bLoop);
 
         /** Copy file to the image directory of online auction program **/
-        File src = jfc.getSelectedFile();
+        File src = frameChooseFile.getSelectedFile();
         File dest = new File(directory + fileName);
         try
         {
