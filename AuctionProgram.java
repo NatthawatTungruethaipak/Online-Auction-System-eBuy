@@ -9,15 +9,13 @@ import java.util.Date;
 
 public class AuctionProgram
 {
+    /** Auction manager instance **/
     private static AuctionManager auctionManager = AuctionManager.getSingletonInstance();
 
+    /** User managere instance **/
     private static UserManager userManager = UserManager.getSingletonInstance();
 
-    private static UserInterface userInterface = UserInterface
-            .getSingletonInstance();
-
-//	private GraphicUI gui = GraphicUI
-
+    /** User login **/
     private static User userLogin;
 
     /**
@@ -36,7 +34,7 @@ public class AuctionProgram
     {
         boolean bLoop = true;
         initialProgram();
-        userInterface.displayHomePage();
+        UserInterface.displayHomePage();
         while (bLoop)
         {
             System.out.println("\nUse command '/help' to see all command");
@@ -44,49 +42,49 @@ public class AuctionProgram
             switch(command)
             {
                 case 1: /** main page command **/
-                    userInterface.displayHomePage();
+                    UserInterface.displayHomePage();
                     break;
                 case 2: /** help command **/
-                    userInterface.displayHelp();
+                    UserInterface.displayHelp();
                     break;              
                 case 3: /** next page command **/
-                    userInterface.displayNextPage();
+                    UserInterface.displayNextPage();
                     break;
                 case 4: /** previous page command **/
-                    userInterface.displayPrevPage();
+                    UserInterface.displayPrevPage();
                     break;
                 case 5: /** first page command **/
-                    userInterface.displayFirstPage();
+                    UserInterface.displayFirstPage();
                     break;
                 case 6: /** search auction command **/
-                    userInterface.searchAuction();
+                    UserInterface.searchAuction();
                     break;
                 case 7: /** display auction information **/
-                    userInterface.displaySelectAuction();
+                    UserInterface.displaySelectAuction();
                     break;
                 case 8: /** display register **/
-                    userInterface.displayRegister();
+                    UserInterface.displayRegister();
                     break;
                 case 9: /** display login **/
-                    userInterface.displayLogin();
+                    UserInterface.displayLogin();
                     break;
                 case 10: /** display logout **/
-                    userInterface.displayLogout();
+                    UserInterface.displayLogout();
                     break;
                 case 11: /** display user profile **/
-                    userInterface.displayManageProfile();
+                    UserInterface.displayManageProfile();
                     break;
                 case 12: /** make auction **/
-                    userInterface.displayMakeAuction();
+                    UserInterface.displayMakeAuction();
                     break;
                 case 13: /** about us **/
-                    userInterface.displayAboutUs();
+                    UserInterface.displayAboutUs();
                     break;
                 case 14: /** Exit **/
-                    bLoop = userInterface.displayEnding();
+                    bLoop = UserInterface.displayEnding();
                     break;
                 default: /** Error command **/
-                    userInterface.displayGetHelp();
+                    UserInterface.displayGetHelp();
                     break;
             }
         }
@@ -131,11 +129,8 @@ public class AuctionProgram
     public static boolean register(String username, String password, String name,
             String surname, Date birth, String address, String email)
     {
-        if (userManager.createUser(username, password, name, surname, birth, address,
-                email))
-            return true;
-        else
-            return false;
+        return userManager.createUser(username, password, name, surname, birth, address,
+                email);
     }
 
     /**
