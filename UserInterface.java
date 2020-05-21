@@ -32,7 +32,8 @@ public class UserInterface
      */
     private static void refresh(boolean bHome)
     {
-        IOUtils.getEnter("Press enter to continue..");
+        System.out.println("Press enter to continue..");
+        IOUtils.getEnter();
         clearScreen();
         if(bHome)
             displayHomePage();
@@ -141,7 +142,7 @@ public class UserInterface
         boolean bLoop = true;
         do
         {
-            money = IOUtils.getInteger("Price that want to bid: ");
+            money = IOUtils.getInteger("Price that want to bid: ", 0);
             if (money < minPrice)
                 System.out.println(
                         "You need to input price more than " + minPrice + " Baht");
