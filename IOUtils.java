@@ -70,8 +70,7 @@ public class IOUtils
 
     /**
      * Validate the password in pattern of 8-40 characters with consist of at least
-     * one number, one lower character, one upper character, one special that is [ @
-     * # $ % ! . _ -].
+     * one number, one lower character, one upper character.
      * 
      * Reference from
      * https://examples.javacodegeeks.com/core-java/util/regex/matcher/validate-password-with-java-regular-expression-example/
@@ -84,7 +83,7 @@ public class IOUtils
     {
         if (isNullStr(password))
             return false;
-        String passwordPattern = "((?=.*[a-z])(?=.*\\d)(?=.*[A-Z])(?=.*[@#$%!_-]).{8,40})";
+        String passwordPattern = "((?=.*[a-z])(?=.*\\d)(?=.*[A-Z]).{8,40})";
         if (password.matches(passwordPattern))
             return true;
         else
@@ -139,44 +138,35 @@ public class IOUtils
      * @param print is wording for print out.
      * @return String from user input.
      */
-    public static String getString(String print)
+    public static String getString(String print, boolean isNullOK)
     {
-        System.out.print(print);
-        Scanner scanner = new Scanner(System.in);
-        String input = scanner.nextLine();
-
-        if (isNullStr(input))
-            return "";
-        else
-            return input.trim();
-    }
-
-    /**
-     * Print the wording and get integer from user.
-     * 
-     * @param print is wording for print out.
-     * @return Integer from user input.
-     */
-    public static int getInteger(String print)
-    {
-        System.out.print(print);
+        String returnString = "";
         boolean bOk = false;
-        int input = 0;
+
         while (!bOk)
         {
-            try
+            System.out.print(print);
+            Scanner scanner = new Scanner(System.in);
+            String input = scanner.nextLine();
+            if (isNullOK)
             {
-                Scanner scanner = new Scanner(System.in);
-                input = scanner.nextInt();
                 bOk = true;
+                returnString = input.trim();
             }
-            catch (Exception e)
+            else
             {
-                System.out.println("Format mismatch");
+                if (isNullStr(input))
+                {
+                    System.out.println("Input can't be null");
+                }
+                else
+                {
+                    bOk = true;
+                    returnString = input.trim();
+                }
             }
-
         }
-        return input;
+        return returnString;
     }
 
     /**
@@ -188,23 +178,24 @@ public class IOUtils
      */
     public static int getInteger(String print, int min)
     {
-        System.out.print(print);
         boolean bOk = false;
         int input = 0;
         while (!bOk)
         {
             try
             {
+                System.out.print(print);
                 Scanner scanner = new Scanner(System.in);
                 input = scanner.nextInt();
-                if (input > min)
+                if (input >= min)
                     bOk = true;
                 else
-                    System.out.println("Number out of range");
+                    System.out.println(
+                            "Input must be number greater than or equal to " + min);
             }
             catch (Exception e)
             {
-                System.out.println("Format mismatch");
+                System.out.println("Input must be number");
             }
 
         }
@@ -221,24 +212,26 @@ public class IOUtils
      */
     public static int getInteger(String print, int min, int max)
     {
-        System.out.print(print);
+
         boolean bOk = false;
         int input = 0;
         while (!bOk)
         {
             try
             {
+                System.out.print(print);
                 Scanner scanner = new Scanner(System.in);
                 input = scanner.nextInt();
-                if ((input > min) && (input < max))
+                if ((input >= min) && (input <= max))
                     bOk = true;
                 else
-                    System.out.println("Number out of range");
+                    System.out.println(
+                            "Input must be number between " + min + " and " + max);
 
             }
             catch (Exception e)
             {
-                System.out.println("Format mismatch");
+                System.out.println("Input must be number");
             }
 
         }
@@ -253,20 +246,28 @@ public class IOUtils
      */
     public static boolean getConfirm(String print)
     {
+        boolean bOk = false;
+        boolean returnConfirm = false;
+        String input = "";
         System.out.print(print);
-        Scanner scanner = new Scanner(System.in);
-        String input = scanner.nextLine();
-        while (!(input.equalsIgnoreCase("yes") || input.equalsIgnoreCase("no")))
+        while (!bOk)
         {
-            System.out.println("Format mismatch");
-            scanner = new Scanner(System.in);
+            Scanner scanner = new Scanner(System.in);
             input = scanner.nextLine();
+            if (input.equalsIgnoreCase("yes"))
+            {
+                returnConfirm = true;
+                bOk = true;
+            }
+            else if (input.equalsIgnoreCase("no"))
+            {
+                returnConfirm = false;
+                bOk = true;
+            }
+            else
+                System.out.println("Input must be yes or no");
         }
-        if (input.equalsIgnoreCase("yes"))
-            return true;
-        else if (input.equalsIgnoreCase("no"))
-            return false;
-        return false;
+        return returnConfirm;
     }
 
     /**
@@ -282,34 +283,38 @@ public class IOUtils
     {
         boolean bOk = false;
         Date dateInput = null;
+        String input = null;
         while (!bOk)
         {
             System.out.print(print);
             Scanner scanner = new Scanner(System.in);
-            String input = scanner.nextLine();
-            while (DateUtils.validateDateStr(input) == false)
-            {
-                {
-                    System.out.println("Format mismatch");
-                    scanner = new Scanner(System.in);
-                    input = scanner.nextLine();
-                }
-            }
-            dateInput = DateUtils.strToDate(input);
-            if (dateCpr == null)
-                dateCpr = new Date();
-            if (command == 1)
-            {
-                if (dateInput.before(dateCpr))
-                    bOk = true;
-            }
-            else if (command == 2)
-            {
-                if (dateInput.after(dateCpr))
-                    bOk = true;
-            }
+            input = scanner.nextLine();
+            if (DateUtils.validateDateStr(input) == false)
+                System.out.println("Date format is dd-mm-yyyy. Example: 26-10-1998");
             else
-                bOk = true;
+            {
+                dateInput = DateUtils.strToDate(input);
+                if (dateCpr == null)
+                    dateCpr = new Date();
+                if (command == 1)
+                {
+                    if (dateInput.before(dateCpr))
+                        bOk = true;
+                    else
+                        System.out.println(
+                                "Input must be date before date to compare.");
+                }
+                else if (command == 2)
+                {
+                    if (dateInput.after(dateCpr))
+                        bOk = true;
+                    else
+                        System.out.println(
+                                "Input must be date after date to compare.");
+                }
+                else
+                    bOk = true;
+            }
         }
         return dateInput;
     }
@@ -327,34 +332,43 @@ public class IOUtils
     {
         boolean bOk = false;
         Date dateInput = null;
+        String input = null;
         while (!bOk)
         {
             System.out.print(print);
             Scanner scanner = new Scanner(System.in);
-            String input = scanner.nextLine();
-            while (DateUtils.validateDateTimeStr(input) == false)
+            input = scanner.nextLine();
+            if (DateUtils.validateDateTimeStr(input) == false)
             {
-                {
-                    System.out.println("Format mismatch");
-                    scanner = new Scanner(System.in);
-                    input = scanner.nextLine();
-                }
-            }
-            dateInput = DateUtils.strToDateTime(input);
-            if (dateCpr == null)
-                dateCpr = new Date();
-            if (command == 1)
-            {
-                if (dateInput.before(dateCpr))
-                    bOk = true;
-            }
-            else if (command == 2)
-            {
-                if (dateInput.after(dateCpr))
-                    bOk = true;
+                System.out.println(
+                        "Date with time format is dd-mm-yyyy-hh:mm. Example: 26-10-1998-13:39");
             }
             else
-                bOk = true;
+            {
+                dateInput = DateUtils.strToDateTime(input);
+                System.out.println(dateInput);
+                if (dateCpr == null)
+                    dateCpr = new Date();
+                if (command == 1)
+                {
+                    if (dateInput.before(dateCpr))
+                        bOk = true;
+                    else
+                        System.out.println(
+                                "Input must be date before date to compare.");
+                }
+
+                else if (command == 2)
+                {
+                    if (dateInput.after(dateCpr))
+                        bOk = true;
+                    else
+                        System.out.println(
+                                "Input must be date after date to compare.");
+                }
+                else
+                    bOk = true;
+            }
         }
         return dateInput;
     }
@@ -371,7 +385,7 @@ public class IOUtils
         int commandValue = 0;
         while (!bOk)
         {
-            String input = getString(print);
+            String input = getString(print, false);
             if (input.equals("/home"))
             {
                 commandValue = 1;
@@ -444,7 +458,7 @@ public class IOUtils
             }
             else
             {
-                bOk = false;
+                commandValue = 0;
             }
         }
         return commandValue;
@@ -460,11 +474,25 @@ public class IOUtils
     {
         boolean bOk = false;
         String userInput = "";
+        UserManager userManager = UserManager.getSingletonInstance();
         while (!bOk)
         {
-            userInput = getString(print);
+            userInput = getString(print, false);
             if (validateUsername(userInput))
-                bOk = true;
+            {
+                if (userManager.findUserByUsername(userInput) != null)
+                {
+                    System.out.println("The username is already in use.");
+                    bOk = false;
+                }
+                else
+                {
+                    bOk = true;
+                }
+            }
+            else
+                System.out.println(
+                        "Username must between 6-30 characters and first character must be alphabet and otherwise can be alphbet, number and underscore.");
         }
         return userInput;
     }
@@ -481,9 +509,12 @@ public class IOUtils
         String userInput = "";
         while (!bOk)
         {
-            userInput = getString(print);
+            userInput = getString(print, false);
             if (validatePassword(userInput))
                 bOk = true;
+            else
+                System.out.println(
+                        "Username must between 8-40 characters.Password must contain at least one lower alphbet, one upper and one number.");
         }
         return userInput;
     }
@@ -500,9 +531,11 @@ public class IOUtils
         String userInput = "";
         while (!bOk)
         {
-            userInput = getString(print);
+            userInput = getString(print, false);
             if (validateEmail(userInput))
                 bOk = true;
+            else
+                System.out.print("Wrong email format");
         }
         return userInput;
     }
