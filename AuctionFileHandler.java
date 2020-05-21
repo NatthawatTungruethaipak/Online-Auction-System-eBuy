@@ -376,7 +376,8 @@ public class AuctionFileHandler
         TextFileWriter writer = new TextFileWriter(userFileName);
         if (writer.open() == false)
             return false;
-
+        
+        writer.writeLine(userList.size()+"\n");
         /** Write each user **/
         for (User user : userList)
         {
