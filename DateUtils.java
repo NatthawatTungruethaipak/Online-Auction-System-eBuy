@@ -22,6 +22,17 @@ public class DateUtils
             "dd-MM-yyyy-HH:mm:ss");
 
     /**
+     * Get current date and time.
+     * 
+     * @return current data and time in term of Date class.
+     */
+    public static Date getCurrentDateTime()
+    {
+        Date dateNow = new Date();
+        return dateNow;
+    }
+    
+    /**
      * Check the date input that is after current date or not
      * 
      * @param date to be check with current date.
