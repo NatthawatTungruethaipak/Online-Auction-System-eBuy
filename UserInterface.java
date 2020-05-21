@@ -87,13 +87,13 @@ public class UserInterface
         {
             int[] diff = DateUtils.diffCurrentDateTime(auction.getDateEnd());
             if (diff[0] != 0) /** Displaying time **/
-                System.out.println(diff[0] + " Days " + diff[1] + " Hours " + diff[2]
+                System.out.println("Remaining: " + diff[0] + " Days " + diff[1] + " Hours " + diff[2]
                         + " Minutes");
             else if (diff[0] == 0)
-                System.out.println(diff[1] + " Hours " + diff[2] + " Minutes "
+                System.out.println("Remaining: " + diff[1] + " Hours " + diff[2] + " Minutes "
                         + diff[3] + " Seconds");
             else if (diff[1] == 0)
-                System.out.println(diff[2] + " Minutes " + diff[3] + " Seconds");
+                System.out.println("Remaining: " + diff[2] + " Minutes " + diff[3] + " Seconds");
         }
 
         /** Print full detail of auction **/
@@ -141,7 +141,7 @@ public class UserInterface
         boolean bLoop = true;
         do
         {
-            money = IOUtils.getInteger("Price that want to bid: ", 0);
+            money = IOUtils.getInteger("Price that want to bid (Baht): ", 0);
             if (money < minPrice)
                 System.out.println(
                         "You need to input price more than " + minPrice + " Baht");
@@ -244,7 +244,7 @@ public class UserInterface
             name = IOUtils.getString("Edit Name: ");
         if (IOUtils.getConfirm("Do you want to edit birth date (yes/no)?: "))
             birth = IOUtils.getDate("Edit Birth (dd-mm-yyyy): ",
-                    null, 1);
+                    null, false);
         if (IOUtils.getConfirm("Do you want to edit address (yes/no)?: "))
             address = IOUtils.getString("Edit Address: ");
         if (IOUtils.getConfirm("Do you want to edit email (yes/no)?: "))
@@ -289,7 +289,7 @@ public class UserInterface
         clearScreen();
         System.out.println(
                 "=========================================================");
-        System.out.println("\tBalance: " + balance);
+        System.out.println("\tBalance: " + balance + " Baht");
         System.out.println(
                 "=========================================================");
     }
@@ -303,12 +303,12 @@ public class UserInterface
     {
         clearScreen();
         displayBalance(user);
-        int money = IOUtils.getInteger("Deposit: ", 0);
+        int money = IOUtils.getInteger("Deposit (Baht): ", 0);
         boolean ret = AuctionProgram.deposit(money);
         clearScreen();
         displayBalance(user);
         if (ret)
-            System.out.println("Money has been deposit to the accuont.");
+            System.out.println("Money has been deposit to the account.");
         else
             System.out
                     .println("Problem occur, cannot deposit money to the account.");
@@ -325,12 +325,12 @@ public class UserInterface
         clearScreen();
         int balance = user.getBalance();
         displayBalance(user);
-        int money = IOUtils.getInteger("Withdraw: ", 0, balance);
+        int money = IOUtils.getInteger("Withdraw (Baht): ", 0, balance);
         boolean ret = AuctionProgram.withdraw(money);
         clearScreen();
         displayBalance(user);
         if (ret)
-            System.out.println("Money has been withdrawn from the accuont.");
+            System.out.println("Money has been withdrawn from the account.");
         else
             System.out.println(
                     "Problem occur, cannot withdraw money from the account.");
@@ -846,9 +846,9 @@ public class UserInterface
         String item = IOUtils.getString("Item name: ");
         String category = IOUtils.getCategory("Select category of item");
         String picture = IOUtils.uploadImage();
-        int minBid = IOUtils.getInteger("Minimum bid money: ", 0);
-        Date dateStart = IOUtils.getDateTime("Start date (dd-mm-yyyy-hh:mm): ", null, 0);
-        Date dateEnd = IOUtils.getDateTime("End date (dd-mm-yyyy-hh:mm): ", dateStart, 2);
+        int minBid = IOUtils.getInteger("Minimum bid money (Baht): ", 0);
+        Date dateStart = IOUtils.getDateTime("Start date (dd-mm-yyyy-hh:mm): ", null, true);
+        Date dateEnd = IOUtils.getDateTime("End date (dd-mm-yyyy-hh:mm): ", dateStart, true);
         System.out.println(
                 "=========================================================");
         System.out.println("Item: " + item);
@@ -859,7 +859,7 @@ public class UserInterface
         displayImage(picture);
         System.out.println(
                 "=========================================================");
-        if (IOUtils.getConfirm("Confirm create auction: "))
+        if (IOUtils.getConfirm("Confirm create auction (yes/no): "))
         {
             if (AuctionProgram.makeAuction(item, category, picture, minBid,
                     dateStart, dateEnd))
@@ -981,7 +981,7 @@ public class UserInterface
         String password = IOUtils.getPassword("Password: ");
         String name = IOUtils.getString("Name: ");
         Date birth = IOUtils.getDate("Birth date (dd-mm-yyyy): ",
-                null, 1);
+                null, false);
         String address = IOUtils.getString("Address: ");
         String email = IOUtils.getEmail("Email: ");
         System.out.println(
