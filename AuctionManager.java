@@ -149,7 +149,9 @@ public class AuctionManager
         }
 
         if (auction.getStage() < 2)
-            AuctionTrigger.addAuction(auction);
+        {
+            AuctionTrigger.getSingleInstance().addAuction(auction);
+        }
     }
 
     /**

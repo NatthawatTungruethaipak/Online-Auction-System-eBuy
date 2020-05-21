@@ -8,9 +8,9 @@ import java.util.Date;
  */
 public class AuctionTrigger extends Thread
 {
-    private static ArrayList<Auction> managedAuction = new ArrayList<Auction>();
-    
     private static AuctionTrigger auctionTrigger = new AuctionTrigger();
+    
+    private ArrayList<Auction> managedAuction = new ArrayList<Auction>();
     
     private boolean bLoop = true; 
     
@@ -29,7 +29,7 @@ public class AuctionTrigger extends Thread
      * @param auction Auction that want to observe.
      * @return Return true if can add to arraylist for checking. Otherwise, false.
      */
-    public static boolean addAuction(Auction auction)
+    public boolean addAuction(Auction auction)
     {
         boolean bCheck = false;
         if (auction != null)

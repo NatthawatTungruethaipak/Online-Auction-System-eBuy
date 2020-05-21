@@ -81,6 +81,8 @@ public class UserInterface
         else
             System.out.print("Starting bid price: " + auction.getMinBid() + " Baht");
         System.out.println(" (" + auction.getNumberOfBid() + " bid)");
+        if (auction.getStage() == 0)
+            System.out.println("Waiting to open");
         if (auction.getStage() == 2) /** Print time left before close auction **/
             System.out.println("Closed auction");
         else
