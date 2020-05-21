@@ -3,7 +3,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
-
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -35,6 +34,7 @@ public class UserInterface
         System.out.println("=========================================================");
         System.out.println("=                         eBuy                          =");
         System.out.println("=========================================================");
+        System.out.println("");
         if(AuctionProgram.isLogin())
         {
             User user = AuctionProgram.getLogin();
@@ -45,7 +45,7 @@ public class UserInterface
             System.out.println("Welcome to the auction program.");
             System.out.println("Uses '/login' to login to the system.");
         }
-        
+        System.out.println("");
         resetAuctionDisplay(null);
         displayAuctionList();
     }
@@ -97,9 +97,9 @@ public class UserInterface
      */
     public static void displayAuctionList()
     {
-        System.out.println("=========================================================");
+        System.out.println("=========================================================\n");
         if(auctionDisplay == null || auctionDisplay.size() == 0) /** Don't have any auction **/
-            System.out.println("\n                 - Do not found any auction -            \n");
+            System.out.println("                 - Do not found any auction -            ");
         else
         {
             
@@ -114,7 +114,7 @@ public class UserInterface
                 }
             }
         }
-        System.out.println("======================== Page "+ (page+1) +" =========================");
+        System.out.println("\n======================== Page "+ (page+1) +" =========================");
     }
 
     /**
@@ -150,15 +150,15 @@ public class UserInterface
     {
         if(auctionDisplay == null || auctionDisplay.size() == 0) /** Don't have any auction **/
         {
-            System.out.println("=========================================================");
+            System.out.println("=========================================================\n");
             System.out.println("                 - Do not found any auction -            ");
-            System.out.println("=========================================================");
+            System.out.println("\n=========================================================");
         }
         else if(page-1 < 0)
         {
-            System.out.println("=========================================================");
+            System.out.println("=========================================================\n");
             System.out.println("                 - This is the first page -              ");
-            System.out.println("=========================================================");
+            System.out.println("\n=========================================================");
         }
         else
         {
@@ -172,6 +172,7 @@ public class UserInterface
     public static void displayFirstPage()
     {
         page = 0;
+        clearScreen();
         displayAuctionList();
     }
     
@@ -183,11 +184,12 @@ public class UserInterface
         int type = 0;
         int keyInt = 0;
         String keyStr = null;
-        
+        clearScreen();
         System.out.println("=========================================================");
         System.out.println("=                     Search Auction                    =");
         System.out.println("=========================================================");
         System.out.println("Select type that want to search");
+        System.out.println("0 - Go back home page");
         System.out.println("1 - Auction in opened stage");
         System.out.println("2 - Auction in closed stage");
         System.out.println("3 - Item");
@@ -196,8 +198,10 @@ public class UserInterface
         System.out.println("6 - Lower start price to bid");
         System.out.println("=========================================================");
         
-        type = IOUtils.getInteger("Select type number: ", 1, 6);
-        if (type == 3)
+        type = IOUtils.getInteger("Select type number: ", 0, 6);
+        if(type == 0)
+            return;
+        else if (type == 3)
             keyStr = IOUtils.getString("Search item name: ");
         else if (type == 4)
             keyStr = IOUtils.getCategory("Select category that want to search");
@@ -206,6 +210,7 @@ public class UserInterface
         else if (type == 6)
             keyInt = IOUtils.getInteger("Start price (Baht): ", 0);
         resetAuctionDisplay(AuctionProgram.searchAuction(type, keyStr, keyInt));
+        clearScreen();
         displayAuctionList();
     }
     
@@ -342,10 +347,13 @@ public class UserInterface
         String password = IOUtils.getPassword("Password: ");
         String name = IOUtils.getString("Name: ");
         String surname = IOUtils.getString("Surname: ");
-        Date birth = IOUtils.getDate("Date dd-mm-yyyy (Ex: 01-10-1998): ",null, 1);
+        Date birth = IOUtils.getDate("Birth date\ndd-mm-yyyy (Ex: 01-10-1998): ",null, 1);
         String address = IOUtils.getString("Address: ");
         String email = IOUtils.getEmail("Email: ");
-        if(IOUtils.getConfirm("Are you sure to register?: "))
+        System.out.println("=========================================================");
+        displayProfile(username, password, name, surname, birth, address, email);
+        System.out.println("=========================================================\n");
+        if(IOUtils.getConfirm("Confirm register (yes/no): "))
         {
             boolean bCheck = AuctionProgram.register(username, password, name, surname, birth, address, email);
             if(bCheck)
@@ -369,9 +377,18 @@ public class UserInterface
      */
     public static void displayLogin()
     {
+        if(AuctionProgram.isLogin())
+        {
+            System.out.println("=========================================================\n");
+            System.out.println("               - Have been login already -               ");
+            System.out.println("\n=========================================================");
+        }
+        clearScreen();
+        System.out.println("=========================================================");
+        System.out.println("=                         Login                         =");
+        System.out.println("=========================================================");
         String username = IOUtils.getString("Username: ");
         String password = IOUtils.getString("Password: ");
-
         if(AuctionProgram.login(username,password))
         {
             System.out.println("=========================================================\n");
@@ -388,11 +405,12 @@ public class UserInterface
     }
     
     /**
-     * Display info of user
+     * Display info of user (hide password).
      */
     private static void displayProfile(User user)
     {
         System.out.println("Username: "+user.getUsername());
+        System.out.println("Password: " + user.getPassword());
         System.out.println("Name: "+user.getName());
         System.out.println("Surname: "+user.getSurname());
         System.out.println("Birth: " + DateUtils.dateToStr(user.getBirth()));
@@ -400,13 +418,33 @@ public class UserInterface
         System.out.println("Email: "+user.getEmail());
     }
     
+    /**
+     * Display info of user. (Used after register/edit profile) 
+     * @param username Username of user
+     * @param password password of user
+     * @param name name of user
+     * @param surname surname of user
+     * @param birth birth date
+     * @param address address of user
+     * @param email email of user
+     */
+    private static void displayProfile(String username, String password, String name, String surname, Date birth, String address, String email)
+    {
+        System.out.println("Username: " + username);
+        System.out.println("Password: " + password);
+        System.out.println("Name: " + name);
+        System.out.println("Surname: " + surname);
+        System.out.println("Birth: " + DateUtils.dateToStr(birth));
+        System.out.println("Address: " + address);
+        System.out.println("Email: " + email);
+    }
     
     /**
      * Display and have the mini menu of user to manage
      */
     public static void displayManageProfile()
     {
-        if(AuctionProgram.isLogin())
+        if(!AuctionProgram.isLogin())
         {
             System.out.println("=========================================================\n");
             System.out.println("                   - Please login first -                ");
@@ -466,7 +504,7 @@ public class UserInterface
     private static void displayEditProfile(User user)
     {
         
-        if(AuctionProgram.isLogin())
+        if(!AuctionProgram.isLogin())
         {
             System.out.println("=========================================================\n");
             System.out.println("                   - Please login first -                ");
@@ -488,24 +526,27 @@ public class UserInterface
         String address = user.getAddress();
         String email = user.getEmail();
         /** Ask user want to edit each data */
-        if(IOUtils.getConfirm("Do you want to password?: "))
+        if(IOUtils.getConfirm("Do you want to edit password (yes/no)?: "))
             password = IOUtils.getPassword("Edit Password: ");
-        if(IOUtils.getConfirm("Do you want to edit name?: "))
+        if(IOUtils.getConfirm("Do you want to edit name (yes/no)?: "))
             name = IOUtils.getString("Edit Name: ");
-        if(IOUtils.getConfirm("Do you want to edit surname?: "))
+        if(IOUtils.getConfirm("Do you want to edit surname (yes/no)?: "))
             surname = IOUtils.getString("Edit Surname: ");
-        if(IOUtils.getConfirm("Do you want to edit birth date?: "))
-            birth = IOUtils.getDate("Edit Date: ",null, 1);
-        if(IOUtils.getConfirm("Do you want to edit address?: "))
+        if(IOUtils.getConfirm("Do you want to edit birth date (yes/no)?: "))
+            birth = IOUtils.getDate("Edit Birth\ndd-mm-yyyy (Ex: 01-10-1998): ",null, 1);
+        if(IOUtils.getConfirm("Do you want to edit address (yes/no)?: "))
             address = IOUtils.getString("Edit Address: ");
-        if(IOUtils.getConfirm("Do you want to edit email?: "))
+        if(IOUtils.getConfirm("Do you want to edit email (yes/no)?: "))
             email = IOUtils.getEmail("Edit Email: ");
-        if(IOUtils.getConfirm("Confirm to edit: "))
+        System.out.println("=========================================================");
+        displayProfile(user.getUsername(), password, name, surname, birth, address, email);
+        System.out.println("=========================================================\n");
+        if(IOUtils.getConfirm("Confirm to edit (yes/no): "))
         {
             if(AuctionProgram.editProfile(password, name, surname, birth, address, email))
             {
                 System.out.println("=========================================================\n");
-                System.out.println("                       - Edit sucess -                   ");
+                System.out.println("                      - Edit success -                   ");
                 System.out.println("\n=========================================================");
             }
             else
@@ -617,7 +658,7 @@ public class UserInterface
      */
     public static void displayMakeAuction()
     {
-        if(AuctionProgram.isLogin())
+        if(!AuctionProgram.isLogin())
         {
             System.out.println("=========================================================\n");
             System.out.println("                   - Please login first -                ");
@@ -625,7 +666,7 @@ public class UserInterface
             refresh();
             return;
         }
-        
+        clearScreen();
         System.out.println("=========================================================");
         System.out.println("=                   Make Auction                        =");
         System.out.println("=========================================================");
@@ -639,8 +680,8 @@ public class UserInterface
         System.out.println("Item: "+item);
         System.out.println("Category: " + category);
         System.out.println("Minimum bid money: " + minBid);
-        System.out.println("Start date: " + DateUtils.dateTimeToStr(dateStart));
-        System.out.println("End date: " + DateUtils.dateTimeToStr(dateEnd));
+        System.out.println("Start date\ndd-mm-yyyy-hh:mm (Ex: 01-10-1998-23:30): " + DateUtils.dateTimeToStr(dateStart));
+        System.out.println("End date\ndd-mm-yyyy-hh:mm (Ex: 01-11-1998-23:30): " + DateUtils.dateTimeToStr(dateEnd));
         displayImage(picture);
         System.out.println("=========================================================");
         if(IOUtils.getConfirm("Confirm create auction: "))
@@ -734,14 +775,14 @@ public class UserInterface
         System.out.println("=========================================================");
         System.out.println("=                        About us                       =");
         System.out.println("=========================================================");
-        System.out.println("    An online auction system: eBuy is a program that lets");
+        System.out.println("\n    An online auction system: eBuy is a program that lets");
         System.out.println("people buy and sell items via auction. This application");
         System.out.println("will act as a market including many functions which are");
         System.out.println("authentication, create the auction, bid the item, sell");
         System.out.println("the item, deposit money, and withdraw money.");
         System.out.println("    In addition, a person who won the auction will ");
         System.out.println("automatically deduct the money from an account.\n");
-        System.out.println("===== This program was created by Kla & Tong group =====");
+        System.out.println("      This program was created by Kla & Tong group      ");
         System.out.println("Group Member: ");
         System.out.println("1) Nathaphop Sundarabhogin  60070503420");
         System.out.println("2) Natthawat Tungruethaipak 60070503426");
