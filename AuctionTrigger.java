@@ -2,11 +2,11 @@ import java.util.ArrayList;
 import java.util.Date;
 
 /**
- * Observer of auction. Observe an auction to update the auction stage.
+ * Observe and manage the auction to update stage on time.
  * 
  * Created by Kla & Tong 14 April 2020
  */
-public class TimeManager extends Thread
+public class AuctionTrigger extends Thread
 {
     private static ArrayList<Auction> managedAuction = new ArrayList<Auction>();
 

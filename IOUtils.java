@@ -9,7 +9,7 @@ import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
- * Represent the utility method about input and output in the auction program.
+ * Utility method about input and output in the auction program.
  * 
  * Created by Kla & Tong 18 May 2020
  */

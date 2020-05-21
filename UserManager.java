@@ -1,8 +1,7 @@
 import java.util.*;
 
 /**
- * Represent the user manager object in auction program. Contain the user manager
- * detail that control user.
+ * Manage, control, and keep all user.
  * 
  * Created by Kla & Tong 23 April 2020
  */

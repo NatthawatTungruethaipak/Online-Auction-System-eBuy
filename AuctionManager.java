@@ -149,7 +149,7 @@ public class AuctionManager
         }
 
         if (auction.getStage() < 2)
-            TimeManager.addAuction(auction);
+            AuctionTrigger.addAuction(auction);
     }
 
     /**

@@ -9,7 +9,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 
 /**
- * User Interface of online auction program.
+ * User Interface of online auction program. Base on terminal.
  * 
  * Created by Kla & Tong 18 May 2020
  */
@@ -455,7 +455,7 @@ public class UserInterface
         System.out.println("/first - Go to first page of auction list.\n");
         System.out.println("/search - Search the auction.\n");
         System.out.println("/auction - Select the auction to display or bid.");
-        System.out.println("The auction program use auction no. to be key\n");
+        System.out.println("Uses auction no. that display to be key\n");
         System.out.println("/register - Register to be new user.\n");
         System.out.println("/login - Login to the system.\n");
         System.out.println("/logout - Logout from the system.\n");

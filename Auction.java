@@ -3,8 +3,8 @@ import java.util.TreeSet;
 import java.util.Iterator;
 
 /**
- * Represent the auction object in auction program. Contain the auction item, bidder,
- * and seller.
+ * Represent the auction object in auction program. Contain the info of auction
+ * item, bid, and seller. In addition manage the bid too.
  * 
  * Created by Kla & Tong 14 April 2020
  */

@@ -3,7 +3,7 @@ import java.util.Date;
 import java.util.Iterator;
 
 /**
- * Manage the Auction file
+ * Handle user file data and auction file data.
  * 
  * Created by Kla & Tong 19 May 2020
  */

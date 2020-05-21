@@ -3,7 +3,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * Represent the utility method about date in the auction program.
+ * Utility method about date in the auction program.
  * 
  * Created by Kla & Tong 18 May 2020
  */
