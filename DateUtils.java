@@ -19,7 +19,7 @@ public class DateUtils
      * DateTime format for date and time
      */
     private static SimpleDateFormat simpleDateTimeFormat = new SimpleDateFormat(
-            "dd-MM-yyyy-HH:mm:ss");
+            "dd-MM-yyyy-HH:mm");
 
     /**
      * Get current date and time.
@@ -145,7 +145,6 @@ public class DateUtils
             simpleDateTimeFormat.setLenient(false);
             Date javaDate = simpleDateTimeFormat.parse(dateTimeStr);
             return javaDate;
-
         }
         catch (ParseException e)
         {
@@ -230,8 +229,8 @@ public class DateUtils
             return false;
         try
         {
-            simpleDateFormat.setLenient(false);
-            if (simpleDateFormat.parse(dateTime) != null)
+            simpleDateTimeFormat.setLenient(false);
+            if (simpleDateTimeFormat.parse(dateTime) != null)
                 return true;
             else
                 return false;
