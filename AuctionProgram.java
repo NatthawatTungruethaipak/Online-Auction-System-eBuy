@@ -13,8 +13,12 @@ public class AuctionProgram
     private static AuctionManager auctionManager = AuctionManager
             .getSingletonInstance();
 
-    /** User managere instance **/
+    /** User manager instance **/
     private static UserManager userManager = UserManager.getSingletonInstance();
+
+    /** User manager instance **/
+    private static AuctionFileHandler fileHandler = AuctionFileHandler
+            .getSingletonInstance();
 
     /** User login **/
     private static User userLogin;
@@ -316,41 +320,40 @@ public class AuctionProgram
             String address, String email)
     {
         if (userLogin != null)
-            return userLogin.editProfile(password, name, birth, address,
-                    email);
+            return userLogin.editProfile(password, name, birth, address, email);
         else
             return false;
     }
 
     /**
-     * 
-     */
-    public static void readData()
-    {
-
-    }
-
-    /**
-     * 
-     */
-    public static void saveData()
-    {
-
-    }
-
-    /**
-     * 
+     * Initialise the program.
      */
     public static void initialProgram()
     {
+        /* Create img directory */
+        IOUtils.initial();
 
+        /* Read user from file */
+        ArrayList<User> userList = fileHandler.readUsers();
+        userManager.initialUser(userList);
+
+        /* Read auction from file */
+        ArrayList<Auction> auctionList = fileHandler.readAuctions();
+        auctionManager.initialAuction(auctionList);
     }
 
     /**
-     * 
+     * End the program
      */
     public static void endProgram()
     {
-
+        /* Save user to file */
+        ArrayList<User> userList = userManager.getAllUser();
+        fileHandler.writeUsers(userList);
+        
+        /* Save auction to file */
+        ArrayList<Auction> auctionList = auctionManager.getAllAuction();
+        fileHandler.writeAuctions(auctionList);
+        
     }
 }
