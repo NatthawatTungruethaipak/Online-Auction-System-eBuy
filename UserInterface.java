@@ -1064,7 +1064,8 @@ public class UserInterface
         for (Auction auction : bidList)
         {
             Bid bid = auction.getBidByUser(user);
-            if (bid != null && auction.getStage() == 1)
+            int stage = auction.getStage();
+            if (bid != null && stage == 1)
             {
                 displayAuction(auction, false);
                 displayBid(bid,"Your bid money: ");
@@ -1081,7 +1082,8 @@ public class UserInterface
         for (Auction auction : bidList)
         {
             Bid winner = auction.getWinner();
-            if (winner != null && winner.getBidder() == user)
+            int stage = auction.getStage();
+            if (stage == 2 && winner != null && winner.getBidder() == user)
             {
                 displayAuction(auction, false);
                 displayBid(winner, "Your bid money: ");
@@ -1098,7 +1100,8 @@ public class UserInterface
         for (Auction auction : bidList)
         {
             Bid winner = auction.getWinner();
-            if (winner != null && winner.getBidder() != user)
+            int stage = auction.getStage();
+            if (stage == 2 && (winner == null || winner.getBidder() != user))
             {
                 displayAuction(auction, false);
                 System.out.println();
