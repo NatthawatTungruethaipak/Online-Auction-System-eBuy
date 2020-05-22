@@ -32,6 +32,8 @@ public class AuctionProgram
     }
 
     /**
+     * Main function.
+     * Get the command from user and display interface follow the command.
      * 
      * @param args
      */
@@ -45,64 +47,49 @@ public class AuctionProgram
             System.out.println("\nUse command '/help' to see all command");
             int command = IOUtils.getCommand("command: ");
             switch (command) {
-                case 1:
-                    /** main page command **/
+                case 1: /** main page command **/                    
                     UserInterface.displayHomePage();
                     break;
-                case 2:
-                    /** help command **/
+                case 2: /** help command **/
                     UserInterface.displayHelp();
                     break;
-                case 3:
-                    /** next page command **/
+                case 3: /** next page command **/
                     UserInterface.displayNextPage();
                     break;
-                case 4:
-                    /** previous page command **/
+                case 4: /** previous page command **/
                     UserInterface.displayPrevPage();
                     break;
-                case 5:
-                    /** first page command **/
+                case 5: /** first page command **/
                     UserInterface.displayFirstPage();
                     break;
-                case 6:
-                    /** search auction command **/
+                case 6: /** search auction command **/
                     UserInterface.displaySearchAuction();
                     break;
-                case 7:
-                    /** display auction information **/
+                case 7: /** display auction information **/
                     UserInterface.displaySelectAuction();
                     break;
-                case 8:
-                    /** display register **/
+                case 8: /** display register **/
                     UserInterface.displayRegister();
                     break;
-                case 9:
-                    /** display login **/
+                case 9: /** display login **/
                     UserInterface.displayLogin();
                     break;
-                case 10:
-                    /** display logout **/
+                case 10: /** display logout **/
                     UserInterface.displayLogout();
                     break;
-                case 11:
-                    /** display user profile **/
+                case 11: /** display user profile **/
                     UserInterface.displayManageProfile();
                     break;
-                case 12:
-                    /** make auction **/
+                case 12: /** make auction **/
                     UserInterface.displayMakeAuction();
                     break;
-                case 13:
-                    /** about us **/
+                case 13: /** about us **/
                     UserInterface.displayAboutUs();
                     break;
-                case 14:
-                    /** Exit **/
+                case 14: /** Exit **/
                     bLoop = UserInterface.displayEnding();
                     break;
-                default:
-                    /** Error command **/
+                default: /** Error command **/
                     UserInterface.displayGetHelp();
                     break;
             }
@@ -112,7 +99,7 @@ public class AuctionProgram
     }
 
     /**
-     * Get login user
+     * Get the user that currently login
      * 
      * @return user
      */
@@ -122,9 +109,9 @@ public class AuctionProgram
     }
 
     /**
-     * Get login user
+     * Check that user is login or not
      * 
-     * @return user
+     * @return True, if user is login. False, if doesn't have any user login.
      */
     public static boolean isLogin()
     {
@@ -132,24 +119,6 @@ public class AuctionProgram
             return true;
         else
             return false;
-    }
-
-    /**
-     * Register the account
-     * 
-     * @param username of registering account
-     * @param password of registering account
-     * @param name     of registering account
-     * @param birth    of registering account
-     * @param address  of registering account
-     * @param email    of registering account
-     * @return True, when can register the account. Otherwise, false.
-     */
-    public static boolean register(String username, String password, String name,
-            Date birth, String address, String email)
-    {
-        return userManager.createUser(username, password, name, birth, address,
-                email);
     }
 
     /**
@@ -169,13 +138,13 @@ public class AuctionProgram
         }
         else
             return false;
-
+    
     }
 
     /**
      * Logout of the system
      * 
-     * @return true when user logged in, false when no user logged in.
+     * @return true if can logout. Otherwise, user haven't login.
      */
     public static boolean logout()
     {
@@ -189,48 +158,105 @@ public class AuctionProgram
     }
 
     /**
-     * Deposit money from the balance
+     * Register the account
      * 
-     * @param money is amount of money to deposit
-     * @return true when can deposit the money to the account. Otherwise false.
+     * @param username Username of user
+     * @param password Password of user
+     * @param name     Name of user
+     * @param birth    Birth date of user
+     * @param address  Address of user.
+     * @param email    Email of user
+     * @return True if be able to register to the system. Otherwise, false.
+     */
+    public static boolean register(String username, String password, String name,
+            Date birth, String address, String email)
+    {
+        return userManager.createUser(username, password, name, birth, address,
+                email);
+    }
+
+    /**
+     * Edit profile of user that currently login
+     * 
+     * @param password Password of user 
+     * @param name     Name of user
+     * @param birth    Birth date of user
+     * @param address  Address of user
+     * @param email    Email of user
+     * @return True if can edit profile. Otherwise, false.
+     */
+    public static boolean editProfile(String password, String name, Date birth,
+            String address, String email)
+    {
+        if (userLogin != null)
+            return userLogin.editProfile(password, name, birth, address, email);
+        else
+            return false;
+    }
+
+    /**
+     * Deposit money to the balance
+     * 
+     * @param money Amount of money to deposit
+     * @return true when can deposit the money to the account.
+     *         Otherwise, false.
      */
     public static boolean deposit(int money)
     {
-        if (userLogin.addMoney(money))
+        boolean bCheck = false;
+        if (userLogin != null)
         {
-            return true;
+            if (userLogin.addMoney(money))
+                bCheck = true;
         }
-        else
-        {
-            return false;
-        }
+        return bCheck;
     }
 
     /**
      * Withdraw money from the balance
      * 
-     * @param money is amount of money to deposit
-     * @return true when can withdraw the money from the account. Otherwise false.
+     * @param money Amount of money to withdraw
+     * @return true when be able to withdraw the money from the account.
+     *          Otherwise, false.
      */
     public static boolean withdraw(int money)
     {
+        boolean bCheck = false;
         if (userLogin != null)
         {
             if (userLogin.deductMoney(money))
-                return true;
-            else
-                return false;
+                bCheck = true;
         }
+        return bCheck;
+    }
+
+    /**
+     * Create auction for sell item
+     * 
+     * @param item      Item name that want to sell
+     * @param category  Category that of item
+     * @param picture   Picture of item
+     * @param minBid    Minimum money to bid
+     * @param dateStart Date start of the auction
+     * @param dateEnd   Date end or close date of auction
+     * @return true if can create auction. Otherwise false.
+     */
+    public static boolean makeAuction(String item, String category, String picture,
+            int minBid, Date dateStart, Date dateEnd)
+    {
+        if(userLogin != null)
+            return auctionManager.createAuction(userLogin, item, category, picture,
+                    minBid, dateStart, dateEnd);
         else
             return false;
     }
 
     /**
-     * Make bid from user
+     * Make bid to the auction
      * 
-     * @param auction that user want to make bid
-     * @param money   amount of money in that bid
-     * @return true when can make bid. Otherwise false.
+     * @param auction Auction that user want to bid
+     * @param money Money that user money want to bid
+     * @return True if user can make bid. Otherwise, false.
      */
     public static boolean makeBid(Auction auction, int money)
     {
@@ -238,31 +264,13 @@ public class AuctionProgram
             return auction.makeBid(userLogin, money);
         else
             return false;
-
-    }
-
-    /**
-     * Create auction for sell
-     * 
-     * @param item      of user that want to sell
-     * @param category  of user that want to sell
-     * @param picture   of user that want to sell
-     * @param minBid    of user that want to sell
-     * @param dateStart of user that want to sell
-     * @param dateEnd   of user that want to sell
-     * @return true when auction is created successful. Otherwise false.
-     */
-    public static boolean makeAuction(String item, String category, String picture,
-            int minBid, Date dateStart, Date dateEnd)
-    {
-        return auctionManager.createAuction(userLogin, item, category, picture,
-                minBid, dateStart, dateEnd);
     }
 
     /**
      * Search auction list from stage, category, item, seller, lower price.
      * 
      * @param type   Type that want to search
+     * (1-open, 2-close, 3-item, 4- cat, 5-name, 6-lower price)
      * @param keyStr Key that used to search.
      * @param keyInt Integer value that want to search
      * @return Return user list from search
@@ -282,10 +290,10 @@ public class AuctionProgram
                 retUserList = auctionManager.searchAuctionByItem(keyStr);
                 break;
             case 4:/* Search auction by category */
-                retUserList = auctionManager.searchAuctionByCat(keyStr);
+                retUserList = auctionManager.searchAuctionByCategory(keyStr);
                 break;
             case 5:/* Search auction by name */
-                retUserList = auctionManager.searchAuctionBySeller(keyStr);
+                retUserList = auctionManager.searchAuctionBySellerName(keyStr);
                 break;
             case 6: /* Search auction by lower price */
                 retUserList = auctionManager.searchAuctionByLowerPrice(keyInt);
@@ -311,32 +319,13 @@ public class AuctionProgram
     }
 
     /**
-     * Edit profile of user
-     * 
-     * @param password of user that going to be
-     * @param name     of user that going to be
-     * @param birth    of user that going to be
-     * @param address  of user that going to be
-     * @param email    of user that going to be
-     * @return true edit profile successful. Otherwise false.
-     */
-    public static boolean editProfile(String password, String name, Date birth,
-            String address, String email)
-    {
-        if (userLogin != null)
-            return userLogin.editProfile(password, name, birth, address, email);
-        else
-            return false;
-    }
-
-    /**
      * Initialise the program.
      */
     public static void initialProgram()
     {
         /* Create img directory */
         IOUtils.initial();
-        
+
         /* Initial category */
         Category.initial();
 
@@ -347,7 +336,7 @@ public class AuctionProgram
         /* Read auction from file */
         ArrayList<Auction> auctionList = fileHandler.readAuctions();
         auctionManager.initialAuction(auctionList);
-        
+
         /* Run auction trigger */
         AuctionTrigger auctionTrigger = AuctionTrigger.getSingleInstance();
         auctionTrigger.start();
@@ -361,14 +350,14 @@ public class AuctionProgram
         /* Interrupt thread to stop loop */
         AuctionTrigger auctionTrigger = AuctionTrigger.getSingleInstance();
         auctionTrigger.interrupt();
-        
+
         /* Save user to file */
         ArrayList<User> userList = userManager.getAllUser();
         fileHandler.writeUsers(userList);
-        
+
         /* Save auction to file */
         ArrayList<Auction> auctionList = auctionManager.getAllAuction();
         fileHandler.writeAuctions(auctionList);
-        
+
     }
 }

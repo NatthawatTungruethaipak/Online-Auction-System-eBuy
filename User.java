@@ -137,7 +137,17 @@ public class User
     }
 
     /**
-     * Editing the profile. Set new password, name, surname, birth, address, email
+     * Get balance of user
+     * 
+     * @return User's balance
+     */
+    public int getBalance()
+    {
+        return this.balance;
+    }
+
+    /**
+     * Editing the profile. Set new password, name, birth, address, email
      * 
      * @param password New password that want to set
      * @param name     New name that want to set
@@ -171,7 +181,7 @@ public class User
     }
 
     /**
-     * Add selling thing of user
+     * Add auction that user selling
      * 
      * @param auction The auction that user sell
      * @return true if can add the auction to list. Otherwise, false.
@@ -190,7 +200,7 @@ public class User
     }
 
     /**
-     * Add buying thing that user bid
+     * Add auction that user bid
      * 
      * @param auction The auction that user bid
      * @return true if can add auction that user bid to list. Otherwise, false.
@@ -212,7 +222,7 @@ public class User
      * Check password for the login
      * 
      * @param password
-     * @return
+     * @return True if password match with user password
      */
     public boolean checkPassword(String password)
     {
@@ -220,16 +230,6 @@ public class User
             return true;
         else
             return false;
-    }
-
-    /**
-     * Get balance of user
-     * 
-     * @return User's balance
-     */
-    public int getBalance()
-    {
-        return this.balance;
     }
 
     /**
@@ -241,10 +241,8 @@ public class User
      */
     public boolean deductMoney(int money)
     {
-        if ((this.balance - money) < 0)
-        {
+        if ((this.balance - money) < 0)        
             return false;
-        }
         else
         {
             this.balance = this.balance - money;
@@ -256,7 +254,7 @@ public class User
      * Add money to balance
      * 
      * @param money amount of money to add in balance
-     * @return true
+     * @return true if can add money. Otherwise, false.
      */
     public boolean addMoney(int money)
     {

@@ -18,7 +18,7 @@ public class IOUtils
     /** Directory of image **/
     final static String imgDirectory = "imgFolder";
 
-    /** Image name **/
+    /** Default image name **/
     final static String imgDefault = "default.png";
 
     /**
@@ -35,15 +35,15 @@ public class IOUtils
     /**
      * Check the string is null or not.
      * 
-     * @param string that will be check.
-     * @return true, when the string is null. false, when the string is not null.
+     * @param string String that will be check.
+     * @return true if the string is null. Otherwise, false.
      */
     public static boolean isNullStr(String string)
     {
+        boolean bCheck = false;
         if (string.trim().equals(""))
-            return true;
-        else
-            return false;
+            bCheck = true;
+        return bCheck;
     }
 
     /**
@@ -53,9 +53,8 @@ public class IOUtils
      * Reference from
      * https://www.geeksforgeeks.org/how-to-validate-a-username-using-regular-expressions-in-java/
      * 
-     * @param username is username to be validate
-     * @return True, when username is in correct pattern. False, when username is not
-     *         in correct pattern.
+     * @param username Username that want to validate
+     * @return True if username is in correct pattern. Otherwise, false.
      */
     public static boolean validateUsername(String username)
     {
@@ -75,9 +74,8 @@ public class IOUtils
      * Reference from
      * https://examples.javacodegeeks.com/core-java/util/regex/matcher/validate-password-with-java-regular-expression-example/
      * 
-     * @param password is password to be validate
-     * @return @return True, when password is in correct pattern. False, when
-     *         password is not in correct pattern.
+     * @param password Password string that want to validate
+     * @return @return True, when password is in correct pattern. Otherwise, false.
      */
     public static boolean validatePassword(String password)
     {
@@ -95,7 +93,7 @@ public class IOUtils
      * 
      * Reference from https://www.tutorialspoint.com/validate-email-address-in-java
      * 
-     * @param email is email to be validate
+     * @param email Email string that want to validate
      * @return True, when email is in correct pattern. False, when email is not in
      *         correct pattern.
      */
@@ -114,13 +112,11 @@ public class IOUtils
      * Validate integer the string parameter must contain only integer in format of
      * string
      * 
-     * @param string is string to be validate
+     * @param string String input that want to validate is integer or not.
      * @return true, when string is integer. False, when string is not integer.
      */
     public static boolean validateInteger(String string)
     {
-        if (isNullStr(string))
-            return false;
         try
         {
             Integer.parseInt(string);
@@ -132,6 +128,7 @@ public class IOUtils
         }
     }
 
+    
     public static void getEnter()
     {
         Scanner scanner = new Scanner(System.in);
@@ -139,65 +136,59 @@ public class IOUtils
     }
 
     /**
-     * Print the wording and get string from user.
+     * Loop ask until get text from user.
      * 
-     * @param print is wording for print out.
+     * @param message Message asking to get input
      * @return String from user input.
      */
-    public static String getString(String print)
+    public static String getText(String message)
     {
-        String returnString = "";
+        String retString = "";
         boolean bOk = false;
 
         while (!bOk)
         {
-            System.out.print(print);
+            System.out.print(message);
             Scanner scanner = new Scanner(System.in);
             String input = scanner.nextLine();
             if (isNullStr(input))
-            {
                 System.out.println("Input can't be null");
-            }
             else
             {
                 bOk = true;
-                returnString = input.trim();
+                retString = input.trim();
             }
         }
-        return returnString;
+        return retString;
     }
 
     /**
-     * Print the wording and get integer from user.
+     * Loop ask until get integer from user. Can set the minimum value.
      * 
-     * @param print is wording for print out.
-     * @param min   is minimum value of number from user input.
+     * @param message Message asking to get input
+     * @param min     Minimum value that let user input.
      * @return Integer from user input.
      */
-    public static int getInteger(String print, int min)
+    public static int getInteger(String message, int min)
     {
         boolean bOk = false;
         int returnInt = 0;
         while (!bOk)
         {
+            System.out.print(message);
+            Scanner scanner = new Scanner(System.in);
+            String input = scanner.nextLine();
             try
             {
-                System.out.print(print);
-                Scanner scanner = new Scanner(System.in);
-                String input = scanner.nextLine();
                 if (isNullStr(input))
-                {
-                    System.out.println("Input can't be null");
-                }
+                    System.out.println ("Input can't be null");
                 else
                 {
                     returnInt = Integer.parseInt(input);
                     if (returnInt >= min)
                         bOk = true;
                     else
-                        System.out.println(
-                                "Input must be number greater than or equal to "
-                                        + min);
+                        System.out.println("Input must be number greater than or equal to " + min);
                 }
 
             }
@@ -211,43 +202,39 @@ public class IOUtils
     }
 
     /**
-     * Print the wording and get integer from user with the range of number.
+     * Loop ask until get integer from user. Can set the minimum and maximum value.
      * 
-     * @param print is wording for print out.
-     * @param min   is minimum value of number from user input.
-     * @param max   is maximum value of number from user input.
+     * @param message Message asking to get input.
+     * @param min     Minimum value that let user input.
+     * @param max     Maximum value that let user input.
      * @return Integer from user input.
      */
-    public static int getInteger(String print, int min, int max)
+    public static int getInteger(String message, int min, int max)
     {
 
         boolean bOk = false;
         int returnInt = 0;
         while (!bOk)
         {
+            System.out.print(message);
+            Scanner scanner = new Scanner(System.in);
+            String input = scanner.nextLine();
             try
             {
-                System.out.print(print);
-                Scanner scanner = new Scanner(System.in);
-                String input = scanner.nextLine();
                 if (isNullStr(input))
-                {
                     System.out.println("Input can't be null");
-                }
                 else
                 {
                     returnInt = Integer.parseInt(input);
                     if ((returnInt >= min) && (returnInt <= max))
                         bOk = true;
                     else
-                        System.out.println("Input must be number between " + min
-                                + " and " + max);
-
+                        System.out.println("Input must be number between " + min + " and " + max);
                 }
             }
             catch (Exception e)
             {
-                System.out.println("Input must be number");
+                System.out.println("Input must be number.");
             }
 
         }
@@ -255,32 +242,29 @@ public class IOUtils
     }
 
     /**
-     * Print the wording and get command from user.
+     * Ask command from user.
      * 
-     * @param print is wording for print out.
+     * @param message Message asking to get command
      * @return command number.
      */
     public static int getCommand(String print)
     {
-        final String[] command =
-        { "/home", "/help", "/next", "/prev", "/first", "/search", "/auction",
-                "/register", "/login", "/logout", "/profile", "/makeauction",
-                "/aboutus", "/exit" };
+        final String[] command = { "/home", "/help", "/next", "/prev", "/first",
+                "/search", "/auction", "/register", "/login", "/logout", "/profile",
+                "/makeauction", "/aboutus", "/exit" };
         int commandValue = 0;
-        String input = getString(print);
+        String input = getText(print);
         for (int i = 0; i < command.length; i++)
-        {
             if (input.equalsIgnoreCase(command[i]))
                 commandValue = i + 1;
-        }
         return commandValue;
     }
 
     /**
-     * Print the wording and get boolean from user.
+     * Loop ask user until user input yes or no
      * 
-     * @param print is wording for print out.
-     * @return boolean from user input.
+     * @param message Message asking to get yes/no
+     * @return True if user ans yes. False if user ans no.
      */
     public static boolean getConfirm(String print)
     {
@@ -303,18 +287,18 @@ public class IOUtils
                 bOk = true;
             }
             else
-                System.out.println("Input must be yes or no");
+                System.out.println("Input must be yes or no.");
         }
         return returnConfirm;
     }
 
     /**
-     * Print the wording and get date from user.
+     * Loop get date until user input correct format of date.
      * 
-     * @param print   is wording for print out.
-     * @param dateCpr is date that going to be compare.
-     * @param bAfter  if true, date input must after dateCpr. Otherwise, date input
-     *                must before dateCpr.
+     * @param message Message asking to get date
+     * @param dateCpr Date to compare before or after
+     * @param bAfter  if true, date input must after dateCpr.
+     *                Otherwise, date input must before dateCpr.
      * @return Date from user input.
      */
     public static Date getDate(String print, Date dateCpr, boolean bAfter)
@@ -339,16 +323,14 @@ public class IOUtils
                     if (dateInput.after(dateCpr))
                         bOk = true;
                     else
-                        System.out.println("Input date must after "
-                                + DateUtils.dateToStr(dateCpr) + " .");
+                        System.out.println("Input date must after " + DateUtils.dateToStr(dateCpr) + " .");
                 }
                 else
                 {
                     if (dateInput.before(dateCpr))
                         bOk = true;
                     else
-                        System.out.println("Input date must before "
-                                + DateUtils.dateToStr(dateCpr) + " .");
+                        System.out.println("Input date must before " + DateUtils.dateToStr(dateCpr) + " .");
                 }
             }
         }
@@ -356,22 +338,22 @@ public class IOUtils
     }
 
     /**
-     * Print the wording and get date with time from user.
+     * Loop get date until user input correct format of date and time.
      * 
-     * @param print   is wording for print out.
-     * @param dateCpr is date that going to be compare.
-     * @param bAfter  if true, date input must after dateCpr. Otherwise, date input
-     *                must before dateCpr.
-     * @return Date with time from user input.
+     * @param message Message asking to get date
+     * @param dateCpr Date to compare before or after
+     * @param bAfter  if true, date time input must after dateCpr.
+     *                Otherwise, date time input must before dateCpr.
+     * @return Date time from user input.
      */
-    public static Date getDateTime(String print, Date dateCpr, boolean bAfter)
+    public static Date getDateTime(String message, Date dateCpr, boolean bAfter)
     {
         boolean bOk = false;
         Date dateInput = null;
         String input = null;
         while (!bOk) /** Loop until date is valid **/
         {
-            System.out.print(print);
+            System.out.print(message);
             Scanner scanner = new Scanner(System.in);
             input = scanner.nextLine();
 
@@ -383,7 +365,6 @@ public class IOUtils
             else
             {
                 dateInput = DateUtils.strToDateTime(input);
-                System.out.println(dateInput);
                 if (dateCpr == null)
                     dateCpr = new Date();
                 if (bAfter)
@@ -391,16 +372,14 @@ public class IOUtils
                     if (dateInput.after(dateCpr))
                         bOk = true;
                     else
-                        System.out.println("Input date must after "
-                                + DateUtils.dateTimeToStr(dateCpr) + " .");
+                        System.out.println("Input date must after " + DateUtils.dateTimeToStr(dateCpr) + " .");
                 }
                 else
                 {
                     if (dateInput.before(dateCpr))
                         bOk = true;
                     else
-                        System.out.println("Input date must before "
-                                + DateUtils.dateTimeToStr(dateCpr) + " .");
+                        System.out.println("Input date must before " + DateUtils.dateTimeToStr(dateCpr) + " .");
 
                 }
             }
@@ -409,43 +388,38 @@ public class IOUtils
     }
 
     /**
-     * Get the username from user as an input and validate the username.
+     * Get the username from user. Check that username is not duplicate in the system.
      * 
-     * @param print is wording for print out.
-     * @return String that will be the username of the user.
+     * @param message Message asking to get input
+     * @return Username from user.
      */
-    public static String getUsername(String print)
+    public static String getUsername(String message)
     {
         boolean bOk = false;
         String userInput = "";
         UserManager userManager = UserManager.getSingletonInstance();
         while (!bOk)
         {
-            userInput = getString(print);
+            userInput = getText(message);
             if (validateUsername(userInput))
             {
                 if (userManager.findUserByUsername(userInput) != null)
-                {
                     System.out.println("The username is already in use.");
-                    bOk = false;
-                }
                 else
-                {
                     bOk = true;
-                }
             }
             else
-                System.out.println(
-                        "Username must between 6-30 characters and first character must be alphabet and otherwise can be alphbet, number and underscore.");
+                System.out.println("Username must between 6-30 characters and first " + 
+            "character must be alphabet and otherwise can be alphbet, number and underscore.");
         }
         return userInput;
     }
 
     /**
-     * Get the password from user as an input and validate the password.
+     * Loop ask user to input the password
      * 
-     * @param print is wording for print out.
-     * @return String that will be the password of the user.
+     * @param message Message asking to get input
+     * @return Password from user.
      */
     public static String getPassword(String print)
     {
@@ -453,20 +427,20 @@ public class IOUtils
         String userInput = "";
         while (!bOk)
         {
-            userInput = getString(print);
+            userInput = getText(print);
             if (validatePassword(userInput))
                 bOk = true;
             else
-                System.out.println(
-                        "Password must between 8-40 characters. Password must contain at least one lower alphbet, one upper and one number.");
+                System.out.println("Password must between 8-40 characters. Password must " + 
+            "contain at least one lower alphbet, one upper and one number.");
         }
         return userInput;
     }
 
     /**
-     * Get the password from user as an input and validate the email.
+     * Get the email from user.
      * 
-     * @param print is wording for print out.
+     * @param message Message asking to get input
      * @return String that will be the email of the user.
      */
     public static String getEmail(String print)
@@ -475,7 +449,7 @@ public class IOUtils
         String userInput = "";
         while (!bOk)
         {
-            userInput = getString(print);
+            userInput = getText(print);
             if (validateEmail(userInput))
                 bOk = true;
             else
@@ -485,7 +459,24 @@ public class IOUtils
     }
 
     /**
-     * Get image directory.
+     * Select category from category list
+     * 
+     * @param message Message asking to get input
+     * @return category that user selected
+     */
+    public static String getCategory(String message)
+    {
+        System.out.println(message);
+        ArrayList<String> categoryList = Category.getAllCategoryStr();
+        for (int i = 0; i < categoryList.size(); i++)
+            System.out.println((i + 1) + " - " + categoryList.get(i));
+        int node = IOUtils.getInteger("Select category number: ", 1,
+                categoryList.size());
+        return categoryList.get(node - 1);
+    }
+
+    /**
+     * Get image directory of auction program.
      * 
      * @return image directory in the system.
      */
@@ -494,31 +485,6 @@ public class IOUtils
         return System.getProperty("user.dir") + "/" + imgDirectory + "/";
     }
 
-    private static String getAvailableFileName(String uploadedFileName)
-    {
-        int count = 0;
-        
-        /** Split file name into suffix and prefix and prepare directory path **/
-        String[] fileSplit = uploadedFileName.split("\\.(?=[^\\.]+$)");
-        String directory = getImageDir();
-        String fileName = uploadedFileName;
-
-        /** Check that file exists or not, If exists, change file name **/
-        File temp = null;
-        boolean bLoop = true;
-        do
-        {
-            temp = new File(directory + fileName);
-            if (!temp.exists())
-                bLoop = false;
-            else
-            {
-                count++;
-                fileName = fileSplit[0] + "-" + count + "." + fileSplit[1];
-            }
-        } while (bLoop);
-        return fileName;
-    }
     /**
      * Upload the image to the system.
      * 
@@ -565,24 +531,40 @@ public class IOUtils
             System.out.println("Error occur, can't upload");
             return imgDefault;
         }
-
+    
         return fileName;
     }
 
     /**
-     * Select category from category list
+     * If there are file in the image directory, change file name.
+     * Until get the available file name.
      * 
-     * @param print is wording for print out.
-     * @return category that user selected
+     * @param uploadedFileName File name that going to upload in system
+     * @return Available file name that doesn't replace file in image directory.
      */
-    public static String getCategory(String print)
+    private static String getAvailableFileName(String uploadedFileName)
     {
-        System.out.println(print);
-        ArrayList<String> categoryList = Category.getAllCategoryStr();
-        for (int i = 0; i < categoryList.size(); i++)
-            System.out.println((i + 1) + " - " + categoryList.get(i));
-        int node = IOUtils.getInteger("Select category number: ", 1,
-                categoryList.size());
-        return categoryList.get(node - 1);
+        int count = 0;
+        
+        /** Split file name into suffix and prefix and prepare directory path **/
+        String[] fileSplit = uploadedFileName.split("\\.(?=[^\\.]+$)");
+        String directory = getImageDir();
+        String fileName = uploadedFileName;
+    
+        /** Check that file exists or not, If exists, change file name **/
+        File temp = null;
+        boolean bLoop = true;
+        do
+        {
+            temp = new File(directory + fileName);
+            if (!temp.exists())
+                bLoop = false;
+            else
+            {
+                count++;
+                fileName = fileSplit[0] + "-" + count + "." + fileSplit[1];
+            }
+        } while (bLoop);
+        return fileName;
     }
 }

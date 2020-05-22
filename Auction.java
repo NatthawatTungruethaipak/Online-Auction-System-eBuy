@@ -58,10 +58,10 @@ public class Auction
         this.category = category;
         this.seller = seller;
         this.dateEnd = dateEnd;
-        seller.addSelling(this);
         this.dateStart = dateStart;
         this.minBid = minBid;
         this.picture = picture;
+        seller.addSelling(this);
     }
 
     /**
@@ -75,7 +75,7 @@ public class Auction
     }
 
     /**
-     * Get url picture of item.
+     * Get picture file name of item.
      * 
      * @return URL picture
      */
@@ -127,7 +127,7 @@ public class Auction
     /**
      * Get the category in string
      * 
-     * @return Category
+     * @return Category string
      */
     public String getCategoryStr()
     {
@@ -137,11 +137,21 @@ public class Auction
     /**
      * Get the stage of an auction
      * 
-     * @return Stage
+     * @return Stage of auction. 0 - wait, 1 - open, 2- close
      */
     public int getStage()
     {
         return this.stage;
+    }
+
+    /**
+     * Minimum bid at start
+     * 
+     * @return minimum bid of the auction at the start of the auction.
+     */
+    public int getMinBid()
+    {
+        return this.minBid;
     }
 
     /**
@@ -155,16 +165,6 @@ public class Auction
             return bidList.get(bidList.size() - 1).getMoney();
         else
             return minBid;
-    }
-
-    /**
-     * Minimum bid at start
-     * 
-     * @return minimum bid of the auction at the start of the auction.
-     */
-    public int getMinBid()
-    {
-        return this.minBid;
     }
 
     /**
@@ -188,6 +188,27 @@ public class Auction
     }
 
     /**
+     * Get bid of user
+     * 
+     * @return Latest Bid that user bid to auction
+     */
+    public Bid getBidByUser(User user)
+    {
+        Bid retBid = null;
+        /* Loop from the end (the highest money) */
+        for (int i = bidList.size() - 1; i >= 0; i--)
+        {
+            Bid bid = bidList.get(i);
+            if (bid.getBidder() == user)
+            {
+                retBid = bid;
+                break;
+            }
+        }
+        return retBid;
+    }
+
+    /**
      * Check the auction is it has a bid.
      * 
      * @return true when this auction has someone bid on it.
@@ -201,29 +222,8 @@ public class Auction
     }
 
     /**
-     * Get bid of user
-     * 
-     * @return Latest Bid that user bid to auction
-     */
-    public Bid getBidByUser(User user)
-    {
-        Bid retBid = null;
-        /* Loop from the end (the highest money) */
-        for(int i = bidList.size()-1; i >= 0; i--)
-        {
-            Bid bid = bidList.get(i);
-            if (bid.getBidder() == user)
-            {
-                retBid = bid;
-                break;
-            }
-        }
-        return retBid;
-    }
-
-    /**
      * Set winner of an auction (Used in read file). Also check that the bid is in
-     * the auction before set.
+     * the auction or not before set.
      * 
      * @param winner The bid that win the auction
      * @return Return true if can set and found this bid in auction. Otherwise,
@@ -232,19 +232,16 @@ public class Auction
     public boolean setWinner(Bid winner)
     {
         boolean bCheck = false;
-        if (winner != null)
+        if (winner != null && bidList.contains(winner) == true)
         {
-            if (bidList.contains(winner) == true)
-            {
-                this.winner = winner;
-                bCheck = true;
-            }
+            this.winner = winner;
+            bCheck = true;
         }
         return bCheck;
     }
 
     /**
-     * Set stage of auction
+     * Set stage of auction. (Used in read file).
      * 
      * @param stage that will be set to the auction
      * @return true when stage is between 0-2. Otherwise is false.
@@ -288,7 +285,9 @@ public class Auction
         if (stage == 1)
         {
             stage = 2;
-            for (int i = bidList.size()-1; i >= 0; i--)
+            
+            /* Find winner, deduct money from bidder and add money to seller */
+            for (int i = bidList.size() - 1; i >= 0; i--)
             {
                 Bid bid = bidList.get(i);
                 User bidder = bid.getBidder();
@@ -334,8 +333,8 @@ public class Auction
                 /* Add bid to auction and user */
                 if (bidList.add(createBid) && user.addBid(this))
                     bCheck = true;
+                Collections.sort(bidList);
             }
-            Collections.sort(bidList);
         }
         return bCheck;
     }

@@ -3,7 +3,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * Utility method about date in the auction program.
+ * Utility method about date and time in the auction program.
  * 
  * Created by Kla & Tong 18 May 2020
  */
@@ -12,15 +12,13 @@ public class DateUtils
     /**
      * Date format for date
      */
-    private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
-            "dd-MM-yyyy");
+    private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
 
     /**
      * DateTime format for date and time
      */
-    private static SimpleDateFormat simpleDateTimeFormat = new SimpleDateFormat(
-            "dd-MM-yyyy-HH:mm");
-    
+    private static SimpleDateFormat simpleDateTimeFormat = new SimpleDateFormat("dd-MM-yyyy-HH:mm");
+
     /**
      * Check the date input that is after current date or not
      * 
@@ -30,7 +28,7 @@ public class DateUtils
     public static boolean isAfterCurrentDateTime(Date date)
     {
         Date dateNow = new Date();
-        if (date.after(dateNow))
+        if (date != null && date.after(dateNow))
             return true;
         else
             return false;
@@ -45,7 +43,7 @@ public class DateUtils
     public static boolean isBeforeCurrentDateTime(Date date)
     {
         Date dateNow = new Date();
-        if (date.before(dateNow))
+        if (date != null && date.before(dateNow))
             return true;
         else
             return false;
@@ -59,8 +57,8 @@ public class DateUtils
      * https://mkyong.com/java/how-to-calculate-date-time-difference-in-java/
      * 
      * @param dateCpr is date to be compare.
-     * @return difference of date and time in term of integer array. Index 0 is days,
-     *         index 1 is hours, index 2 is minutes, index 3 is seconds
+     * @return Difference of date and time in term of integer array.
+     *         Index 0 is days, index 1 is hours, index 2 is minutes, index 3 is seconds
      */
     public static int[] diffCurrentDateTime(Date dateCpr)
     {
@@ -69,7 +67,7 @@ public class DateUtils
 
         try
         {
-            // in milliseconds
+            /* In millisecs */
             long diff = Math.abs(dateNow.getTime() - dateCpr.getTime());
 
             long diffSeconds = (diff / 1000) % 60;
@@ -122,7 +120,7 @@ public class DateUtils
      * Reference from
      * https://mkyong.com/java/how-to-calculate-date-time-difference-in-java/
      * 
-     * @param date and time that going to create
+     * @param dateTimeStr date and time that going to create in Date class
      * @return Date instance. If can't convert, null.
      */
     public static Date strToDateTime(String dateTimeStr)
@@ -163,7 +161,7 @@ public class DateUtils
      * Reference from
      * https://mkyong.com/java/how-to-calculate-date-time-difference-in-java/
      * 
-     * @param date and time that going to create
+     * @param dateTime date and time that going to create instance.
      * @return Date instance. If can't convert, null.
      */
     public static String dateTimeToStr(Date dateTime)
@@ -172,16 +170,16 @@ public class DateUtils
         String strDate = simpleDateTimeFormat.format(dateTime);
         return strDate;
     }
-    
+
     /**
      * Validate date to check pattern of date in format dd-MM-yyyy
      * 
      * Reference from
      * https://mkyong.com/java/how-to-calculate-date-time-difference-in-java/
      * 
-     * @param date that going to be validate
-     * @return True, when date is correct pattern. False, when date is incorrect
-     *         pattern.
+     * @param date Date in string that want to validate
+     * @return True if date is correct pattern.
+     *         False if date is incorrect pattern.
      */
     public static boolean validateDateStr(String date)
     {
@@ -208,9 +206,9 @@ public class DateUtils
      * Reference from
      * https://mkyong.com/java/how-to-calculate-date-time-difference-in-java/
      * 
-     * @param dateTime that going to be validate
-     * @return True, when date and time is correct pattern. False, when date and time
-     *         is incorrect pattern.
+     * @param dateTime Date time in string that want to validate
+     * @return True if date and time is correct pattern.
+     *         False if date and time is incorrect pattern.
      */
     public static boolean validateDateTimeStr(String dateTime)
     {

@@ -1,4 +1,5 @@
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Manage, control, and keep all user.
@@ -26,7 +27,7 @@ public class UserManager
     }
 
     /**
-     * Get instance of UserManager. Implement Singleton
+     * Get instance of UserManager. Implement Singleton.
      * 
      * @return Instance of UserManager
      */
@@ -46,36 +47,6 @@ public class UserManager
             this.userList = userList;
         else
             this.userList = new ArrayList<User>();
-    }
-
-    /**
-     * Validate data of new user
-     * 
-     * @param username of new user
-     * @param password of new user
-     * @param name     of new user
-     * @param birth    of new user
-     * @param address  of new user
-     * @param email    of new user
-     * @return new user with validated
-     */
-    private User validateUser(String username, String password, String name,
-            Date birth, String address, String email)
-    {
-        if (IOUtils.validateUsername(username) == false)
-            return null;
-        if (IOUtils.validatePassword(password) == false)
-            return null;
-        if (DateUtils.isAfterCurrentDateTime(birth))
-            return null;
-        if (IOUtils.validateEmail(email) == false)
-            return null;
-
-        /* Create new user */
-        if (findUserByUsername(username) == null)
-            return new User(username, password, name, birth, address, email);
-        else
-            return null;
     }
 
     /**
@@ -133,14 +104,8 @@ public class UserManager
             if (user.getUsername().equals(username))
             {
                 if (user.checkPassword(password))
-                {
                     findUser = user;
-                    break;
-                }
-                else
-                {
-                    break;
-                }
+                break;
             }
         }
         return findUser;
@@ -170,10 +135,40 @@ public class UserManager
     /**
      * Get all user list. (Used in write file)
      * 
-     * @return All user list.
+     * @return User list
      */
     public ArrayList<User> getAllUser()
     {
         return userList;
+    }
+
+    /**
+     * Validate user data and return in User instance back.
+     * 
+     * @param username Username to validate
+     * @param password Password user to validate
+     * @param name     Name of user to validate
+     * @param birth    birth date of user
+     * @param address  Address of user
+     * @param email    Email of user
+     * @return New user if the data is valid.
+     */
+    private User validateUser(String username, String password, String name,
+            Date birth, String address, String email)
+    {
+        if (IOUtils.validateUsername(username) == false)
+            return null;
+        if (IOUtils.validatePassword(password) == false)
+            return null;
+        if (DateUtils.isAfterCurrentDateTime(birth))
+            return null;
+        if (IOUtils.validateEmail(email) == false)
+            return null;
+    
+        /* Create new user */
+        if (findUserByUsername(username) == null)
+            return new User(username, password, name, birth, address, email);
+        else
+            return null;
     }
 }

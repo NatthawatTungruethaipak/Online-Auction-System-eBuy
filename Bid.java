@@ -41,16 +41,6 @@ public class Bid  implements Comparable<Bid>
     }
 
     /**
-     * Get date that this bid was created
-     * 
-     * @return Created date of bid
-     */
-    public Date getDateTime()
-    {
-        return this.dateBid;
-    }
-
-    /**
      * Get money that bid
      * 
      * @return Bid money
@@ -58,6 +48,16 @@ public class Bid  implements Comparable<Bid>
     public int getMoney()
     {
         return this.money;
+    }
+
+    /**
+     * Get date that this bid was created
+     * 
+     * @return Created date of bid
+     */
+    public Date getDateTime()
+    {
+        return this.dateBid;
     }
 
     /**
