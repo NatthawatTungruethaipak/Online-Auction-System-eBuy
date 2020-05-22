@@ -125,13 +125,40 @@ public class UserManager
     public boolean createUser(String username, String password, String name,
             Date birth, String address, String email)
     {
-        User newUser = validateUser(username, password, name, birth, address, email);
-        if (newUser != null && userList.add(newUser))
-            return true;
-        else
-            return false;
+        User newUser = null;
+        /** Validate user data and don't have username in system. **/
+        if(IOUtils.validateUser(username, password, name, birth, address, email) &&
+           findUserByUsername(username) == null)
+        {
+            newUser = new User(username, password, name, birth, address, email);
+            if (userList.add(newUser))
+                return true;
+        }
+        return false;
     }
-
+    
+    /**
+     * Edit profile data.
+     * 
+     * @param user     User that want to edit
+     * @param password Password of user
+     * @param name     Name of user
+     * @param birth    Birth date of user
+     * @param address  Address of user
+     * @param email    Email of user
+     * @return True, if can create a new user. Otherwise, false.
+     */
+    public boolean editProfile(User user, String password,String name, Date birth, String address, String email)
+    {
+        /** Validate user data and don't have username in system. **/
+        if(IOUtils.validateUser(user.getUsername(), password, name, birth, address, email))
+        {
+            user.editProfile(password, name, birth, address, email);
+            return true;
+        }
+        return false;
+    }
+    
     /**
      * Get all user list. (Used in write file)
      * 
@@ -140,35 +167,5 @@ public class UserManager
     public ArrayList<User> getAllUser()
     {
         return userList;
-    }
-
-    /**
-     * Validate user data and return in User instance back.
-     * 
-     * @param username Username to validate
-     * @param password Password user to validate
-     * @param name     Name of user to validate
-     * @param birth    birth date of user
-     * @param address  Address of user
-     * @param email    Email of user
-     * @return New user if the data is valid.
-     */
-    private User validateUser(String username, String password, String name,
-            Date birth, String address, String email)
-    {
-        if (IOUtils.validateUsername(username) == false)
-            return null;
-        if (IOUtils.validatePassword(password) == false)
-            return null;
-        if (DateUtils.isAfterCurrentDateTime(birth))
-            return null;
-        if (IOUtils.validateEmail(email) == false)
-            return null;
-    
-        /* Create new user */
-        if (findUserByUsername(username) == null)
-            return new User(username, password, name, birth, address, email);
-        else
-            return null;
     }
 }
