@@ -116,11 +116,11 @@ public class AuctionFileHandler
     private Auction parseAuction(String parse[])
     {
         String item = null;
-        String category = null;
         String picture = null;
         User seller = null;
         Date dateStart = null;
         Date dateEnd = null;
+        Category category = null;
         int stage = 0;
         int minBid = 0;
 
@@ -135,14 +135,20 @@ public class AuctionFileHandler
             if (tag.equals(tagAuction[0])
                     && IOUtils.isNullStr(text) != true)
                 item = text;
+            
             /** Check category **/
             else if (tag.equals(tagAuction[1])
                     && IOUtils.isNullStr(text) != true)
-                category = text;
+            {
+                System.out.println("\""+text+"\"");
+                category = Category.findCategory(text);
+            }
+            
             /** Check picture **/
             else if (tag.equals(tagAuction[2])
                     && IOUtils.isNullStr(text) != true)
                 picture = text;
+            
             /** Check seller user **/
             else if (tag.equals(tagAuction[3]))
             {
@@ -150,14 +156,17 @@ public class AuctionFileHandler
                 if (seller == null)
                     return null;
             }
+            
             /** Check start date **/
             else if (tag.equals(tagAuction[4])
                     && DateUtils.validateDateTimeStr(text))
                 dateStart = DateUtils.strToDateTime(text);
+            
             /** Check close date **/
             else if (tag.equals(tagAuction[5])
                     && DateUtils.validateDateTimeStr(text))
                 dateEnd = DateUtils.strToDateTime(text);
+            
             /** Check stage **/
             else if (tag.equals(tagAuction[6])
                     && IOUtils.validateInteger(text))
@@ -166,6 +175,7 @@ public class AuctionFileHandler
                 if (stage < 0 || stage > 2)
                     return null;
             }
+            
             /** Check minimum bid money **/
             else if (tag.equals(tagAuction[7])
                     && IOUtils.validateInteger(text))
@@ -180,6 +190,7 @@ public class AuctionFileHandler
         /** Check that start date after end date or not **/
         if (dateStart.after(dateEnd))
             return null;
+        
         Auction auction = new Auction(seller, item, category, dateStart, dateEnd,
                 minBid, picture);
 

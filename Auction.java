@@ -51,11 +51,11 @@ public class Auction
      * @param minBid    Minimum money to bid
      * @param picture   Picture of item
      */
-    public Auction(User seller, String item, String category, Date dateStart,
+    public Auction(User seller, String item, Category category, Date dateStart,
             Date dateEnd, int minBid, String picture)
     {
         this.item = item;
-        this.category = Category.findCategory(category);
+        this.category = category;
         this.seller = seller;
         this.dateEnd = dateEnd;
         seller.addSelling(this);
@@ -125,7 +125,7 @@ public class Auction
     }
 
     /**
-     * Get the category of item
+     * Get the category in string
      * 
      * @return Category
      */

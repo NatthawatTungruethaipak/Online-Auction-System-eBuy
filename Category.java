@@ -48,7 +48,8 @@ public class Category
         Category retCategory = null;
         for (Category category : categoryList)
         {
-            if (category.equals(categoryFind))
+            String categoryStr = category.getCategoryStr();
+            if (categoryStr.equals(categoryFind))
             {
                 retCategory = category;
                 break;

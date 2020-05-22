@@ -30,9 +30,6 @@ public class AuctionManager
     /** HashMap of auction list that have a key is seller */
     private HashMap<User, ArrayList<Auction>> auctionMapSeller = new HashMap<User, ArrayList<Auction>>();
 
-    /** Default file if user doesn't upload the picture **/
-    private final String defaultFile = "";
-
     /**
      * Constructor of auction manager. Make it private to prevent to implement
      * singleton.
@@ -80,24 +77,25 @@ public class AuctionManager
      * @param dateEnd   End date of auction
      * @return Return auction if the data is valid. Otherwise, false.
      */
-    private Auction validateAuction(User seller, String item, String category,
+    private Auction validateAuction(User seller, String item, String categoryStr,
             Date dateStart, Date dateEnd, int minBid, String picture)
     {
         if (seller == null)
-            System.out.println("Seller");
+            return null;
         if (dateStart.after(dateEnd))
-            System.out.println("Date End");
+            return null;
         if (IOUtils.isNullStr(item))
-            System.out.println("Item");
-        if (IOUtils.isNullStr(category))
-            System.out.println("Category");
+            return null;
+        if (IOUtils.isNullStr(categoryStr))
+            return null;
         if (IOUtils.isNullStr(picture))
-            picture = defaultFile;
+            return null;
         if (minBid < 0)
             return null;
-
         if (DateUtils.isBeforeCurrentDateTime(dateEnd))
             return null;
+        
+        Category category = Category.findCategory(categoryStr);
 
         Auction auction = new Auction(seller, item, category, dateStart, dateEnd,
                 minBid, picture);
@@ -124,8 +122,8 @@ public class AuctionManager
             closedAuction.add(auction);
 
         /** Add auction to hash map of category **/
-        ArrayList<Auction> auctionCategoryList = auctionMapCategory
-                .get(Category.findCategory(auction.getCategoryStr()));
+        Category category = Category.findCategory(auction.getCategoryStr());
+        ArrayList<Auction> auctionCategoryList = auctionMapCategory.get(category);
         if (auctionCategoryList != null)
             auctionCategoryList.add(auction);
 
