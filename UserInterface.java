@@ -967,7 +967,7 @@ public class UserInterface
                 "=========================================================");
         if (AuctionProgram.isLogin())
         {
-            if (IOUtils.getConfirm("Do you want to make a bid?"))
+            if (IOUtils.getConfirm("Do you want to make a bid? (yes/no): "))
                 displayMakeBid(auction);
         }
         else
@@ -1103,7 +1103,7 @@ public class UserInterface
         JFrame f = new JFrame("image");
         String imgDir = IOUtils.getImageDir() + imgFileName;
         BufferedImage img = null;
-        System.out.print("Loading image...  ");
+        System.out.print("Loading image to display...  ");
         try
         {
             img = ImageIO.read(new File(imgDir));
@@ -1111,7 +1111,7 @@ public class UserInterface
         catch (IOException e)
         {
             System.out.println("Fail...");
-            System.out.println("Cannot loading image to display");
+            System.out.println("Cannot load image to display");
             return;
         }
         int width = img.getWidth();

@@ -9,15 +9,16 @@ import java.util.Date;
 public class AuctionTrigger extends Thread
 {
     private static AuctionTrigger auctionTrigger = new AuctionTrigger();
-    
+
     private ArrayList<Auction> managedAuction = new ArrayList<Auction>();
-    
-    private boolean bLoop = true; 
-    
+
+    private boolean bLoop = true;
+
     private AuctionTrigger()
     {
+        
     }
-    
+
     public static AuctionTrigger getSingleInstance()
     {
         return auctionTrigger;
@@ -32,10 +33,13 @@ public class AuctionTrigger extends Thread
     public boolean addAuction(Auction auction)
     {
         boolean bCheck = false;
-        if (auction != null)
+        synchronized (managedAuction)
         {
-            if (managedAuction.add(auction))
-                bCheck = true;
+            if (auction != null)
+            {
+                if (managedAuction.add(auction))
+                    bCheck = true;
+            }
         }
         return bCheck;
     }
@@ -44,47 +48,52 @@ public class AuctionTrigger extends Thread
      * Implement run method of thread. Observe all managed and update its stage.
      */
     public void run()
-    {
+    {      
         AuctionManager auctionManager = AuctionManager.getSingletonInstance();
         while (bLoop)
         {
-            for (int i = 0; i < managedAuction.size(); i ++)
+            synchronized (managedAuction)
             {
-                Auction auction = managedAuction.get(i);
-                int stage = auction.getStage();
-                Date currentDate = DateUtils.getCurrentDateTime();
-                /**************** For Testing ****************/
-//                 currentDate = DateUtils.strToDate("1-1-1998"); 
-//                 try
-//                {
-//                    Thread.sleep(30000);/* 30000 = 30 Secs */
-//                }
-//                catch (InterruptedException e)
-//                {
-//                    System.out.println("Thread error problem");
-//                } 
-                /********************************************/ 
-                 
-                if (stage == 0)
+                for (int i = 0; i < managedAuction.size(); i++)
                 {
-                    Date startDate = auction.getDateStart();
-                    if (startDate.before(currentDate))
-                        auctionManager.updateAuctionStage(auction);
+                    Auction auction = managedAuction.get(i);
+                    int stage = auction.getStage();
+                    Date currentDate = DateUtils.getCurrentDateTime();
+
+                    if (stage == 0)
+                    {
+                        Date startDate = auction.getDateStart();
+                        if (startDate.before(currentDate))
+                            auctionManager.updateAuctionStage(auction);
+                    }
+                    else if (stage == 1)
+                    {
+                        Date endDate = auction.getDateEnd();
+                        if (endDate.before(currentDate))
+                            auctionManager.updateAuctionStage(auction);
+                    }
+                    else
+                    {
+                        managedAuction.remove(auction);
+                    }
                 }
-                else if (stage == 1)
-                {
-                    Date endDate = auction.getDateEnd();
-                    if (endDate.before(currentDate))
-                        auctionManager.updateAuctionStage(auction);
-                }
-                else
-                {
-                    managedAuction.remove(auction);
-                }
+            }
+
+            /**
+             * Sleep thread for a while to let another thread can add data from
+             * synchronized
+             **/
+            try
+            {
+                Thread.sleep(1000);
+            }
+            catch (InterruptedException e)
+            {
+                System.out.println("Can't sleep thread");
             }
         }
     }
-    
+
     public void interrupt()
     {
         /* Stop loop */
