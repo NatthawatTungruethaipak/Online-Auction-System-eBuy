@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
 import javax.swing.JFileChooser;
-import javax.swing.JFrame;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.filechooser.FileSystemView;
 
@@ -495,32 +494,14 @@ public class IOUtils
         return System.getProperty("user.dir") + "/" + imgDirectory + "/";
     }
 
-    /**
-     * Upload the image to the system.
-     * 
-     * @return filename of the image.
-     */
-    public static String uploadImage()
+    private static String getAvailableFileName(String uploadedFileName)
     {
         int count = 0;
-        /** Upload image **/
-        JFileChooser frameChooseFile = new JFileChooser(
-                FileSystemView.getFileSystemView());
-        frameChooseFile.setDialogTitle("Select an image");
-        frameChooseFile.setAcceptAllFileFilterUsed(false);
-        FileNameExtensionFilter filter = new FileNameExtensionFilter(
-                "jpg/png images", "png", "jpg");
-        frameChooseFile.addChoosableFileFilter(filter);
-
-        /** If user doesn't upload image, reset to default **/
-        int ret = frameChooseFile.showOpenDialog(null);
-        if (ret != JFileChooser.APPROVE_OPTION)
-            return imgDefault;
-
+        
         /** Split file name into suffix and prefix and prepare directory path **/
-        String fileName = frameChooseFile.getSelectedFile().getName();
+        String[] fileSplit = uploadedFileName.split("\\.(?=[^\\.]+$)");
         String directory = getImageDir();
-        String[] fileSplit = fileName.split("\\.(?=[^\\.]+$)");
+        String fileName = uploadedFileName;
 
         /** Check that file exists or not, If exists, change file name **/
         File temp = null;
@@ -536,18 +517,53 @@ public class IOUtils
                 fileName = fileSplit[0] + "-" + count + "." + fileSplit[1];
             }
         } while (bLoop);
-
+        return fileName;
+    }
+    /**
+     * Upload the image to the system.
+     * 
+     * @return filename of the image. If error occur, return default image.
+     */
+    public static String uploadImage()
+    {
+        
+        /** Upload image **/
+        JFileChooser frameChooseFile = new JFileChooser(
+                FileSystemView.getFileSystemView());
+        frameChooseFile.setDialogTitle("Select an image");
+        frameChooseFile.setAcceptAllFileFilterUsed(false);
+        FileNameExtensionFilter filter = new FileNameExtensionFilter(
+                "jpg/png images", "png", "jpg");
+        frameChooseFile.addChoosableFileFilter(filter);
+        
+        System.out.print("Selecting image... ");
+        /** If user doesn't upload image, reset to default **/
+        int ret = JFileChooser.CANCEL_OPTION;
+        ret = frameChooseFile.showOpenDialog(null);
+        if (ret != JFileChooser.APPROVE_OPTION)
+        {
+            System.out.println("No image uploaded");
+            return imgDefault;
+        }
+        else
+            System.out.println("Image uploaded");
+        
+        /** Prepare file name and directory **/
+        String uploadedFileName = frameChooseFile.getSelectedFile().getName();
+        String fileName = getAvailableFileName(uploadedFileName);
+        String directory = getImageDir();
+            
         /** Copy file to the image directory of online auction program **/
-        File src = frameChooseFile.getSelectedFile();
-        File dest = new File(directory + fileName);
         try
         {
+            File src = frameChooseFile.getSelectedFile();
+            File dest = new File(directory + fileName);
             Files.copy(src.toPath(), dest.toPath());
         }
         catch (IOException e)
         {
             System.out.println("Error occur, can't upload");
-            return null;
+            return imgDefault;
         }
 
         return fileName;
@@ -570,9 +586,4 @@ public class IOUtils
         return categoryList.get(node - 1);
     }
 
-    public static void main(String[] args)
-    {
-        System.out.println(getInteger("euei: ", 5));
-        System.out.println(getInteger("ahha: ",5,15));
-    }
 }

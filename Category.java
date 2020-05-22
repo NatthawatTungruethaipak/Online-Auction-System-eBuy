@@ -21,7 +21,6 @@ public class Category
     public Category(String categoryStr)
     {
         this.categoryStr = categoryStr;
-        categoryList.add(this);
     }
 
     /**
@@ -34,9 +33,7 @@ public class Category
                 "Sporting Goods", "Health & Beauty", "Toys & Hobbies", "Books",
                 "Movies", "Music", "Business & Industrial", "Vehicle", "Other" };
         for (String str : strArray)
-        {
-            new Category(str);
-        }
+            categoryList.add(new Category(str));
     }
 
     /**
@@ -51,7 +48,8 @@ public class Category
         Category retCategory = null;
         for (Category category : categoryList)
         {
-            if (category.equals(categoryFind))
+            String categoryStr = category.getCategoryStr();
+            if (categoryStr.equals(categoryFind))
             {
                 retCategory = category;
                 break;
@@ -75,6 +73,16 @@ public class Category
             retList.add(category.getCategoryStr());
         }
         return retList;
+    }
+    
+    /**
+     * Get the category string list
+     * 
+     * @return Array list of category in string format.
+     */
+    public static ArrayList<Category> getAllCategory()
+    {
+        return categoryList;
     }
 
     /**
