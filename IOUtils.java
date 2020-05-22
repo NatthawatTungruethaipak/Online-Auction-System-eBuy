@@ -129,7 +129,8 @@ public class IOUtils
     }
 
     /**
-     * Validate user data and return in User instance back.
+     * Validate all user data.
+     * Return true if valid.
      * 
      * @param username Username to validate
      * @param password Password user to validate
@@ -159,7 +160,8 @@ public class IOUtils
     }
     
     /**
-     * Validate the auction data, create, and check stage.
+     * Validate all auction data.
+     * Return true if valid.
      * 
      * @param seller    Seller of auction
      * @param item      Item name
