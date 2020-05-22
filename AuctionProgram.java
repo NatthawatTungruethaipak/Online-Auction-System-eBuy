@@ -130,7 +130,7 @@ public class AuctionProgram
      */
     public static boolean login(String username, String password)
     {
-        User user = userManager.checkLogin(username, password);
+        User user = userManager.getLogin(username, password);
         if (user != null)
         {
             userLogin = user;
