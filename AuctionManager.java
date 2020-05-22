@@ -50,14 +50,18 @@ public class AuctionManager
     {
         return auctionManager;
     }
-
+    
     /**
-     * Initialize for AuctionManager
+     * Initialize auction list for AuctionManager
      * 
      * @param auctionList
      */
     public void initialAuction(ArrayList<Auction> auctionList)
     {
+        ArrayList<Category> categoryList = Category.getAllCategory();
+        for(Category category: categoryList)
+            auctionMapCategory.put(category, new ArrayList<Auction>());
+        
         if (auctionList == null)
             return;
         for (Auction auction : auctionList)
@@ -149,9 +153,7 @@ public class AuctionManager
         }
 
         if (auction.getStage() < 2)
-        {
             AuctionTrigger.getSingleInstance().addAuction(auction);
-        }
     }
 
     /**
