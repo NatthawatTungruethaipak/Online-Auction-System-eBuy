@@ -8,26 +8,22 @@ import java.util.Date;
  */
 public class UserManager
 {
-    /**
-     * UserManager that will be Singleton to control user
-     */
-    private static UserManager userManager = new UserManager();;
+    /** UserManager that will be Singleton to control user */
+    private static UserManager userManager = new UserManager();
 
-    /**
-     * List of user
-     */
+    /** List of user */
     private ArrayList<User> userList = null;
 
     /**
-     * Constructor of UserManager class for future add-on Make it private to prevent
-     * to implement singleton.
+     * Constructor of UserManager class.
+     * Make it private to prevent to implement singleton.
      */
     private UserManager()
     {
     }
 
     /**
-     * Get instance of UserManager. Implement Singleton.
+     * Get instance of UserManager. Implement singleton.
      * 
      * @return Instance of UserManager
      */
@@ -37,9 +33,10 @@ public class UserManager
     }
 
     /**
-     * Create the ArrayList for userList
+     * Initialize user list for UserManager.
+     * Can set the userList (Used for read file).
      * 
-     * @param userList Initialize user
+     * @param userList User list that want to set in UserManager
      */
     public void initialUser(ArrayList<User> userList)
     {
@@ -50,7 +47,7 @@ public class UserManager
     }
 
     /**
-     * Find the user using username
+     * Find the user using username.
      * 
      * @param username Username that want to find
      * @return User if found. Null if not.
@@ -70,7 +67,8 @@ public class UserManager
     }
 
     /**
-     * Find the user using name
+     * Find the user using name.
+     * If there are duplicate name, it will return the first user that found.
      * 
      * @param name Name that want to find
      * @return User that has name that finding
@@ -90,11 +88,11 @@ public class UserManager
     }
 
     /**
-     * Find username and then check the password.
+     * Find user from username and check that password is match or not.
      * 
      * @param username Username that want to find
      * @param password Password that want to check
-     * @return User if username and password are same. Otherwise, null.
+     * @return User if username and password are correct. Otherwise, null.
      */
     public User getLogin(String username, String password)
     {
@@ -126,7 +124,8 @@ public class UserManager
             Date birth, String address, String email)
     {
         User newUser = null;
-        /** Validate user data and don't have username in system. **/
+        
+        /* Validate user data and don't have username in system. */
         if(IOUtils.validateUser(username, password, name, birth, address, email) &&
            findUserByUsername(username) == null)
         {
@@ -138,7 +137,7 @@ public class UserManager
     }
     
     /**
-     * Edit profile data.
+     * Edit profile data of user.
      * 
      * @param user     User that want to edit
      * @param password Password of user
@@ -150,7 +149,7 @@ public class UserManager
      */
     public boolean editProfile(User user, String password,String name, Date birth, String address, String email)
     {
-        /** Validate user data and don't have username in system. **/
+        /* Validate user data and don't have username in system. */
         if(IOUtils.validateUser(user.getUsername(), password, name, birth, address, email))
         {
             user.editProfile(password, name, birth, address, email);

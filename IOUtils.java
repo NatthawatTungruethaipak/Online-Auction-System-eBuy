@@ -15,10 +15,10 @@ import javax.swing.filechooser.FileSystemView;
  */
 public class IOUtils
 {
-    /** Directory of image **/
+    /** Directory of image */
     final static String imgDirectory = "imgFolder";
 
-    /** Default image name **/
+    /** Default image name */
     final static String imgDefault = "default.png";
 
     /**
@@ -26,7 +26,7 @@ public class IOUtils
      */
     public static void initial()
     {
-        /** Create image directory **/
+        /* Create image directory */
         File file = new File(getImageDir());
         if (!file.exists())
             file.mkdir();
@@ -68,7 +68,7 @@ public class IOUtils
     }
 
     /**
-     * Validate the password in pattern of 8-40 characters with consist of at least
+     * Validate the password in pattern of 8-40 characters to consist of at least
      * one number, one lower character, one upper character.
      * 
      * Reference from
@@ -109,11 +109,10 @@ public class IOUtils
     }
 
     /**
-     * Validate integer the string parameter must contain only integer in format of
-     * string
+     * Validate integer. The string parameter must contain only integer in format of string
      * 
-     * @param string String input that want to validate is integer or not.
-     * @return true, when string is integer. False, when string is not integer.
+     * @param string String that want to validate is integer or not.
+     * @return true, when string can be in integer. False, when string is not integer.
      */
     public static boolean validateInteger(String string)
     {
@@ -129,7 +128,7 @@ public class IOUtils
     }
 
     /**
-     * Validate all user data.
+     * Validate user data.
      * Return true if valid.
      * 
      * @param username Username to validate
@@ -160,7 +159,7 @@ public class IOUtils
     }
     
     /**
-     * Validate all auction data.
+     * Validate auction data.
      * Return true if valid.
      * 
      * @param seller    Seller of auction
@@ -193,7 +192,9 @@ public class IOUtils
             return true;
     }
     
-    
+    /**
+     * Get enter key from user.
+     */
     public static void getEnter()
     {
         Scanner scanner = new Scanner(System.in);
@@ -203,12 +204,12 @@ public class IOUtils
     /**
      * Loop ask until get text from user.
      * 
-     * @param message Message asking to get input
-     * @return String from user input.
+     * @param message Message asking user to get input
+     * @return Text from user input.
      */
     public static String getText(String message)
     {
-        String retString = "";
+        String retString = ""; /* Return text */
         boolean bOk = false;
 
         while (!bOk)
@@ -237,7 +238,7 @@ public class IOUtils
     public static int getInteger(String message, int min)
     {
         boolean bOk = false;
-        int returnInt = 0;
+        int returnInt = 0;  /* Integer that going to return */
         while (!bOk)
         {
             System.out.print(message);
@@ -278,8 +279,15 @@ public class IOUtils
     {
 
         boolean bOk = false;
-        int returnInt = 0;
-        while (!bOk)
+        int returnInt = 0;     /* Integer that going to return */
+        if(max < min) /* Swap value */
+        {
+            int temp = max;
+            max = min;
+            min = temp;
+        }
+            
+        while (!bOk) /* Loop until get corret input format from user */
         {
             System.out.print(message);
             Scanner scanner = new Scanner(System.in);
@@ -309,7 +317,7 @@ public class IOUtils
     /**
      * Ask command from user.
      * 
-     * @param message Message asking to get command
+     * @param message Message asking to get command.
      * @return command number.
      */
     public static int getCommand(String print)
@@ -319,6 +327,7 @@ public class IOUtils
                 "/makeauction", "/aboutus", "/exit" };
         int commandValue = 0;
         String input = getText(print);
+        /* Loop check the command and get pos of that command before return */
         for (int i = 0; i < command.length; i++)
             if (input.equalsIgnoreCase(command[i]))
                 commandValue = i + 1;
@@ -328,13 +337,13 @@ public class IOUtils
     /**
      * Loop ask user until user input yes or no
      * 
-     * @param message Message asking to get yes/no
-     * @return True if user ans yes. False if user ans no.
+     * @param message Message asking to get yes/no.
+     * @return True if user say yes. False if user say no.
      */
     public static boolean getConfirm(String print)
     {
         boolean bOk = false;
-        boolean returnConfirm = false;
+        boolean returnConfirm = false;  /* Boolean to return the answer */
         String input = "";
         System.out.print(print);
         while (!bOk)
@@ -361,7 +370,8 @@ public class IOUtils
      * Loop get date until user input correct format of date.
      * 
      * @param message Message asking to get date
-     * @param dateCpr Date to compare before or after
+     * @param dateCpr Date to compare before or after.
+     *                Can be null to set to current date.
      * @param bAfter  if true, date input must after dateCpr.
      *                Otherwise, date input must before dateCpr.
      * @return Date from user input.
@@ -369,9 +379,9 @@ public class IOUtils
     public static Date getDate(String print, Date dateCpr, boolean bAfter)
     {
         boolean bOk = false;
-        Date dateInput = null;
-        String input = null;
-        while (!bOk)
+        Date dateInput = null;  /* Date to compare */
+        String input = null;    /* Input line from user */
+        while (!bOk) /* Loop until date is valid */
         {
             System.out.print(print);
             Scanner scanner = new Scanner(System.in);
@@ -414,19 +424,16 @@ public class IOUtils
     public static Date getDateTime(String message, Date dateCpr, boolean bAfter)
     {
         boolean bOk = false;
-        Date dateInput = null;
-        String input = null;
-        while (!bOk) /** Loop until date is valid **/
+        Date dateInput = null;  /* Date to compare */
+        String input = null;    /* Input line from user */
+        while (!bOk) /* Loop until date is valid */
         {
             System.out.print(message);
             Scanner scanner = new Scanner(System.in);
             input = scanner.nextLine();
 
             if (DateUtils.validateDateTimeStr(input) == false)
-            {
-                System.out.println(
-                        "Date with time format is dd-mm-yyyy-hh:mm. Example: 26-10-1998-13:39");
-            }
+                System.out.println("Date with time format is dd-mm-yyyy-hh:mm. Example: 26-10-1998-13:39");
             else
             {
                 dateInput = DateUtils.strToDateTime(input);
@@ -453,7 +460,7 @@ public class IOUtils
     }
 
     /**
-     * Get the username from user. Check that username is not duplicate in the system.
+     * Loop get the username from user and check that username is not duplicate in the system.
      * 
      * @param message Message asking to get input
      * @return Username from user.
@@ -461,7 +468,7 @@ public class IOUtils
     public static String getUsername(String message)
     {
         boolean bOk = false;
-        String userInput = "";
+        String userInput = "";  /* Text line input */
         UserManager userManager = UserManager.getSingletonInstance();
         while (!bOk)
         {
@@ -489,7 +496,7 @@ public class IOUtils
     public static String getPassword(String print)
     {
         boolean bOk = false;
-        String userInput = "";
+        String userInput = "";  /* Text line input */
         while (!bOk)
         {
             userInput = getText(print);
@@ -503,7 +510,7 @@ public class IOUtils
     }
 
     /**
-     * Get the email from user.
+     * Loop ask until get the correct email format.
      * 
      * @param message Message asking to get input
      * @return String that will be the email of the user.
@@ -524,17 +531,20 @@ public class IOUtils
     }
 
     /**
-     * Select category from category list
+     * Select category from category list.
      * 
      * @param message Message asking to get input
-     * @return category that user selected
+     * @return category string that user selected
      */
     public static String getCategory(String message)
     {
         System.out.println(message);
         ArrayList<String> categoryList = Category.getAllCategoryStr();
+        /* Display all category */
         for (int i = 0; i < categoryList.size(); i++)
             System.out.println((i + 1) + " - " + categoryList.get(i));
+        
+        /* Let user select */
         int node = IOUtils.getInteger("Select category number: ", 1,
                 categoryList.size());
         return categoryList.get(node - 1);
@@ -558,7 +568,7 @@ public class IOUtils
     public static String uploadImage()
     {
         
-        /** Upload image **/
+        /* Upload image */
         JFileChooser frameChooseFile = new JFileChooser(
                 FileSystemView.getFileSystemView());
         frameChooseFile.setDialogTitle("Select an image");
@@ -568,7 +578,8 @@ public class IOUtils
         frameChooseFile.addChoosableFileFilter(filter);
         
         System.out.print("Selecting image... ");
-        /** If user doesn't upload image, reset to default **/
+        
+        /* If user doesn't upload image, reset to default */
         int ret = JFileChooser.CANCEL_OPTION;
         ret = frameChooseFile.showOpenDialog(null);
         if (ret != JFileChooser.APPROVE_OPTION)
@@ -579,12 +590,12 @@ public class IOUtils
         else
             System.out.println("Image uploaded");
         
-        /** Prepare file name and directory **/
+        /* Prepare file name and directory */
         String uploadedFileName = frameChooseFile.getSelectedFile().getName();
         String fileName = getAvailableFileName(uploadedFileName);
         String directory = getImageDir();
             
-        /** Copy file to the image directory of online auction program **/
+        /* Copy file to the image directory of online auction program */
         try
         {
             File src = frameChooseFile.getSelectedFile();
@@ -601,22 +612,21 @@ public class IOUtils
     }
 
     /**
-     * If there are file in the image directory, change file name.
-     * Until get the available file name.
+     * Find image file name that doesn't exist in image directory.
      * 
      * @param uploadedFileName File name that going to upload in system
-     * @return Available file name that doesn't replace file in image directory.
+     * @return Available file name that doesn't exist in image directory.
      */
     private static String getAvailableFileName(String uploadedFileName)
     {
         int count = 0;
         
-        /** Split file name into suffix and prefix and prepare directory path **/
+        /* Split file name into suffix and prefix and prepare directory path */
         String[] fileSplit = uploadedFileName.split("\\.(?=[^\\.]+$)");
         String directory = getImageDir();
         String fileName = uploadedFileName;
     
-        /** Check that file exists or not, If exists, change file name **/
+        /* Check that file exists or not, If exists, change file name */
         File temp = null;
         boolean bLoop = true;
         do

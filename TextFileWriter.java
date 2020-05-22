@@ -12,11 +12,11 @@ public class TextFileWriter
     /** File name to open */
     private String fileName = null;
 
-    /** Write buffer from file **/
+    /** Write buffer from file */
     private BufferedWriter writer;
 
     /**
-     * Constructor of TextFileWriter. Set the file name
+     * Constructor of TextFileWriter. Set the file name to open.
      * 
      * @param fileName
      */
@@ -26,7 +26,7 @@ public class TextFileWriter
     }
 
     /**
-     * Open file and setting buffer
+     * Open file and setting write buffer.
      * 
      * @return Return true if can open. Otherwise, false.
      */
@@ -35,6 +35,7 @@ public class TextFileWriter
         boolean bCheck = false;
         try
         {
+            /* Setting write buffer */
             if (writer != null)
             {
                 writer.close();
@@ -52,7 +53,7 @@ public class TextFileWriter
     }
 
     /**
-     * Close buffer
+     * Close write buffer.
      * 
      * @return Return true if can close. If there are error occur, false
      */
@@ -77,9 +78,10 @@ public class TextFileWriter
     }
 
     /**
-     * Write line text to file
+     * Write line text to file.
      * 
-     * @return Line read from text file
+     * @param line Line that want to write to text file
+     * @return True if can write. Otherwise, false.
      */
     public boolean writeLine(String line)
     {

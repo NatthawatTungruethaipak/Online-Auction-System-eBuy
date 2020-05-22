@@ -11,10 +11,10 @@ public class Bid  implements Comparable<Bid>
     /** Bidder of the bid */
     private User bidder;
 
-    /** Amount of money that bid **/
+    /** Amount of money that bid */
     private int money;
 
-    /** Date that bid **/
+    /** Date that make the bid */
     private Date dateBid;
 
     /**
@@ -33,7 +33,7 @@ public class Bid  implements Comparable<Bid>
     /**
      * Get the user who make a bid
      * 
-     * @return User that make a bid
+     * @return Owner of bid.
      */
     public User getBidder()
     {
@@ -41,9 +41,9 @@ public class Bid  implements Comparable<Bid>
     }
 
     /**
-     * Get money that bid
+     * Get number of money that bid
      * 
-     * @return Bid money
+     * @return Bid price
      */
     public int getMoney()
     {
@@ -51,7 +51,7 @@ public class Bid  implements Comparable<Bid>
     }
 
     /**
-     * Get date that this bid was created
+     * Get the date that create the bid
      * 
      * @return Created date of bid
      */
@@ -81,9 +81,9 @@ public class Bid  implements Comparable<Bid>
      * CompareTo function for using in bidSet.
      * 
      * @param bid Bid that want to compare
-     * @return Positive value, if money of this instance is more than. Negative
-     *         value, if money of this instance is less than. Zero, if both of them
-     *         are equal.
+     * @return Positive value, if money of this instance is more than.
+     *         Negative value, if money of this instance is less than.
+     *         Zero, if both of them are equal.
      */
     public int compareTo(Bid bid)
     {

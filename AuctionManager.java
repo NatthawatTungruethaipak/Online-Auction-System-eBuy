@@ -9,16 +9,16 @@ import java.util.HashMap;
  */
 public class AuctionManager
 {
-    /** Keep auctionManager instance, used for singleton **/
+    /** Keep auctionManager instance, used for singleton */
     private static AuctionManager auctionManager = new AuctionManager();
 
-    /** Auction list that in wait stage **/
+    /** Auction list that in wait stage */
     private ArrayList<Auction> waitedAuction = new ArrayList<Auction>();
 
-    /** Auction list that in open stage **/
+    /** Auction list that in open stage */
     private ArrayList<Auction> openedAuction = new ArrayList<Auction>();
 
-    /** Auction list that in close stage **/
+    /** Auction list that in close stage */
     private ArrayList<Auction> closedAuction = new ArrayList<Auction>();
 
     /** HashMap of auction list that have a key is category */
@@ -31,17 +31,17 @@ public class AuctionManager
     private HashMap<User, ArrayList<Auction>> auctionMapSeller = new HashMap<User, ArrayList<Auction>>();
 
     /**
-     * Constructor of auction manager. Make it private to prevent to implement
-     * singleton.
+     * Constructor of auction manager.
+     * Make it private to prevent to implement singleton.
      */
     private AuctionManager()
     {
     }
 
     /**
-     * Get instance of auction manager. Implement singleton
+     * Get instance of auction manager. Implement the singleton.
      * 
-     * @return AuctionManager instance
+     * @return AuctionManager instance of AuctionManager
      */
     public static AuctionManager getSingletonInstance()
     {
@@ -50,8 +50,9 @@ public class AuctionManager
     
     /**
      * Initialize auction list for AuctionManager and hash map.
+     * Can set the auctionList (Used for read file).
      * 
-     * @param auctionList List of auction that want to set in the auction manager.
+     * @param auctionList List of auction that want to set. Can be null.
      */
     public void initialAuction(ArrayList<Auction> auctionList)
     {
@@ -66,11 +67,11 @@ public class AuctionManager
     }
 
     /**
-     * Create the auction and add to auction manager
+     * Create the auction and keep in list.
      * 
      * @param item      Item name
      * @param category  Category of item
-     * @param picture   Picture url
+     * @param picture   Picture file name
      * @param minBid    Minimum money of bid
      * @param dateStart Start date of an auction
      * @param dateEnd   End date of an auction
@@ -198,9 +199,9 @@ public class AuctionManager
     }
 
     /**
-     * Get all auction. (Used to save file)
+     * Get all auction (Used to save file).
      * 
-     * @return All auction
+     * @return All auction in a ArrayList
      */
     public ArrayList<Auction> getAllAuction()
     {
@@ -221,7 +222,7 @@ public class AuctionManager
      */
     private void storeAuction(Auction auction)
     {
-        /** Add auction to stage list **/
+        /* Add auction to stage list */
         if (auction.getStage() == 0)
             waitedAuction.add(auction);
         else if (auction.getStage() == 1)
@@ -229,13 +230,13 @@ public class AuctionManager
         else if (auction.getStage() == 2)
             closedAuction.add(auction);
     
-        /** Add auction to hash map of category **/
+        /* Add auction to hash map of category */
         Category category = Category.findCategory(auction.getCategoryStr());
         ArrayList<Auction> auctionCategoryList = auctionMapCategory.get(category);
         if (auctionCategoryList != null)
             auctionCategoryList.add(auction);
     
-        /** Add auction to hash map of item **/
+        /* Add auction to hash map of item */
         ArrayList<Auction> auctionItemList = auctionMapItem.get(auction.getItem());
         if (auctionItemList != null)
             auctionItemList.add(auction);
@@ -246,7 +247,7 @@ public class AuctionManager
             auctionMapItem.put(auction.getItem(), auctionItemList);
         }
     
-        /** Add auction to hash map of seller **/
+        /* Add auction to hash map of seller */
         ArrayList<Auction> auctionSellerList = auctionMapSeller.get(auction.getSeller());
         if (auctionSellerList != null)
             auctionSellerList.add(auction);
@@ -257,7 +258,7 @@ public class AuctionManager
             auctionMapSeller.put(auction.getSeller(), auctionSellerList);
         }
     
-        /** Add auction to auction trigger **/
+        /* Add auction to AuctionTrigger */
         if (auction.getStage() < 2)
             AuctionTrigger.getSingleInstance().addAuction(auction);
     }

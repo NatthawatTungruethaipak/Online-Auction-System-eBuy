@@ -8,31 +8,31 @@ import java.util.Date;
  */
 public class User
 {
-    /** User's username **/
+    /** Username of user */
     private String username;
 
-    /** User's password **/
+    /** Password of user */
     private String password;
 
-    /** User's name **/
+    /** Name of user */
     private String name;
 
-    /** User's birth **/
+    /** Birth date of user */
     private Date birth;
 
-    /** User's address **/
+    /** Address of user */
     private String address;
 
-    /** User's email **/
+    /** Email of user */
     private String email;
 
-    /** User's balance **/
+    /** Balance account of user */
     private int balance = 0;
 
-    /** User's bidList **/
+    /** Auction list that user bid */
     private ArrayList<Auction> bidList = new ArrayList<Auction>();
 
-    /** User's sellingList **/
+    /** Auction list that user sell */
     private ArrayList<Auction> sellingList = new ArrayList<Auction>();
 
     /**
@@ -59,7 +59,7 @@ public class User
     /**
      * Get username of user
      * 
-     * @return User's username
+     * @return Username of user.
      */
     public String getUsername()
     {
@@ -69,7 +69,7 @@ public class User
     /**
      * Get password of user
      * 
-     * @return User's password
+     * @return Password of user
      */
     public String getPassword()
     {
@@ -79,7 +79,7 @@ public class User
     /**
      * Get name of user
      * 
-     * @return User's name
+     * @return Name of user
      */
     public String getName()
     {
@@ -87,9 +87,9 @@ public class User
     }
 
     /**
-     * Get birth of user
+     * Get birth date of user
      * 
-     * @return User's birth
+     * @return Birth date of user.
      */
     public Date getBirth()
     {
@@ -99,7 +99,7 @@ public class User
     /**
      * Get address of user
      * 
-     * @return User's address
+     * @return Address of user
      */
     public String getAddress()
     {
@@ -109,7 +109,7 @@ public class User
     /**
      * Get email of user
      * 
-     * @return User's email
+     * @return Email of user.
      */
     public String getEmail()
     {
@@ -117,9 +117,9 @@ public class User
     }
 
     /**
-     * Get sellingList of user
+     * Get sell auction list of user
      * 
-     * @return User's sellingList
+     * @return Auction list that user sell
      */
     public ArrayList<Auction> getSellingList()
     {
@@ -127,9 +127,9 @@ public class User
     }
 
     /**
-     * Get bidList of user
+     * Get auction list that user bid
      * 
-     * @return User's bidList
+     * @return Auction list that user bid
      */
     public ArrayList<Auction> getBidList()
     {
@@ -137,9 +137,9 @@ public class User
     }
 
     /**
-     * Get balance of user
+     * Get balance money in account of user
      * 
-     * @return User's balance
+     * @return Money in account
      */
     public int getBalance()
     {
@@ -154,12 +154,11 @@ public class User
      * @param birth    New birth that want to set
      * @param address  New address that want to set
      * @param email    New email that want to set
-     * @return
+     * @return Return true.
      */
     public boolean editProfile(String password, String name, Date birth,
             String address, String email)
     {
-        /** Set to user **/
         this.password = password;
         this.name = name;
         this.birth = birth;
@@ -188,7 +187,7 @@ public class User
     }
 
     /**
-     * Add auction that user bid
+     * Add auction that user bid to the bidList of user.
      * 
      * @param auction The auction that user bid
      * @return true if can add auction that user bid to list. Otherwise, false.
@@ -196,7 +195,7 @@ public class User
     public boolean addBid(Auction auction)
     {
         boolean bCheck = false;
-        if(auction != null )
+        if(auction != null)
         {
             if (bidList.contains(auction))
                 bCheck = true;
@@ -207,10 +206,10 @@ public class User
     }
 
     /**
-     * Check password for the login
+     * Compare other password with password of user that it's same or not. 
      * 
-     * @param password
-     * @return True if password match with user password
+     * @param password Password that want to check.
+     * @return True if password and user password are the same.
      */
     public boolean checkPassword(String password)
     {
@@ -221,9 +220,9 @@ public class User
     }
 
     /**
-     * Deduct money from balance
+     * Deduct money from balance account
      * 
-     * @param money amount of money to deduct from the balance
+     * @param money Amount of money to deduct from the balance
      * @return if deduct the money from the balance and the balance has more than or
      *         equal to zero will return true
      */
@@ -239,10 +238,10 @@ public class User
     }
 
     /**
-     * Add money to balance
+     * Add money to balance account
      * 
-     * @param money amount of money to add in balance
-     * @return true if can add money. Otherwise, false.
+     * @param money amount of money to add in balance.
+     * @return true if can add money to the account. Otherwise, false.
      */
     public boolean addMoney(int money)
     {

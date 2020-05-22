@@ -8,29 +8,27 @@ import java.util.Date;
  */
 public class AuctionFileHandler
 {
-    /** Instance of AuctionFileHandler. Implement singleton **/
+    /** Instance of AuctionFileHandler. Implement singleton */
     private static AuctionFileHandler auctionFileHandler = new AuctionFileHandler();
 
-    /** User file name **/
+    /** User file name */
     final private String userFileName = "userData.txt";
 
-    /** Auction file name **/
+    /** Auction file name */
     final private String auctionFileName = "auctionData.txt";
 
-    /** User tag to indicate data type **/
+    /** User tag to indicate data type in file */
     final private String[] tagUser =
     { "USERNAME", "PASSWORD", "NAME", "BIRTH", "ADDRESS", "EMAIL", "BALANCE" };
 
-    /** Auction tag to indicate data type **/
-    final private String[] tagAuction =
-    { "ITEM", "CATEGORY", "PICTURE", "SELLER", "DATESTART", "DATEEND", "STAGE",
-            "MINBID" };
+    /** Auction tag to indicate data type in file */
+    final private String[] tagAuction = { "ITEM", "CATEGORY", "PICTURE", "SELLER",
+                                          "DATESTART", "DATEEND", "STAGE", "MINBID" };
 
-    /** Bid tag to indicate data type **/
-    final private String[] tagBid =
-    { "BIDDER", "MONEY", "DATE" };
+    /** Bid tag to indicate data type in file */
+    final private String[] tagBid = { "BIDDER", "MONEY", "DATE" };
 
-    /** Winner tag to indicate the winner of auction **/
+    /** Winner tag to indicate the winner of auction */
     final private String tagWinner = "WINNERBIDDER";
 
     /**
@@ -44,7 +42,7 @@ public class AuctionFileHandler
     /**
      * Get instance of AuctionFileHandler. Implement singleton
      * 
-     * @return
+     * @return Return instance of AuctionFileHandler
      */
     public static AuctionFileHandler getSingletonInstance()
     {
@@ -54,21 +52,21 @@ public class AuctionFileHandler
     /**
      * Read user file and return list of user back.
      * 
-     * @return List of user
+     * @return List of user that read from file
      */
     public ArrayList<User> readUsers()
     {
-        String dataLines[];
-        boolean bNotNull = true;
-        int count = 0;
+        String dataLines[];          /* Data read from line */
+        boolean bNotNull = true;     /* Indicate line null error */
+        int count = 0;               /* No. of user */
         ArrayList<User> userList = new ArrayList<User>();
     
-        /** Open file. If cannot open, return null; **/
+        /* Open file. If cannot open, return null; */
         TextFileReader reader = new TextFileReader(userFileName);
         if (reader.open() == false)
             return null;
     
-        /** Read number of data **/
+        /* Read number of data */
         String line;
         line = reader.readLine();
         try
@@ -80,7 +78,7 @@ public class AuctionFileHandler
             return null;
         }
     
-        /** Loop get user and add user to list **/
+        /* Loop get user and add user to list */
         int numTag = tagUser.length;
         for (int i = 0; i < count && bNotNull; i++)
         {
@@ -103,22 +101,22 @@ public class AuctionFileHandler
     /**
      * Read auction file and return list of auction back.
      * 
-     * @return List of auction
+     * @return List of auction that read from file
      */
     public ArrayList<Auction> readAuctions()
     {
-        String dataLines[];
-        int countAuction = 0;
-        boolean bNotNull = true;
+        String dataLines[];         /* Data read from line */
+        int countAuction = 0;       /* No. of auction */
+        boolean bNotNull = true;    /* Indicate line null error */    
     
         ArrayList<Auction> auctionList = new ArrayList<Auction>();
     
-        /** Open file. If cannot open, return null; **/
+        /* Open file. If cannot open, return null; */
         TextFileReader reader = new TextFileReader(auctionFileName);
         if (reader.open() == false)
             return null;
     
-        /** Read number of data **/
+        /* Read number of data */
         String line;
         line = reader.readLine();
         try
@@ -130,7 +128,7 @@ public class AuctionFileHandler
             return null;
         }
     
-        /** Loop get auction, loop get bid, and add to list **/
+        /* Loop get auction, loop get bid, and add to list */
         int numTag = tagAuction.length;
         for (int i = 0; i < countAuction && bNotNull; i++)
         {
@@ -313,26 +311,26 @@ public class AuctionFileHandler
         int minBid = 0;
 
         UserManager userManager = UserManager.getSingletonInstance();
-        /** Loop through each data and validate tag **/
+        /* Loop through each data and validate tag */
         for (int i = 0; i < tagAuction.length; i++)
         {
             String[] fields = parse[i].split(" ", 2);
             String tag = fields[0].trim();
             String text = fields[1].trim();
             
-            /** Check item name **/
+            /* Check item name **/
             if (tag.equals(tagAuction[0]))
                 item = text;
 
-            /** Check category **/
+            /* Check category */
             else if (tag.equals(tagAuction[1]))
                 category = Category.findCategory(text);
 
-            /** Check picture **/
+            /* Check picture */
             else if (tag.equals(tagAuction[2]))
                 picture = text;
 
-            /** Check seller user **/
+            /* Check seller user */
             else if (tag.equals(tagAuction[3]))
             {
                 seller = userManager.findUserByUsername(text);
@@ -340,15 +338,15 @@ public class AuctionFileHandler
                     return null;
             }
 
-            /** Check start date **/
+            /* Check start date */
             else if (tag.equals(tagAuction[4]))
                 dateStart = DateUtils.strToDateTime(text);
 
-            /** Check close date **/
+            /* Check close date */
             else if (tag.equals(tagAuction[5]))
                 dateEnd = DateUtils.strToDateTime(text);
 
-            /** Check stage **/
+            /* Check stage */
             else if (tag.equals(tagAuction[6]))
             {
                 stage = Integer.parseInt(text);
@@ -356,7 +354,7 @@ public class AuctionFileHandler
                     return null;
             }
 
-            /** Check minimum bid money **/
+            /* Check minimum bid money */
             else if (tag.equals(tagAuction[7]))
             {
                 minBid = Integer.parseInt(text);
@@ -371,7 +369,7 @@ public class AuctionFileHandler
         if(IOUtils.validateAuction(seller, item, category, dateStart, dateEnd, minBid, picture))
         {
             auction= new Auction(seller, item, category, dateStart, dateEnd, minBid, picture);
-            /** Set stage **/
+            /* Set stage */
             if (auction.setStage(stage) == false)
                 return null;
         }
@@ -386,21 +384,21 @@ public class AuctionFileHandler
      */
     private void parseBid(String parse[], Auction auction)
     {
-        boolean bWinner = false;
-        boolean bError = false;
-        User bidder = null;
-        int money = 0;
-        Date dateBid = null;
+        boolean bWinner = false; /* Boolean to indicate for winner */
+        boolean bError = false;  /* Boolean to indicate the error */
+        User bidder = null;      /* Bidder of auction */
+        int money = 0;           /* Bid price */ 
+        Date dateBid = null;     /* The bid date */
 
         UserManager userManager = UserManager.getSingletonInstance();
-        /** Loop through each tag and then get the data **/
+        /* Loop through each tag and then get the data */
         for (int i = 0; i < tagBid.length && !bError; i++)
         {
             String[] fields = parse[i].split(" ", 2);
             String tag = fields[0].trim();
             String text = fields[1].trim();
             
-            /** Get bidder **/
+            /* Get bidder */
             if (tag.equals(tagBid[0]) || tag.equals(tagWinner))
             {
                 bidder = userManager.findUserByUsername(text);
@@ -413,7 +411,7 @@ public class AuctionFileHandler
                     bWinner = true;
             }
 
-            /** Check bid money **/
+            /* Check bid money */
             else if (tag.equals(tagBid[1]) && IOUtils.validateInteger(text))
             {
                 money = Integer.parseInt(text);
@@ -424,7 +422,7 @@ public class AuctionFileHandler
                 }
             }
 
-            /** Check bid date **/
+            /* Check bid date */
             else if (tag.equals(tagBid[2]) && DateUtils.validateDateTimeStr(text))
                 dateBid = DateUtils.strToDateTime(text);
             else
@@ -434,7 +432,7 @@ public class AuctionFileHandler
             }
         }
         
-        /** If don't have any error occur, create bid and add to auction **/
+        /* If don't have any error occur, create bid and add to auction */
         if (bError == false)
         {
             Bid bid = new Bid(bidder, money);
@@ -449,16 +447,16 @@ public class AuctionFileHandler
 
     /**
      * Read bid data from file.
-     * @param reader Read buffer
-     * @param auction Auction that going to add after read bid data.
+     * @param reader Read buffered
+     * @param auction Auction that going to add after read the bid data.
      */
     private void readBids(TextFileReader reader, Auction auction)
     {
-        String tag[];
-        int countBid = 0;
-        boolean bNotNull = true;
+        String dataLines[];         /* Data read from line */
+        int countBid = 0;           /* No. of bid */
+        boolean bNotNull = true;    /* Indicate line null error */
 
-        /** Get No. of Bid **/
+        /* Get No. of Bid */
         String line = reader.readLine();
         try
         {
@@ -469,20 +467,20 @@ public class AuctionFileHandler
             return;
         }
 
-        /** Read all bid in auction **/
+        /* Read all bid in auction */
         int numTag = tagBid.length;
         for (int i = 0; i < countBid && bNotNull; i++)
         {
-            tag = new String[numTag];
+            dataLines = new String[numTag];
             for (int j = 0; j < numTag && bNotNull; j++)
             {
-                tag[j] = reader.readLine();
-                if (tag[j] == null)
+                dataLines[j] = reader.readLine();
+                if (dataLines[j] == null)
                     bNotNull = false;
             }
             
             /* Send to validata and add to auction */
-            parseBid(tag, auction);
+            parseBid(dataLines, auction);
         }
     }
 

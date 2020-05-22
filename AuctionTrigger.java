@@ -8,32 +8,43 @@ import java.util.Date;
  */
 public class AuctionTrigger extends Thread
 {
+    /** AuctionTrigger instance. Implement the singleton. */
     private static AuctionTrigger auctionTrigger = new AuctionTrigger();
 
+    /** Auction list that AuctionTrigger observe and update the stage of auction. */
     private ArrayList<Auction> managedAuction = new ArrayList<Auction>();
 
+    /** Used to make infinity loop in thread and can stop the loop from interrupt. */
     private boolean bLoop = true;
 
+    /**
+     * Private constructor. Implement the singleton
+     */
     private AuctionTrigger()
     {
 
     }
 
+    /**
+     * Get instance of AuctionTrigger.
+     * Implement the singleton
+     * @return Instance of AuctionTrigger
+     */
     public static AuctionTrigger getSingleInstance()
     {
         return auctionTrigger;
     }
 
     /**
-     * Add auction to managed list to observe and update stage.
+     * Add auction to managed list to observe and update the stage.
      * 
      * @param auction Auction that want to observe.
-     * @return Return true if can add to arraylist for checking. Otherwise, false.
+     * @return Return true if can add to Arraylist for checking. Otherwise, false.
      */
     public boolean addAuction(Auction auction)
     {
         boolean bCheck = false;
-        synchronized (managedAuction)
+        synchronized (managedAuction) /* Synchronized with loop in thread */
         {
             if (auction != null)
             {
@@ -52,7 +63,7 @@ public class AuctionTrigger extends Thread
         AuctionManager auctionManager = AuctionManager.getSingletonInstance();
         while (bLoop)
         {
-            /** Synchronized the data when add to list **/
+            /* Synchronized the data when add to list */
             synchronized (managedAuction)
             {
                 for (int i = 0; i < managedAuction.size(); i++)
@@ -79,10 +90,7 @@ public class AuctionTrigger extends Thread
                 }
             }
 
-            /**
-             * Sleep thread for a while to let another thread can add data from
-             * synchronized
-             **/
+         /* Sleep thread for a while to let another thread can add data from synchronized */
             try
             {
                 Thread.sleep(1000);

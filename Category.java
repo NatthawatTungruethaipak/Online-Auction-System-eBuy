@@ -32,6 +32,7 @@ public class Category
         { "Electronics", "Collecibles & Art", "Fashion", "Home & Garden",
                 "Sporting Goods", "Health & Beauty", "Toys & Hobbies", "Books",
                 "Movies", "Music", "Business & Industrial", "Vehicle", "Other" };
+        
         for (String str : strArray)
             categoryList.add(new Category(str));
     }
@@ -45,7 +46,7 @@ public class Category
      */
     public static Category findCategory(String categoryFind)
     {
-        Category retCategory = null;
+        Category retCategory = null;    /* return category */
         for (Category category : categoryList)
         {
             String categoryStr = category.getCategoryStr();
@@ -55,14 +56,15 @@ public class Category
                 break;
             }
         }
-        /* If null set to other */
+        
+        /* If it's null set to 'Other' */
         if (retCategory == null)
             retCategory = Category.findCategory("Other");
         return retCategory;
     }
 
     /**
-     * Get the string list of  category.
+     * Get the array list of category string.
      * 
      * @return Array list of category in string format.
      */
@@ -87,9 +89,9 @@ public class Category
     }
 
     /**
-     * Get category string of current instance.
+     * Get the string of category.
      * 
-     * @return Category string inside.
+     * @return Category word.
      */
     public String getCategoryStr()
     {
@@ -97,7 +99,7 @@ public class Category
     }
 
     /**
-     * Override the equals method to compare from string
+     * Override the equals method to compare the string between category.
      * 
      * @param categoryStr Category string that want to compare
      * @return True if string inside category and string that want to compare is the

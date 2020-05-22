@@ -10,31 +10,31 @@ import java.util.Date;
  */
 public class Auction
 {
-    /** Item name **/
+    /** Item name */
     private String item;
 
-    /** Category of item **/
+    /** Category of item */
     private Category category;
 
     /** Picture url of item */
     private String picture = null;
 
-    /** Seller of an auction **/
+    /** Seller of an auction */
     private User seller;
 
-    /** The Bid that won the auction **/
+    /** The Bid that won the auction */
     private Bid winner = null;
 
-    /** Start date to open an auction **/
+    /** Start date to open an auction */
     private Date dateStart;
 
-    /** End date to close an auction **/
+    /** End date to close an auction */
     private Date dateEnd;
 
-    /** Stage of an auction (wait:0, open:1, closed:2) **/
+    /** Stage of an auction (wait:0, open:1, closed:2) */
     private int stage = 0;
 
-    /** Minimum bid of auction **/
+    /** Minimum bid of auction */
     private int minBid = 0;
 
     /** List of bid **/
@@ -85,7 +85,7 @@ public class Auction
     }
 
     /**
-     * Get the seller of auction
+     * Get the seller of auction.
      * 
      * @return The seller user
      */
@@ -95,7 +95,7 @@ public class Auction
     }
 
     /**
-     * The winner for the closed auction
+     * The winner for the closed auction.
      * 
      * @return The winner user of auction
      */
@@ -105,7 +105,7 @@ public class Auction
     }
 
     /**
-     * Get the opened date of an Auction
+     * Get the opened date of an Auction.
      * 
      * @return Opened date of an auction
      */
@@ -115,7 +115,7 @@ public class Auction
     }
 
     /**
-     * Get the closed date of an Auction
+     * Get the closed date of an Auction.
      * 
      * @return Closed date of an auction
      */
@@ -125,7 +125,7 @@ public class Auction
     }
 
     /**
-     * Get the category in string
+     * Get the string of category.
      * 
      * @return Category string
      */
@@ -136,6 +136,7 @@ public class Auction
 
     /**
      * Get the stage of an auction
+     * 0 - wait, 1 - open, 2- close
      * 
      * @return Stage of auction. 0 - wait, 1 - open, 2- close
      */
@@ -145,7 +146,7 @@ public class Auction
     }
 
     /**
-     * Minimum bid at start
+     * Minimum price to bid when open the auction.
      * 
      * @return minimum bid of the auction at the start of the auction.
      */
@@ -155,9 +156,11 @@ public class Auction
     }
 
     /**
-     * Get current price of this auction
+     * Get current price of this auction.
+     * If there are some user bid, return the current bid money.
+     * Otherwise, return minimum money to bid.
      * 
-     * @return current bid price
+     * @return Current bid price.
      */
     public int getCurrentBidMoney()
     {
@@ -178,9 +181,9 @@ public class Auction
     }
 
     /**
-     * Iterator of bid
+     * Get bid list of the auction (Used in write file.)
      * 
-     * @return iterator of bid
+     * @return ArrayList of bid
      */
     public ArrayList<Bid> getBidList()
     {
@@ -188,13 +191,14 @@ public class Auction
     }
 
     /**
-     * Get bid of user
-     * 
-     * @return Latest Bid that user bid to auction
+     * Get the latest bid that user bid to the auction
+     *
+     * @param user User that want to find.
+     * @return Latest bid of user.
      */
     public Bid getBidByUser(User user)
     {
-        Bid retBid = null;
+        Bid retBid = null;  /* Return bid */
         /* Loop from the end (the highest money) */
         for (int i = bidList.size() - 1; i >= 0; i--)
         {
@@ -209,9 +213,9 @@ public class Auction
     }
 
     /**
-     * Check the auction is it has a bid.
+     * Indicate that has any user make a bid to the auction or not.
      * 
-     * @return true when this auction has someone bid on it.
+     * @return true if this auction has someone make a bid.
      */
     public boolean isBid()
     {
@@ -222,12 +226,11 @@ public class Auction
     }
 
     /**
-     * Set winner of an auction (Used in read file). Also check that the bid is in
-     * the auction or not before set.
+     * Set winner of an auction (Used in read file).
+     * Bid object needs to contains in auction before set.
      * 
      * @param winner The bid that win the auction
-     * @return Return true if can set and found this bid in auction. Otherwise,
-     *         false.
+     * @return True if can set winner and found bid in the auction. Otherwise, false.
      */
     public boolean setWinner(Bid winner)
     {
@@ -241,10 +244,10 @@ public class Auction
     }
 
     /**
-     * Set stage of auction. (Used in read file).
+     * Set stage of the auction. (Used in read file).
      * 
-     * @param stage that will be set to the auction
-     * @return true when stage is between 0-2. Otherwise is false.
+     * @param stage Number of stage that want to set
+     * @return True when stage is between 0-2. Otherwise is false.
      */
     public boolean setStage(int stage)
     {
@@ -315,7 +318,7 @@ public class Auction
     public boolean makeBid(User user, int money)
     {
         boolean bCheck = false;
-        int startBidPrice = minBid - 1;
+        int startBidPrice = minBid - 1; /* Used to validate the money */
 
         /* Check stage is open or not */
         if (stage == 1)
@@ -340,7 +343,7 @@ public class Auction
     }
 
     /**
-     * Add bid to auction. Used for read from file
+     * Add bid to auction (Used for read from file).
      * 
      * @param bid Bid that want to add
      */

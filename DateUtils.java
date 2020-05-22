@@ -22,7 +22,7 @@ public class DateUtils
     /**
      * Check the date input that is after current date or not
      * 
-     * @param date to be check with current date.
+     * @param date Date that want to check with current date.
      * @return true when date is after current date. Otherwise false.
      */
     public static boolean isAfterCurrentDateTime(Date date)
@@ -37,12 +37,12 @@ public class DateUtils
     /**
      * Check the date input that is before current date or not
      * 
-     * @param date to be check with current date.
+     * @param date Date that want to check with current date.
      * @return true when date is before current date. Otherwise false.
      */
     public static boolean isBeforeCurrentDateTime(Date date)
     {
-        Date dateNow = new Date();
+        Date dateNow = new Date();          /* Current date time */
         if (date != null && date.before(dateNow))
             return true;
         else
@@ -50,8 +50,7 @@ public class DateUtils
     }
 
     /**
-     * Find the difference in date and time from current time with date and time from
-     * user.
+     * Find the difference of date and time with the current time.
      * 
      * Reference from
      * https://mkyong.com/java/how-to-calculate-date-time-difference-in-java/
@@ -62,8 +61,8 @@ public class DateUtils
      */
     public static int[] diffCurrentDateTime(Date dateCpr)
     {
-        Date dateNow = new Date();
-        int diffDateTime[] = new int[4];
+        Date dateNow = new Date();          /* Current date time */
+        int diffDateTime[] = new int[4];    /* Used to return date time */
 
         try
         {
@@ -90,13 +89,13 @@ public class DateUtils
     }
 
     /**
-     * Change from string format to date
+     * Convert from string format to Date type.
      * 
      * Reference from
      * https://mkyong.com/java/how-to-calculate-date-time-difference-in-java/
      * 
-     * @param date String date format that want to create date instance
-     * @return Date instance. If can't convert, null.
+     * @param dateStr String of date format
+     * @return Date instance. But if dateStr is wrong format, null.
      */
     public static Date strToDate(String dateStr)
     {
@@ -115,13 +114,13 @@ public class DateUtils
     }
 
     /**
-     * Change from string format to date time
+     * Convert from string format to DateTime type.
      * 
      * Reference from
      * https://mkyong.com/java/how-to-calculate-date-time-difference-in-java/
      * 
-     * @param dateTimeStr date and time that going to create in Date class
-     * @return Date instance. If can't convert, null.
+     * @param dateTimeStr String of date format
+     * @return DateTime instance. But if dateStr is wrong format, null.
      */
     public static Date strToDateTime(String dateTimeStr)
     {
@@ -140,13 +139,13 @@ public class DateUtils
     }
 
     /**
-     * Change from string format to date
+     * Convert from Date type to string format
      * 
      * Reference from
      * https://mkyong.com/java/how-to-calculate-date-time-difference-in-java/
      * 
-     * @param date String date format that want to create date instance
-     * @return Date instance. If can't convert, null.
+     * @param date Date type that want to convert to string of date format
+     * @returnDate string format. If can't convert, null.
      */
     public static String dateToStr(Date date)
     {
@@ -156,13 +155,13 @@ public class DateUtils
     }
 
     /**
-     * Change from string format to date time
+     * Convert from DateTime type to string format
      * 
      * Reference from
      * https://mkyong.com/java/how-to-calculate-date-time-difference-in-java/
      * 
-     * @param dateTime date and time that going to create instance.
-     * @return Date instance. If can't convert, null.
+     * @param dateTime DateTime type that want to convert to string of date format
+     * @return Date string format. If can't convert, null.
      */
     public static String dateTimeToStr(Date dateTime)
     {
@@ -172,7 +171,7 @@ public class DateUtils
     }
 
     /**
-     * Validate date to check pattern of date in format dd-MM-yyyy
+     * Validate string of date to check pattern of date in format dd-MM-yyyy
      * 
      * Reference from
      * https://mkyong.com/java/how-to-calculate-date-time-difference-in-java/
@@ -183,9 +182,9 @@ public class DateUtils
      */
     public static boolean validateDateStr(String date)
     {
-        if (IOUtils.isNullStr(date))
+        if (IOUtils.isNullStr(date)) /* Check null */
             return false;
-        try
+        try /* Check format */
         {
             simpleDateFormat.setLenient(false);
             if (simpleDateFormat.parse(date) != null)
@@ -200,8 +199,8 @@ public class DateUtils
     }
 
     /**
-     * Validate date and time to check pattern of date and time in format
-     * dd-MM-yyyy-HH:mm:ss
+     * Validate string of date and time.
+     * Check pattern of date and time in format dd-MM-yyyy-HH:mm:ss
      * 
      * Reference from
      * https://mkyong.com/java/how-to-calculate-date-time-difference-in-java/

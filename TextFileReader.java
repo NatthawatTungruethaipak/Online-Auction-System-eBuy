@@ -12,13 +12,13 @@ public class TextFileReader
     /** File name to open */
     private String fileName = null;
 
-    /** Read buffer from file **/
+    /** Read buffer from file */
     private BufferedReader reader;
 
     /**
-     * Constructor of TextFileReader. Set the file name
+     * Constructor of TextFileReader. Set the file name to read.
      * 
-     * @param fileName
+     * @param fileName File name that going to open.
      */
     public TextFileReader(String fileName)
     {
@@ -26,7 +26,7 @@ public class TextFileReader
     }
 
     /**
-     * Open file and setting buffer
+     * Open file and setting buffer.
      * 
      * @return Return true if can open. Otherwise, false.
      */
@@ -35,6 +35,7 @@ public class TextFileReader
         boolean bCheck = false;
         try
         {
+            /* Setting read buffer */
             if (reader != null)
             {
                 reader.close();
@@ -52,7 +53,7 @@ public class TextFileReader
     }
 
     /**
-     * Close buffer
+     * Close read buffer
      * 
      * @return Return true if can close. If there are error occur, false
      */
@@ -70,8 +71,7 @@ public class TextFileReader
         }
         catch (Exception e)
         {
-            System.out.println(
-                    "System: Cannot close the read file, some error occur.");
+            System.out.println("System: Cannot close the read file, some error occur.");
             reader = null;
         }
         return bCheck;
@@ -84,9 +84,10 @@ public class TextFileReader
      */
     public String readLine()
     {
-        if (reader == null)
+        if (reader == null) /* Don't have read buffer */
             return null;
         String line;
+        /* Read line */
         try
         {
             line = reader.readLine();

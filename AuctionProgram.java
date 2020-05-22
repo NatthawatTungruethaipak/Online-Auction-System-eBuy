@@ -9,23 +9,23 @@ import java.util.Date;
 
 public class AuctionProgram
 {
-    /** Auction manager instance **/
+    /** AuctionManager instance */
     private static AuctionManager auctionManager = AuctionManager
             .getSingletonInstance();
 
-    /** User manager instance **/
+    /** UserManager instance */
     private static UserManager userManager = UserManager.getSingletonInstance();
 
-    /** Auction file handler instance instance **/
+    /** AuctionFileHandler instance  */
     private static AuctionFileHandler fileHandler = AuctionFileHandler
             .getSingletonInstance();
 
-    /** User login **/
+    /** User that login */
     private static User userLogin = null;
 
     /**
-     * Constructor of auction program. Make it private to prevent to implement
-     * singleton.
+     * Constructor of auction program.
+     * Make it private to prevent to implement singleton.
      */
     private AuctionProgram()
     {
@@ -35,7 +35,7 @@ public class AuctionProgram
      * Main function.
      * Get the command from user and display interface follow the command.
      * 
-     * @param args
+     * @param args Argument from command
      */
     public static void main(String[] args)
     {
@@ -47,49 +47,49 @@ public class AuctionProgram
             System.out.println("\nUse command '/help' to see all command");
             int command = IOUtils.getCommand("command: ");
             switch (command) {
-                case 1: /** main page command **/                    
+                case 1: /* main page command */                    
                     UserInterface.displayHomePage();
                     break;
-                case 2: /** help command **/
+                case 2: /* help command */
                     UserInterface.displayHelp();
                     break;
-                case 3: /** next page command **/
+                case 3: /* next page command */
                     UserInterface.displayNextPage();
                     break;
-                case 4: /** previous page command **/
+                case 4: /* previous page command */
                     UserInterface.displayPrevPage();
                     break;
-                case 5: /** first page command **/
+                case 5: /* first page command */
                     UserInterface.displayFirstPage();
                     break;
-                case 6: /** search auction command **/
+                case 6: /* search auction command */
                     UserInterface.displaySearchAuction();
                     break;
-                case 7: /** display auction information **/
+                case 7: /* display auction information */
                     UserInterface.displaySelectAuction();
                     break;
-                case 8: /** display register **/
+                case 8: /* display register */
                     UserInterface.displayRegister();
                     break;
-                case 9: /** display login **/
+                case 9: /* display login */
                     UserInterface.displayLogin();
                     break;
-                case 10: /** display logout **/
+                case 10: /* display logout */
                     UserInterface.displayLogout();
                     break;
-                case 11: /** display user profile **/
+                case 11: /* display user profile */
                     UserInterface.displayManageProfile();
                     break;
-                case 12: /** make auction **/
+                case 12: /* make auction */
                     UserInterface.displayMakeAuction();
                     break;
-                case 13: /** about us **/
+                case 13: /* about us */
                     UserInterface.displayAboutUs();
                     break;
-                case 14: /** Exit **/
+                case 14: /* Exit */
                     bLoop = UserInterface.displayEnding();
                     break;
-                default: /** Error command **/
+                default: /* Error command */
                     UserInterface.displayGetHelp();
                     break;
             }
@@ -101,7 +101,7 @@ public class AuctionProgram
     /**
      * Get the user that currently login
      * 
-     * @return user
+     * @return User that currently login
      */
     public static User getLogin()
     {
@@ -195,7 +195,7 @@ public class AuctionProgram
     }
 
     /**
-     * Deposit money to the balance
+     * Deposit money to the balance of user that login
      * 
      * @param money Amount of money to deposit
      * @return true when can deposit the money to the account.
@@ -213,7 +213,7 @@ public class AuctionProgram
     }
 
     /**
-     * Withdraw money from the balance
+     * Withdraw money from the balance of user that login
      * 
      * @param money Amount of money to withdraw
      * @return true when be able to withdraw the money from the account.
@@ -231,7 +231,8 @@ public class AuctionProgram
     }
 
     /**
-     * Create auction for sell item
+     * Create auction for sell item.
+     * User needs to login first.
      * 
      * @param item      Item name that want to sell
      * @param category  Category that of item
@@ -252,7 +253,8 @@ public class AuctionProgram
     }
 
     /**
-     * Make bid to the auction
+     * Make bid to the auction.
+     * User needs to login first.
      * 
      * @param auction Auction that user want to bid
      * @param money Money that user money want to bid
