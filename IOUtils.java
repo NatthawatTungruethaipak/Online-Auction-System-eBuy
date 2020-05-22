@@ -509,12 +509,9 @@ public class IOUtils
         boolean bLoop = true;
         do
         {
-            temp = new File(directory + uploadedFileName);
+            temp = new File(directory + fileName);
             if (!temp.exists())
-            {
-                System.out.println("I'm out this shit");
                 bLoop = false;
-            }
             else
             {
                 count++;
@@ -554,11 +551,8 @@ public class IOUtils
         
         /** Prepare file name and directory **/
         String uploadedFileName = frameChooseFile.getSelectedFile().getName();
-        System.out.println(uploadedFileName);
         String fileName = getAvailableFileName(uploadedFileName);
-        System.out.println(fileName);
         String directory = getImageDir();
-        System.out.println(directory);
             
         /** Copy file to the image directory of online auction program **/
         try
