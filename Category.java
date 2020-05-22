@@ -14,7 +14,7 @@ public class Category
     private String categoryStr;
 
     /**
-     * Constructor of Category. Set the string and add the Category to list
+     * Constructor of Category. Set the category string.
      * 
      * @param categoryStr String of category
      */
@@ -37,7 +37,7 @@ public class Category
     }
 
     /**
-     * Find the category instance from all category
+     * Find the category instance from category list
      * 
      * @param categoryFind String of category that want to get
      * @return Category instance that finding from string. If not found, Category of
@@ -55,13 +55,14 @@ public class Category
                 break;
             }
         }
+        /* If null set to other */
         if (retCategory == null)
             retCategory = Category.findCategory("Other");
         return retCategory;
     }
 
     /**
-     * Get the category string list
+     * Get the string list of  category.
      * 
      * @return Array list of category in string format.
      */
@@ -74,11 +75,11 @@ public class Category
         }
         return retList;
     }
-    
+
     /**
-     * Get the category string list
+     * Get the category list.
      * 
-     * @return Array list of category in string format.
+     * @return Array list of category.
      */
     public static ArrayList<Category> getAllCategory()
     {
@@ -108,24 +109,5 @@ public class Category
             return true;
         else
             return false;
-    }
-
-    /**
-     * Check that category contain in list of category or not.
-     * @param category to be check
-     * @return True when category contain in the list of category. Otherwise false.
-     */
-    public boolean contains(String category)
-    {
-        boolean contain = false;
-        for (Category eachCategory : categoryList)
-        {
-            if (eachCategory.equals(category))
-            {
-                contain = true;
-                break;
-            }
-        }
-        return contain;
     }
 }
