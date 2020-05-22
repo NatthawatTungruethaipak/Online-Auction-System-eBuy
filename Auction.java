@@ -294,6 +294,7 @@ public class Auction
                 int bidMoney = bid.getMoney();
                 if (bidder.deductMoney(bidMoney))
                 {
+                    seller.addMoney(bidMoney);
                     winner = bid;
                     break;
                 }
