@@ -178,12 +178,15 @@ public class User
      */
     public boolean addSelling(Auction auction)
     {
-        if (auction == null)
-            return false;
-        if (this.sellingList.add(auction))
-            return true;
-        else
-            return false;
+        boolean bCheck = false;
+        if(auction != null )
+        {
+            if (sellingList.contains(auction))
+                bCheck = true;
+            else if (sellingList.add(auction))
+                bCheck = true;
+        }
+        return bCheck;
     }
 
     /**
@@ -194,10 +197,15 @@ public class User
      */
     public boolean addBid(Auction auction)
     {
-        if (this.bidList.add(auction))
-            return true;
-        else
-            return false;
+        boolean bCheck = false;
+        if(auction != null )
+        {
+            if (bidList.contains(auction))
+                bCheck = true;
+            else if (bidList.add(auction))
+                bCheck = true;
+        }
+        return bCheck;
     }
 
     /**
