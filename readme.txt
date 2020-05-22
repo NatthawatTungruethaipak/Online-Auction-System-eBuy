@@ -8,7 +8,7 @@ need to use command that we provide to use the program such as '/help' or '/logi
 
 
 ## Software Requirement ##
-    - Terminal
+    - Terminal with graphic display.
     - Java 8
 
 
@@ -58,15 +58,15 @@ need to use command that we provide to use the program such as '/help' or '/logi
   *Note* The program will not save until close program successfully.
 
 
-## How to use? ##
+## How to run? ##
 
   1) Go to file directory of program.
     Go to file directory that contains java file, data text file, and picture folder
        
-  2) Uses command javac *.java
+  2) Uses command 'javac *.java'
     Execute from .java to .class
 
-  3) Uses command java AuctionProgram
+  3) Uses command 'java AuctionProgram'
     Run the eBuy
 
 
@@ -97,47 +97,53 @@ need to use command that we provide to use the program such as '/help' or '/logi
 
 ## All command ##
 
-/help
+# /help
   See all command.
 
-/home
+# /home
   Home page of auction program.
 
-/next
+# /next
   Go to next page of auction list.
 
-/prev
+# /prev
   Go back to previous page of auction list.
 
-/first
+# /first
   Go to first page of auction list.
 
-/search
+# /search
   Search the auction.
 
-/auction
+# /auction
   Select the auction to display or bid. Uses auction no. that display to be key
 
-/register
+# /register
   Register to be new user.
 
-/login
+# /login
   Login to the system.
 
-/logout
+# /logout
   Logout from the system.
 
-/profile
-  View the profile info.
+# /profile
+  View the profile, account, and history bid/selling
 
-/makeauction
+# /makeauction
   Make the auction.
 
-/aboutus
+# /aboutus
   See about us.
   
-/exit
+# /exit
   Exit from the program.
+
+
+## Problem in program ##
+  The terminal needs to have a graphic display. Because there are some part to upload and display picture.
+If the terminal doesn't have graphic display, it will occur the throw exception X10 (Cause from
+don't have a gui from system).
 
 
 ## Creator ##
