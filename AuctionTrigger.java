@@ -16,7 +16,7 @@ public class AuctionTrigger extends Thread
 
     private AuctionTrigger()
     {
-        
+
     }
 
     public static AuctionTrigger getSingleInstance()
@@ -45,13 +45,14 @@ public class AuctionTrigger extends Thread
     }
 
     /**
-     * Implement run method of thread. Observe all managed and update its stage.
+     * Implement run method of thread. Observe, manage, and update all auction.
      */
     public void run()
-    {      
+    {
         AuctionManager auctionManager = AuctionManager.getSingletonInstance();
         while (bLoop)
         {
+            /** Synchronized the data when add to list **/
             synchronized (managedAuction)
             {
                 for (int i = 0; i < managedAuction.size(); i++)
@@ -63,13 +64,13 @@ public class AuctionTrigger extends Thread
                     {
                         Date startDate = auction.getDateStart();
                         if (DateUtils.isBeforeCurrentDateTime(startDate))
-                          auctionManager.updateAuctionStage(auction);
+                            auctionManager.updateAuctionStage(auction);
                     }
                     else if (stage == 1)
                     {
                         Date endDate = auction.getDateEnd();
                         if (DateUtils.isBeforeCurrentDateTime(endDate))
-                          auctionManager.updateAuctionStage(auction);
+                            auctionManager.updateAuctionStage(auction);
                     }
                     else
                     {
@@ -93,6 +94,9 @@ public class AuctionTrigger extends Thread
         }
     }
 
+    /**
+     * Interrupt method to stop the loop of thread
+     */
     public void interrupt()
     {
         /* Stop loop */
