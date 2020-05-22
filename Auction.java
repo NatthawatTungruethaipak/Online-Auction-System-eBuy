@@ -1,6 +1,6 @@
 import java.util.Date;
-import java.util.TreeSet;
 import java.util.Iterator;
+import java.util.TreeSet;
 
 /**
  * Represent the auction object in auction program. Contain the info of auction
@@ -151,7 +151,7 @@ public class Auction
      */
     public int getCurrentBidMoney()
     {
-        if (bidSet.last() != null)
+        if (!bidSet.isEmpty())
             return bidSet.last().getMoney();
         else 
             return minBid;
@@ -304,7 +304,7 @@ public class Auction
              * Check that have anyone bid or not. If have, set minimum money to
              * maximum bid from bid set instead
              */
-            if (bidSet.last() != null)
+            if (!bidSet.isEmpty())
                 startBidPrice = bidSet.last().getMoney();
 
             if (user != null && money > startBidPrice)

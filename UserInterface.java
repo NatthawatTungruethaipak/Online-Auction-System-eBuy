@@ -377,11 +377,14 @@ public class UserInterface
         System.out.println(
                 "---------------------------------------------------------");
         for (Auction auction : bidList)
-            if (auction.getWinner().getBidder() == user)
+        {
+            Bid bid = auction.getWinner();
+            if (bid != null && bid.getBidder() == user)
             {
                 displayAuction(auction, false);
                 System.out.println();
             }
+        }
 
         System.out.println();
         System.out.println(
@@ -390,11 +393,14 @@ public class UserInterface
         System.out.println(
                 "---------------------------------------------------------");
         for (Auction auction : bidList)
-            if (auction.getWinner().getBidder() != user)
+        {
+            Bid bid = auction.getWinner();
+            if (bid != null && bid.getBidder() != user)
             {
                 displayAuction(auction, false);
                 System.out.println();
             }
+        }
 
         System.out.println(
                 "\n=========================================================");
