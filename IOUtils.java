@@ -498,7 +498,7 @@ public class IOUtils
     /**
      * Upload the image to the system.
      * 
-     * @return filename of the image.
+     * @return filename of the image. If error occur, return default image.
      */
     public static String uploadImage()
     {
@@ -513,9 +513,17 @@ public class IOUtils
         frameChooseFile.addChoosableFileFilter(filter);
 
         /** If user doesn't upload image, reset to default **/
-        int ret = frameChooseFile.showOpenDialog(null);
-        if (ret != JFileChooser.APPROVE_OPTION)
+        try
+        {
+            int ret = frameChooseFile.showOpenDialog(null);
+            if (ret != JFileChooser.APPROVE_OPTION)
+                return imgDefault;
+        }
+        catch(Exception e)
+        {
+            System.out.println("Error, can't open file chooser box");
             return imgDefault;
+        }
 
         /** Split file name into suffix and prefix and prepare directory path **/
         String fileName = frameChooseFile.getSelectedFile().getName();
@@ -547,7 +555,7 @@ public class IOUtils
         catch (IOException e)
         {
             System.out.println("Error occur, can't upload");
-            return null;
+            return imgDefault;
         }
 
         return fileName;
