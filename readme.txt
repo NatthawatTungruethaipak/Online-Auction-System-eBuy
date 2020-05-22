@@ -49,13 +49,44 @@ need to use command that we provide to use the program such as '/help' or '/logi
 
   # Data file (2 Files, 1 Folder)
     1. userData.txt
-        Keep user data.
+        Keep user data. In file, the first line will be no. of user data. Then follow with the
+      pattern below
+
+        USERNAME tk123456
+        PASSWORD 123456@tT
+        NAME Mister TK
+        BIRTH 08-10-1998
+        ADDRESS 461/35
+        EMAIL nathaphop@mail.com
+        BALANCE 10056
+
     2. auctionData.txt
-        Keep auction data.
+        Keep auction data. In file, the first line will be no. of auction. Then the auction data which
+      has the pattern as below.
+
+        ITEM axe
+        CATEGORY Home & Garden
+        PICTURE axe.jpg
+        SELLER Natthawat
+        DATESTART 25-05-2020-15:30
+        DATEEND 27-05-2020-18:50
+        STAGE 0
+        MINBID 100
+
+        After this pattern, will follow with no. of bid and then bid in this pattern.
+
+        BIDDER Nathaphop
+        MONEY 7000
+        DATE 23-05-2020-05:46
+
+        'BIDDER' could change to 'WINNERBIDDER' if this bid is the winner.
+
     3. imgFolder
         Folder that keeping image of an item.
-    if in the directory doesn't have these things, the program will auto generate later.
-  *Note* The program will not save until close program successfully.
+
+      = if in the directory doesn't have these things, the program will auto generate later. =
+      *Note* The program will not save until close program successfully.
+      *Note 2* There are some dummy data. You can see dummy user through userData.txt or UserDummy.pdf
 
 
 ## How to run? ##
@@ -67,7 +98,7 @@ need to use command that we provide to use the program such as '/help' or '/logi
     Execute from .java to .class
 
   3) Uses command 'java AuctionProgram'
-    Run the eBuy
+    Run the eBuy.
 
 
 ## How to use? ##
