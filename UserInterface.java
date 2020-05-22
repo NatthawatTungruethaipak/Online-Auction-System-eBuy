@@ -66,6 +66,17 @@ public class UserInterface
     }
 
     /**
+     * Display bid info.
+     * 
+     * @param bid Bid that want to display
+     */
+    private static void displayBid(Bid bid)
+    {
+        System.out.println("Your bid money: " + bid.getMoney());
+        System.out.println("Bid date: " + DateUtils.dateTimeToStr(bid.getDateTime()));
+    }
+    
+    /**
      * Display auction info.
      * 
      * @param auction Auction that want to display
@@ -144,34 +155,27 @@ public class UserInterface
             System.out.println("Starting bid: " + auction.getMinBid() + " Baht");
         }
 
-        int money = 0;
-        boolean bLoop = true;
-        do
+        int money = IOUtils.getInteger("Price that want to bid (Baht): ", minPrice);
+        if(IOUtils.getConfirm("Are you sure to make bid "+ money +" baht? (yes/no): "))
         {
-            money = IOUtils.getInteger("Price that want to bid (Baht): ", 0);
-            if (money < minPrice)
+            if (AuctionProgram.makeBid(auction, money))
+            {
                 System.out.println(
-                        "You need to input price more than " + minPrice + " Baht");
+                        "=========================================================\n");
+                System.out.println(
+                        "                   - Make bid success -                   ");
+                System.out.println(
+                        "\n=========================================================");
+            }
             else
-                bLoop = false;
-        } while (bLoop);
-        if (AuctionProgram.makeBid(auction, money))
-        {
-            System.out.println(
-                    "=========================================================\n");
-            System.out.println(
-                    "                   - Make bid success -                   ");
-            System.out.println(
-                    "\n=========================================================");
-        }
-        else
-        {
-            System.out.println(
-                    "=========================================================\n");
-            System.out.println(
-                    "                     - Make bid fail -                   ");
-            System.out.println(
-                    "\n=========================================================");
+            {
+                System.out.println(
+                        "=========================================================\n");
+                System.out.println(
+                        "                     - Make bid fail -                   ");
+                System.out.println(
+                        "\n=========================================================");
+            }
         }
     }
 
@@ -359,29 +363,17 @@ public class UserInterface
         ArrayList<Auction> bidList = user.getBidList();
         System.out.println(
                 "---------------------------------------------------------");
-        System.out.println("\t\tBidding");
+        System.out.println("\t\t\tBidding");
         System.out.println(
                 "---------------------------------------------------------");
 
-        for (Auction auction : bidList)
-            if (auction.getStage() == 1)
-            {
-                displayAuction(auction, false);
-                System.out.println();
-            }
-
-        System.out.println();
-        System.out.println(
-                "---------------------------------------------------------");
-        System.out.println("\t\tOffers");
-        System.out.println(
-                "---------------------------------------------------------");
         for (Auction auction : bidList)
         {
-            Bid bid = auction.getWinner();
-            if (bid != null && bid.getBidder() == user)
+            Bid bid = auction.getBidByUser(user);
+            if (bid != null && auction.getStage() == 1)
             {
                 displayAuction(auction, false);
+                displayBid(bid);
                 System.out.println();
             }
         }
@@ -389,15 +381,35 @@ public class UserInterface
         System.out.println();
         System.out.println(
                 "---------------------------------------------------------");
-        System.out.println("\t\tDidn't Win");
+        System.out.println("\t\t\tOffers");
         System.out.println(
                 "---------------------------------------------------------");
         for (Auction auction : bidList)
         {
-            Bid bid = auction.getWinner();
-            if (bid != null && bid.getBidder() != user)
+            Bid bid = auction.getBidByUser(user);
+            Bid winner = auction.getWinner();
+            if (bid != null &&  winner != null && bid == winner)
             {
                 displayAuction(auction, false);
+                displayBid(bid);
+                System.out.println();
+            }
+        }
+
+        System.out.println();
+        System.out.println(
+                "---------------------------------------------------------");
+        System.out.println("\t\t\tDidn't Win");
+        System.out.println(
+                "---------------------------------------------------------");
+        for (Auction auction : bidList)
+        {
+            Bid bid = auction.getBidByUser(user);
+            Bid winner = auction.getWinner();
+            if (bid != null &&  winner != null && bid != auction.getWinner())
+            {
+                displayAuction(auction, false);
+                displayBid(bid);
                 System.out.println();
             }
         }
@@ -411,7 +423,7 @@ public class UserInterface
         ArrayList<Auction> sellList = user.getSellingList();
         System.out.println(
                 "---------------------------------------------------------");
-        System.out.println("\t\tWaiting");
+        System.out.println("\t\t\tWaiting");
         System.out.println(
                 "---------------------------------------------------------");
         for (Auction auction : sellList)
@@ -425,7 +437,7 @@ public class UserInterface
         System.out.println(
                 "---------------------------------------------------------");
 
-        System.out.println("\t\tActive");
+        System.out.println("\t\t\tActive");
         System.out.println(
                 "---------------------------------------------------------");
         for (Auction auction : sellList)
@@ -438,7 +450,7 @@ public class UserInterface
         System.out.println();
         System.out.println(
                 "---------------------------------------------------------");
-        System.out.println("\t\tSold");
+        System.out.println("\t\t\tSold");
         System.out.println(
                 "---------------------------------------------------------");
         for (Auction auction : sellList)
@@ -451,7 +463,7 @@ public class UserInterface
         System.out.println();
         System.out.println(
                 "---------------------------------------------------------");
-        System.out.println("\t\tUnsold");
+        System.out.println("\t\t\tUnsold");
         System.out.println(
                 "---------------------------------------------------------");
         for (Auction auction : sellList)

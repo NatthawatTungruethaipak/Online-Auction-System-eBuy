@@ -1,10 +1,10 @@
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
-import java.util.Iterator;
-import java.util.TreeSet;
 
 /**
- * Represent the auction object in auction program. Contain the info of auction
- * item, bid, and seller. In addition manage the bid too.
+ * Represent the auction object in auction program. Contain the info of auction item,
+ * bid, and seller. In addition manage the bid too.
  * 
  * Created by Kla & Tong 14 April 2020
  */
@@ -38,7 +38,7 @@ public class Auction
     private int minBid = 0;
 
     /** List of bid **/
-    private TreeSet<Bid> bidSet = new TreeSet<Bid>();
+    private ArrayList<Bid> bidList = new ArrayList<Bid>();
 
     /**
      * Constructor of Auction.
@@ -151,9 +151,9 @@ public class Auction
      */
     public int getCurrentBidMoney()
     {
-        if (!bidSet.isEmpty())
-            return bidSet.last().getMoney();
-        else 
+        if (!bidList.isEmpty())
+            return bidList.get(bidList.size() - 1).getMoney();
+        else
             return minBid;
     }
 
@@ -174,7 +174,7 @@ public class Auction
      */
     public int getNumberOfBid()
     {
-        return bidSet.size();
+        return bidList.size();
     }
 
     /**
@@ -182,9 +182,9 @@ public class Auction
      * 
      * @return iterator of bid
      */
-    public Iterator<Bid> getBidIterator()
+    public ArrayList<Bid> getBidList()
     {
-        return this.bidSet.iterator();
+        return this.bidList;
     }
 
     /**
@@ -194,10 +194,31 @@ public class Auction
      */
     public boolean isBid()
     {
-        if (bidSet.isEmpty())
+        if (bidList.isEmpty())
             return false;
         else
             return true;
+    }
+
+    /**
+     * Get bid of user
+     * 
+     * @return Latest Bid that user bid to auction
+     */
+    public Bid getBidByUser(User user)
+    {
+        Bid retBid = null;
+        /* Loop from the end (the highest money) */
+        for(int i = bidList.size()-1; i >= 0; i--)
+        {
+            Bid bid = bidList.get(i);
+            if (bid.getBidder() == user)
+            {
+                retBid = bid;
+                break;
+            }
+        }
+        return retBid;
     }
 
     /**
@@ -213,7 +234,7 @@ public class Auction
         boolean bCheck = false;
         if (winner != null)
         {
-            if (bidSet.contains(winner) == true)
+            if (bidList.contains(winner) == true)
             {
                 this.winner = winner;
                 bCheck = true;
@@ -267,10 +288,8 @@ public class Auction
         if (stage == 1)
         {
             stage = 2;
-            Iterator<Bid> bids = bidSet.descendingIterator();
-            while (bids.hasNext())
+            for (Bid bid : bidList)
             {
-                Bid bid = bids.next();
                 User bidder = bid.getBidder();
                 int bidMoney = bid.getMoney();
                 if (bidder.deductMoney(bidMoney))
@@ -278,7 +297,7 @@ public class Auction
                     winner = bid;
                     break;
                 }
-            }            
+            }
             bCheck = true;
         }
         return bCheck;
@@ -304,16 +323,17 @@ public class Auction
              * Check that have anyone bid or not. If have, set minimum money to
              * maximum bid from bid set instead
              */
-            if (!bidSet.isEmpty())
-                startBidPrice = bidSet.last().getMoney();
+            if (!bidList.isEmpty())
+                startBidPrice = bidList.get(bidList.size() - 1).getMoney();
 
             if (user != null && money > startBidPrice)
             {
                 Bid createBid = new Bid(user, money);
                 /* Add bid to auction and user */
-                if (bidSet.add(createBid) && user.addBid(this))
+                if (bidList.add(createBid) && user.addBid(this))
                     bCheck = true;
             }
+            Collections.sort(bidList);
         }
         return bCheck;
     }
@@ -326,6 +346,7 @@ public class Auction
     public void addBid(Bid bid)
     {
         if (bid != null)
-            bidSet.add(bid);
+            bidList.add(bid);
+        Collections.sort(bidList);
     }
 }
