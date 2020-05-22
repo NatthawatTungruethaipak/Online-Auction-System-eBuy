@@ -27,7 +27,7 @@ public class UserManager
     }
 
     /**
-     * Get instance of UserManager. Implement Singleton
+     * Get instance of UserManager. Implement Singleton.
      * 
      * @return Instance of UserManager
      */
