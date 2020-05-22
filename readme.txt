@@ -60,8 +60,8 @@ need to use command that we provide to use the program such as '/help' or '/logi
 
 ## How to run? ##
 
-  1) Go to file directory of program.
-    Go to file directory that contains java file, data text file, and picture folder
+  1) Go to 'src' folder.
+    Go to src directory that contains java file, data text file, and picture folder
        
   2) Uses command 'javac *.java'
     Execute from .java to .class
@@ -140,11 +140,12 @@ need to use command that we provide to use the program such as '/help' or '/logi
   Exit from the program.
 
 
-## Problem in program ##
-  The terminal needs to have a graphic display. Because there are some part to upload and display picture.
+## Features (or problems..?) in program ##
+  - You can bid on your auction (and can bid repeatly as you want).
+  - You can win your auciton.
+  - The terminal needs to have a graphic display. Because there are some part to upload and display picture.
 If the terminal doesn't have graphic display, it will occur the throw exception X10 (Cause from
 don't have a gui from system).
-
 
 ## Creator ##
 Created by Kla & Tong group
