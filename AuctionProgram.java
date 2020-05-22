@@ -290,10 +290,10 @@ public class AuctionProgram
                 retUserList = auctionManager.searchAuctionByItem(keyStr);
                 break;
             case 4:/* Search auction by category */
-                retUserList = auctionManager.searchAuctionByCat(keyStr);
+                retUserList = auctionManager.searchAuctionByCategory(keyStr);
                 break;
             case 5:/* Search auction by name */
-                retUserList = auctionManager.searchAuctionBySeller(keyStr);
+                retUserList = auctionManager.searchAuctionBySellerName(keyStr);
                 break;
             case 6: /* Search auction by lower price */
                 retUserList = auctionManager.searchAuctionByLowerPrice(keyInt);
