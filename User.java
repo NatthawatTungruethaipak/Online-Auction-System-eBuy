@@ -159,18 +159,6 @@ public class User
     public boolean editProfile(String password, String name, Date birth,
             String address, String email)
     {
-        /** Validate **/
-        if (IOUtils.validatePassword(password) == false)
-            return false;
-        if (IOUtils.validateEmail(email) == false)
-            return false;
-        if (IOUtils.isNullStr(name) == true)
-            return false;
-        if (IOUtils.isNullStr(address) == true)
-            return false;
-        if (birth == null || DateUtils.isAfterCurrentDateTime(birth))
-            return false;
-
         /** Set to user **/
         this.password = password;
         this.name = name;

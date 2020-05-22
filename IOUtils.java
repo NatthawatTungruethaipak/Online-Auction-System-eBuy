@@ -128,6 +128,36 @@ public class IOUtils
         }
     }
 
+    /**
+     * Validate user data and return in User instance back.
+     * 
+     * @param username Username to validate
+     * @param password Password user to validate
+     * @param name     Name of user to validate
+     * @param birth    birth date of user
+     * @param address  Address of user
+     * @param email    Email of user
+     * @return New user if the data is valid.
+     */
+    public static boolean validateUser(String username, String password, String name,
+            Date birth, String address, String email)
+    {
+        if (IOUtils.validateUsername(username) == false)
+            return false;
+        if (IOUtils.validatePassword(password) == false)
+            return false;
+        if (IOUtils.isNullStr(name) == true)
+            return false;
+        if (birth == null || DateUtils.isAfterCurrentDateTime(birth))
+            return false;
+        if (IOUtils.isNullStr(address) == true)
+            return false;
+        if (IOUtils.validateEmail(email) == false)
+            return false;
+            
+        return true;
+    }
+    
     
     public static void getEnter()
     {

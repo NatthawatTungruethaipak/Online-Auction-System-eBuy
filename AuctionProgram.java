@@ -189,7 +189,7 @@ public class AuctionProgram
             String address, String email)
     {
         if (userLogin != null)
-            return userLogin.editProfile(password, name, birth, address, email);
+            return userManager.editProfile(userLogin, password, name, birth, address, email);
         else
             return false;
     }
