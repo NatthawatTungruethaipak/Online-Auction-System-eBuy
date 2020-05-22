@@ -79,10 +79,12 @@ public class UserInterface
      * Display bid info.
      * 
      * @param bid Bid that want to display
+     * @param print Text to display before bid money
      */
-    private static void displayBid(Bid bid)
+    private static void displayBid(Bid bid, String print)
     {
-        System.out.println("Your bid money: " + bid.getMoney());
+        System.out.println("Bidder :" + bid.getBidder().getName());
+        System.out.println(print + bid.getMoney());
         System.out
                 .println("Bid date: " + DateUtils.dateTimeToStr(bid.getDateTime()));
     }
@@ -96,19 +98,23 @@ public class UserInterface
     private static void displayAuction(Auction auction, boolean bFull)
     {
         System.out.println("Item: " + auction.getItem());
-        /** Check that have anyone bid or not, display different text **/
-        if (auction.isBid())
-            System.out
-                    .print("Current bid: " + auction.getCurrentBidMoney() + " Baht");
-        else
-            System.out.print("Starting bid price: " + auction.getMinBid() + " Baht");
-        System.out.println(" (" + auction.getNumberOfBid() + " bid)");
-        if (auction.getStage() == 0) /** Auction is waiting to open **/
+        int stage = auction.getStage();
+        /** Auction is waiting to open **/
+        if (stage == 0) 
             System.out.println("Waiting to open");
-        else if (auction.getStage() == 2) /** Auction is close **/
-            System.out.println("Closed auction");
-        else /** Displaying time **/
+        
+        /** Auction is openning **/
+        else if (stage == 1)
         {
+            /** Check that have anyone bid or not, display different text **/
+            if (auction.isBid())
+                System.out.print(
+                        "Current bid: " + auction.getCurrentBidMoney() + " Baht");
+            else
+                System.out.print(
+                        "Starting bid price: " + auction.getMinBid() + " Baht");
+            System.out.println(" (" + auction.getNumberOfBid() + " bid)");
+            /** Display different time **/
             int[] diff = DateUtils.diffCurrentDateTime(auction.getDateEnd());
             if (diff[0] != 0)
                 System.out.println("Remaining: " + diff[0] + " Days " + diff[1]
@@ -120,6 +126,12 @@ public class UserInterface
                 System.out.println("Remaining: " + diff[2] + " Minutes " + diff[3]
                         + " Seconds");
         }
+        
+        /** Auction is closing **/
+        else if (stage == 2)
+            System.out.println("Closed auction");
+        
+        
         Date startDate = auction.getDateStart();
         System.out.print("Started: " + DateUtils.dateTimeToStr(startDate));
         Date endDate = auction.getDateEnd();
@@ -129,17 +141,14 @@ public class UserInterface
         if (bFull)
         {
             Bid winBid = auction.getWinner();
-            if (auction.getStage() == 2) /** Print winner **/
+            if (stage == 2) /** Print winner **/
             {
                 if (winBid == null)
                     System.out.println("Winner: Don't have winner");
                 else
                 {
                     User bidder = winBid.getBidder();
-                    System.out.println("Winner: " + bidder.getName());
-                    System.out.println("Win price: " + winBid.getMoney());
-                    System.out.println("Bid date: "
-                            + DateUtils.dateTimeToStr(winBid.getDateTime()));
+                    displayBid(winBid, "Win price: ");
                 }
             }
             System.out.println("Category: " + auction.getCategoryStr());
@@ -387,7 +396,7 @@ public class UserInterface
             if (bid != null && auction.getStage() == 1)
             {
                 displayAuction(auction, false);
-                displayBid(bid);
+                displayBid(bid,"Your bid money: ");
                 System.out.println();
             }
         }
@@ -405,7 +414,7 @@ public class UserInterface
             if (bid != null && winner != null && bid == winner)
             {
                 displayAuction(auction, false);
-                displayBid(bid);
+                displayBid(bid, "Your bid money: ");
                 System.out.println();
             }
         }
@@ -423,7 +432,7 @@ public class UserInterface
             if (bid != null && winner != null && bid != auction.getWinner())
             {
                 displayAuction(auction, false);
-                displayBid(bid);
+                displayBid(bid, "Your bid money: ");
                 System.out.println();
             }
         }
@@ -473,7 +482,7 @@ public class UserInterface
             if (auction.getStage() == 2 && winner != null)
             {
                 displayAuction(auction, false);
-                displayBid(winner);
+                displayBid(winner, "Winner bid price: ");
                 System.out.println();
             }
         }
