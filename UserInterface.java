@@ -409,12 +409,11 @@ public class UserInterface
                 "---------------------------------------------------------");
         for (Auction auction : bidList)
         {
-            Bid bid = auction.getBidByUser(user);
             Bid winner = auction.getWinner();
-            if (bid != null && winner != null && bid == winner)
+            if (winner != null && winner.getBidder() == user)
             {
                 displayAuction(auction, false);
-                displayBid(bid, "Your bid money: ");
+                displayBid(winner, "Your bid money: ");
                 System.out.println();
             }
         }
@@ -427,12 +426,10 @@ public class UserInterface
                 "---------------------------------------------------------");
         for (Auction auction : bidList)
         {
-            Bid bid = auction.getBidByUser(user);
             Bid winner = auction.getWinner();
-            if (bid != null && winner != null && bid != auction.getWinner())
+            if (winner != null && winner.getBidder() != user)
             {
                 displayAuction(auction, false);
-                displayBid(bid, "Your bid money: ");
                 System.out.println();
             }
         }

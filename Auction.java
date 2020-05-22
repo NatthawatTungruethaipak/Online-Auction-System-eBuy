@@ -288,8 +288,9 @@ public class Auction
         if (stage == 1)
         {
             stage = 2;
-            for (Bid bid : bidList)
+            for (int i = bidList.size()-1; i >= 0; i--)
             {
+                Bid bid = bidList.get(i);
                 User bidder = bid.getBidder();
                 int bidMoney = bid.getMoney();
                 if (bidder.deductMoney(bidMoney))
