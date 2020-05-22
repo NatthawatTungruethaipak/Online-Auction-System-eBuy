@@ -6,7 +6,7 @@ import java.util.Date;
  * 
  * Created by Kla & Tong 14 April 2020
  */
-public class Bid
+public class Bid  implements Comparable<Bid>
 {
     /** Bidder of the bid */
     private User bidder;
@@ -27,7 +27,7 @@ public class Bid
     {
         this.bidder = user;
         this.money = money;
-        this.dateBid = DateUtils.getCurrentDateTime();
+        this.dateBid = new Date();
     }
 
     /**

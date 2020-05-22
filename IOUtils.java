@@ -4,12 +4,12 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
-
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.filechooser.FileSystemView;
 
 /**
- * Represent the utility method about input and output in the auction program.
+ * Utility method about input and output in the auction program.
  * 
  * Created by Kla & Tong 18 May 2020
  */
@@ -132,13 +132,19 @@ public class IOUtils
         }
     }
 
+    public static void getEnter()
+    {
+        Scanner scanner = new Scanner(System.in);
+        scanner.nextLine();
+    }
+
     /**
      * Print the wording and get string from user.
      * 
      * @param print is wording for print out.
      * @return String from user input.
      */
-    public static String getString(String print, boolean isNullOK)
+    public static String getString(String print)
     {
         String returnString = "";
         boolean bOk = false;
@@ -148,22 +154,14 @@ public class IOUtils
             System.out.print(print);
             Scanner scanner = new Scanner(System.in);
             String input = scanner.nextLine();
-            if (isNullOK)
+            if (isNullStr(input))
             {
-                bOk = true;
-                returnString = input.trim();
+                System.out.println("Input can't be null");
             }
             else
             {
-                if (isNullStr(input))
-                {
-                    System.out.println("Input can't be null");
-                }
-                else
-                {
-                    bOk = true;
-                    returnString = input.trim();
-                }
+                bOk = true;
+                returnString = input.trim();
             }
         }
         return returnString;
@@ -179,19 +177,29 @@ public class IOUtils
     public static int getInteger(String print, int min)
     {
         boolean bOk = false;
-        int input = 0;
+        int returnInt = 0;
         while (!bOk)
         {
             try
             {
                 System.out.print(print);
                 Scanner scanner = new Scanner(System.in);
-                input = scanner.nextInt();
-                if (input >= min)
-                    bOk = true;
+                String input = scanner.nextLine();
+                if (isNullStr(input))
+                {
+                    System.out.println("Input can't be null");
+                }
                 else
-                    System.out.println(
-                            "Input must be number greater than or equal to " + min);
+                {
+                    returnInt = Integer.parseInt(input);
+                    if (returnInt >= min)
+                        bOk = true;
+                    else
+                        System.out.println(
+                                "Input must be number greater than or equal to "
+                                        + min);
+                }
+
             }
             catch (Exception e)
             {
@@ -199,7 +207,7 @@ public class IOUtils
             }
 
         }
-        return input;
+        return returnInt;
     }
 
     /**
@@ -214,20 +222,28 @@ public class IOUtils
     {
 
         boolean bOk = false;
-        int input = 0;
+        int returnInt = 0;
         while (!bOk)
         {
             try
             {
                 System.out.print(print);
                 Scanner scanner = new Scanner(System.in);
-                input = scanner.nextInt();
-                if ((input >= min) && (input <= max))
-                    bOk = true;
+                String input = scanner.nextLine();
+                if (isNullStr(input))
+                {
+                    System.out.println("Input can't be null");
+                }
                 else
-                    System.out.println(
-                            "Input must be number between " + min + " and " + max);
+                {
+                    returnInt = Integer.parseInt(input);
+                    if ((returnInt >= min) && (returnInt <= max))
+                        bOk = true;
+                    else
+                        System.out.println("Input must be number between " + min
+                                + " and " + max);
 
+                }
             }
             catch (Exception e)
             {
@@ -235,7 +251,29 @@ public class IOUtils
             }
 
         }
-        return input;
+        return returnInt;
+    }
+
+    /**
+     * Print the wording and get command from user.
+     * 
+     * @param print is wording for print out.
+     * @return command number.
+     */
+    public static int getCommand(String print)
+    {
+        final String[] command =
+        { "/home", "/help", "/next", "/prev", "/first", "/search", "/auction",
+                "/register", "/login", "/logout", "/profile", "/makeauction",
+                "/aboutus", "/exit" };
+        int commandValue = 0;
+        String input = getString(print);
+        for (int i = 0; i < command.length; i++)
+        {
+            if (input.equalsIgnoreCase(command[i]))
+                commandValue = i + 1;
+        }
+        return commandValue;
     }
 
     /**
@@ -275,11 +313,11 @@ public class IOUtils
      * 
      * @param print   is wording for print out.
      * @param dateCpr is date that going to be compare.
-     * @param command is select before or after compare operation. For command = 1 is
-     *                before, command = 2 is after. Otherwise will not check.
+     * @param bAfter  if true, date input must after dateCpr. Otherwise, date input
+     *                must before dateCpr.
      * @return Date from user input.
      */
-    public static Date getDate(String print, Date dateCpr, int command)
+    public static Date getDate(String print, Date dateCpr, boolean bAfter)
     {
         boolean bOk = false;
         Date dateInput = null;
@@ -296,24 +334,22 @@ public class IOUtils
                 dateInput = DateUtils.strToDate(input);
                 if (dateCpr == null)
                     dateCpr = new Date();
-                if (command == 1)
-                {
-                    if (dateInput.before(dateCpr))
-                        bOk = true;
-                    else
-                        System.out.println(
-                                "Input must be date before date to compare.");
-                }
-                else if (command == 2)
+                if (bAfter)
                 {
                     if (dateInput.after(dateCpr))
                         bOk = true;
                     else
-                        System.out.println(
-                                "Input must be date after date to compare.");
+                        System.out.println("Input date must after "
+                                + DateUtils.dateToStr(dateCpr) + " .");
                 }
                 else
-                    bOk = true;
+                {
+                    if (dateInput.before(dateCpr))
+                        bOk = true;
+                    else
+                        System.out.println("Input date must before "
+                                + DateUtils.dateToStr(dateCpr) + " .");
+                }
             }
         }
         return dateInput;
@@ -324,20 +360,21 @@ public class IOUtils
      * 
      * @param print   is wording for print out.
      * @param dateCpr is date that going to be compare.
-     * @param command is select before or after compare operation. For command = 1 is
-     *                before, command = 2 is after. Otherwise will not check.
+     * @param bAfter  if true, date input must after dateCpr. Otherwise, date input
+     *                must before dateCpr.
      * @return Date with time from user input.
      */
-    public static Date getDateTime(String print, Date dateCpr, int command)
+    public static Date getDateTime(String print, Date dateCpr, boolean bAfter)
     {
         boolean bOk = false;
         Date dateInput = null;
         String input = null;
-        while (!bOk)
+        while (!bOk) /** Loop until date is valid **/
         {
             System.out.print(print);
             Scanner scanner = new Scanner(System.in);
             input = scanner.nextLine();
+
             if (DateUtils.validateDateTimeStr(input) == false)
             {
                 System.out.println(
@@ -349,71 +386,26 @@ public class IOUtils
                 System.out.println(dateInput);
                 if (dateCpr == null)
                     dateCpr = new Date();
-                if (command == 1)
-                {
-                    if (dateInput.before(dateCpr))
-                        bOk = true;
-                    else
-                        System.out.println(
-                                "Input must be date before date to compare.");
-                }
-
-                else if (command == 2)
+                if (bAfter)
                 {
                     if (dateInput.after(dateCpr))
                         bOk = true;
                     else
-                        System.out.println(
-                                "Input must be date after date to compare.");
+                        System.out.println("Input date must after "
+                                + DateUtils.dateTimeToStr(dateCpr) + " .");
                 }
                 else
-                    bOk = true;
+                {
+                    if (dateInput.before(dateCpr))
+                        bOk = true;
+                    else
+                        System.out.println("Input date must before "
+                                + DateUtils.dateTimeToStr(dateCpr) + " .");
+
+                }
             }
         }
         return dateInput;
-    }
-
-    /**
-     * Print the wording and get command from user.
-     * 
-     * @param print is wording for print out.
-     * @return command number.
-     */
-    public static int getCommand(String print)
-    {
-        int commandValue = 0;
-        String input = getString(print, false);
-        if (input.equals("/home"))
-            commandValue = 1;
-        else if (input.equals("/help"))
-            commandValue = 2;
-        else if (input.equals("/next"))
-            commandValue = 3;
-        else if (input.equals("/prev"))
-            commandValue = 4;
-        else if (input.equals("/first"))
-            commandValue = 5;
-        else if (input.equals("/search"))
-            commandValue = 6;
-        else if (input.equals("/auction"))
-            commandValue = 7;
-        else if (input.equals("/register"))
-            commandValue = 8;
-        else if (input.equals("/login"))
-            commandValue = 9;
-        else if (input.equals("/logout"))
-            commandValue = 10;
-        else if (input.equals("/profile"))
-            commandValue = 11;
-        else if (input.equals("/makeauction"))
-            commandValue = 12;
-        else if (input.equals("/aboutus"))
-            commandValue = 13;
-        else if (input.equals("/exit"))
-            commandValue = 14;
-        else
-            commandValue = 0;
-        return commandValue;
     }
 
     /**
@@ -429,7 +421,7 @@ public class IOUtils
         UserManager userManager = UserManager.getSingletonInstance();
         while (!bOk)
         {
-            userInput = getString(print, false);
+            userInput = getString(print);
             if (validateUsername(userInput))
             {
                 if (userManager.findUserByUsername(userInput) != null)
@@ -461,12 +453,12 @@ public class IOUtils
         String userInput = "";
         while (!bOk)
         {
-            userInput = getString(print, false);
+            userInput = getString(print);
             if (validatePassword(userInput))
                 bOk = true;
             else
                 System.out.println(
-                        "Username must between 8-40 characters.Password must contain at least one lower alphbet, one upper and one number.");
+                        "Password must between 8-40 characters. Password must contain at least one lower alphbet, one upper and one number.");
         }
         return userInput;
     }
@@ -483,11 +475,11 @@ public class IOUtils
         String userInput = "";
         while (!bOk)
         {
-            userInput = getString(print, false);
+            userInput = getString(print);
             if (validateEmail(userInput))
                 bOk = true;
             else
-                System.out.print("Wrong email format");
+                System.out.println("Wrong email format");
         }
         return userInput;
     }
@@ -499,33 +491,17 @@ public class IOUtils
      */
     public static String getImageDir()
     {
-        return System.getProperty("user.dir") + "\\" + imgDirectory + "\\";
+        return System.getProperty("user.dir") + "/" + imgDirectory + "/";
     }
 
-    /**
-     * Upload the image to the system.
-     * 
-     * @return filename of the image.
-     */
-    public static String uploadImage()
+    private static String getAvailableFileName(String uploadedFileName)
     {
         int count = 0;
-        /** Upload image **/
-        JFileChooser frameChooseFile = new JFileChooser();
-        frameChooseFile.setDialogTitle("Select an image");
-        frameChooseFile.setAcceptAllFileFilterUsed(false);
-        FileNameExtensionFilter filter = new FileNameExtensionFilter(
-                "jpg or png images", "png", "jpg");
-        frameChooseFile.addChoosableFileFilter(filter);
-
-        /** If user doesn't upload image, reset to default **/
-        if (frameChooseFile.showOpenDialog(null) != JFileChooser.APPROVE_OPTION)
-            return imgDefault;
-
+        
         /** Split file name into suffix and prefix and prepare directory path **/
-        String fileName = frameChooseFile.getSelectedFile().getName();
+        String[] fileSplit = uploadedFileName.split("\\.(?=[^\\.]+$)");
         String directory = getImageDir();
-        String[] fileSplit = fileName.split("\\.(?=[^\\.]+$)");
+        String fileName = uploadedFileName;
 
         /** Check that file exists or not, If exists, change file name **/
         File temp = null;
@@ -541,18 +517,53 @@ public class IOUtils
                 fileName = fileSplit[0] + "-" + count + "." + fileSplit[1];
             }
         } while (bLoop);
-
+        return fileName;
+    }
+    /**
+     * Upload the image to the system.
+     * 
+     * @return filename of the image. If error occur, return default image.
+     */
+    public static String uploadImage()
+    {
+        
+        /** Upload image **/
+        JFileChooser frameChooseFile = new JFileChooser(
+                FileSystemView.getFileSystemView());
+        frameChooseFile.setDialogTitle("Select an image");
+        frameChooseFile.setAcceptAllFileFilterUsed(false);
+        FileNameExtensionFilter filter = new FileNameExtensionFilter(
+                "jpg/png images", "png", "jpg");
+        frameChooseFile.addChoosableFileFilter(filter);
+        
+        System.out.print("Selecting image... ");
+        /** If user doesn't upload image, reset to default **/
+        int ret = JFileChooser.CANCEL_OPTION;
+        ret = frameChooseFile.showOpenDialog(null);
+        if (ret != JFileChooser.APPROVE_OPTION)
+        {
+            System.out.println("No image uploaded");
+            return imgDefault;
+        }
+        else
+            System.out.println("Image uploaded");
+        
+        /** Prepare file name and directory **/
+        String uploadedFileName = frameChooseFile.getSelectedFile().getName();
+        String fileName = getAvailableFileName(uploadedFileName);
+        String directory = getImageDir();
+            
         /** Copy file to the image directory of online auction program **/
-        File src = frameChooseFile.getSelectedFile();
-        File dest = new File(directory + fileName);
         try
         {
+            File src = frameChooseFile.getSelectedFile();
+            File dest = new File(directory + fileName);
             Files.copy(src.toPath(), dest.toPath());
         }
         catch (IOException e)
         {
             System.out.println("Error occur, can't upload");
-            return null;
+            return imgDefault;
         }
 
         return fileName;

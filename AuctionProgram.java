@@ -21,7 +21,7 @@ public class AuctionProgram
             .getSingletonInstance();
 
     /** User login **/
-    private static User userLogin;
+    private static User userLogin = null;
 
     /**
      * Constructor of auction program. Make it private to prevent to implement
@@ -67,7 +67,7 @@ public class AuctionProgram
                     break;
                 case 6:
                     /** search auction command **/
-                    UserInterface.searchAuction();
+                    UserInterface.displaySearchAuction();
                     break;
                 case 7:
                     /** display auction information **/
@@ -108,6 +108,7 @@ public class AuctionProgram
             }
         }
         endProgram();
+        System.exit(0);
     }
 
     /**
@@ -283,7 +284,10 @@ public class AuctionProgram
             case 4:/* Search auction by category */
                 retUserList = auctionManager.searchAuctionByCat(keyStr);
                 break;
-            case 5: /* Search auction by lower price */
+            case 5:/* Search auction by category */
+                retUserList = auctionManager.searchAuctionByCat(keyStr);
+                break;
+            case 6: /* Search auction by lower price */
                 retUserList = auctionManager.searchAuctionByLowerPrice(keyInt);
                 break;
         }
@@ -343,6 +347,10 @@ public class AuctionProgram
         /* Read auction from file */
         ArrayList<Auction> auctionList = fileHandler.readAuctions();
         auctionManager.initialAuction(auctionList);
+        
+        /* Run auction trigger */
+        AuctionTrigger auctionTrigger = AuctionTrigger.getSingleInstance();
+        auctionTrigger.start();
     }
 
     /**
@@ -350,6 +358,10 @@ public class AuctionProgram
      */
     public static void endProgram()
     {
+        /* Interrupt thread to stop loop */
+        AuctionTrigger auctionTrigger = AuctionTrigger.getSingleInstance();
+        auctionTrigger.interrupt();
+        
         /* Save user to file */
         ArrayList<User> userList = userManager.getAllUser();
         fileHandler.writeUsers(userList);

@@ -9,7 +9,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 
 /**
- * User Interface of online auction program.
+ * User Interface of online auction program. Base on terminal.
  * 
  * Created by Kla & Tong 18 May 2020
  */
@@ -32,14 +32,16 @@ public class UserInterface
      */
     private static void refresh(boolean bHome)
     {
-        IOUtils.getString("Press enter to continue..");
+        System.out.println("Press enter to continue..");
+        IOUtils.getEnter();
         clearScreen();
-        if(bHome)
+        if (bHome)
             displayHomePage();
     }
 
     /**
-     * Clear screen.
+     * Clear screen. Reference:
+     * https://stackoverflow.com/questions/2979383/java-clear-the-console
      */
     private static void clearScreen()
     {
@@ -48,19 +50,43 @@ public class UserInterface
     }
 
     /**
-     * Reset the auction list.
+     * Set the auction list.
      * 
      * @param auctionList Set auction list to display and reset. if null, set auction
      *                    list to opened auction.
      */
-    private static void resetAuctionDisplay(ArrayList<Auction> auctionList)
+    private static void setAuctionDisplay(ArrayList<Auction> auctionList)
     {
-        if (auctionList == null)
-            auctionDisplay = AuctionProgram.searchAuction(1, null, 0);
-        else
-            auctionDisplay = auctionList;
+        auctionDisplay = auctionList;
         page = 0;
 
+    }
+
+    /**
+     * Reset the display auction list to default.
+     * 
+     * @param auctionList Set auction list to display and reset. if null, set auction
+     *                    list to opened auction.
+     */
+    private static void resetAuctionDisplay()
+    {
+        auctionDisplay = AuctionProgram.searchAuction(1, null, 0);
+        page = 0;
+
+    }
+
+    /**
+     * Display bid info.
+     * 
+     * @param bid Bid that want to display
+     * @param print Text to display before bid money
+     */
+    private static void displayBid(Bid bid, String print)
+    {
+        System.out.println("Bidder :" + bid.getBidder().getName());
+        System.out.println(print + bid.getMoney());
+        System.out
+                .println("Bid date: " + DateUtils.dateTimeToStr(bid.getDateTime()));
     }
 
     /**
@@ -72,49 +98,62 @@ public class UserInterface
     private static void displayAuction(Auction auction, boolean bFull)
     {
         System.out.println("Item: " + auction.getItem());
-        if (auction.isBid()) /**
-                              * Check that have anyone bid or not, display different
-                              * text
-                              **/
-            System.out
-                    .print("Current bid: " + auction.getCurrentBidMoney() + " Baht");
-        else
-            System.out.print("Starting bid price: " + auction.getMinBid() + " Baht");
-        System.out.println(" (" + auction.getNumberOfBid() + " bid)");
-        if (auction.getStage() == 2) /** Print time left before close auction **/
-            System.out.println("Closed auction");
-        else
+        int stage = auction.getStage();
+        /** Auction is waiting to open **/
+        if (stage == 0) 
+            System.out.println("Waiting to open");
+        
+        /** Auction is openning **/
+        else if (stage == 1)
         {
+            /** Check that have anyone bid or not, display different text **/
+            if (auction.isBid())
+                System.out.print(
+                        "Current bid: " + auction.getCurrentBidMoney() + " Baht");
+            else
+                System.out.print(
+                        "Starting bid price: " + auction.getMinBid() + " Baht");
+            System.out.println(" (" + auction.getNumberOfBid() + " bid)");
+            /** Display different time **/
             int[] diff = DateUtils.diffCurrentDateTime(auction.getDateEnd());
-            if (diff[0] != 0) /** Displaying time **/
-                System.out.println(diff[0] + " Days " + diff[1] + " Hours " + diff[2]
-                        + " Minutes");
-            else if (diff[0] == 0)
-                System.out.println(diff[1] + " Hours " + diff[2] + " Minutes "
-                        + diff[3] + " Seconds");
-            else if (diff[1] == 0)
-                System.out.println(diff[2] + " Minutes " + diff[3] + " Seconds");
+            if (diff[0] != 0)
+                System.out.println("Remaining: " + diff[0] + " Days " + diff[1]
+                        + " Hours " + diff[2] + " Minutes");
+            else if (diff[0] == 0 && diff[1] != 0)
+                System.out.println("Remaining: " + diff[1] + " Hours " + diff[2]
+                        + " Minutes " + diff[3] + " Seconds");
+            else
+                System.out.println("Remaining: " + diff[2] + " Minutes " + diff[3]
+                        + " Seconds");
         }
+        
+        /** Auction is closing **/
+        else if (stage == 2)
+            System.out.println("Closed auction");
+        
+        
+        Date startDate = auction.getDateStart();
+        System.out.print("Started: " + DateUtils.dateTimeToStr(startDate));
+        Date endDate = auction.getDateEnd();
+        System.out.println("\tEnded: " + DateUtils.dateTimeToStr(endDate));
 
         /** Print full detail of auction **/
         if (bFull)
         {
             Bid winBid = auction.getWinner();
-            if (auction.getStage() == 2) /** Print winner **/
+            if (stage == 2) /** Print winner **/
+            {
                 if (winBid == null)
                     System.out.println("Winner: Don't have winner");
                 else
                 {
                     User bidder = winBid.getBidder();
-                    System.out.println("Winner: " + bidder.getName());
+                    displayBid(winBid, "Win price: ");
                 }
+            }
             System.out.println("Category: " + auction.getCategoryStr());
-            Date startDate = auction.getDateStart();
-            System.out.println("Started: " + DateUtils.dateToStr(startDate));
-            Date endDate = auction.getDateEnd();
-            System.out.println("Ended: " + DateUtils.dateToStr(endDate));
             User seller = auction.getSeller();
-            System.out.println("Seller: " + seller.getUsername());
+            System.out.println("Seller: " + seller.getName());
         }
     }
 
@@ -125,46 +164,41 @@ public class UserInterface
      */
     private static void displayMakeBid(Auction auction)
     {
-        int minPrice;
+        int minPrice = 0;
         if (auction.isBid())
         {
             minPrice = auction.getCurrentBidMoney();
             System.out.println("Current bid: " + minPrice + " Baht");
+            minPrice = minPrice + 1; /* Plus one to use in input */
         }
         else
         {
-            minPrice = auction.getMinBid() - 1;
+            minPrice = auction.getMinBid();
             System.out.println("Starting bid: " + auction.getMinBid() + " Baht");
         }
 
-        int money = 0;
-        boolean bLoop = true;
-        do
+        int money = IOUtils.getInteger("Price that want to bid (Baht): ", minPrice);
+        if (IOUtils.getConfirm(
+                "Are you sure to make bid " + money + " baht? (yes/no): "))
         {
-            money = IOUtils.getInteger("Price that want to bid: ");
-            if (money < minPrice)
+            if (AuctionProgram.makeBid(auction, money))
+            {
                 System.out.println(
-                        "You need to input price more than " + minPrice + " Baht");
+                        "=========================================================\n");
+                System.out.println(
+                        "                   - Make bid success -                   ");
+                System.out.println(
+                        "\n=========================================================");
+            }
             else
-                bLoop = false;
-        } while (bLoop);
-        if (AuctionProgram.makeBid(auction, money))
-        {
-            System.out.println(
-                    "=========================================================\n");
-            System.out.println(
-                    "                   - Make bid success -                   ");
-            System.out.println(
-                    "\n=========================================================");
-        }
-        else
-        {
-            System.out.println(
-                    "=========================================================\n");
-            System.out.println(
-                    "                     - Make bid fail -                   ");
-            System.out.println(
-                    "\n=========================================================");
+            {
+                System.out.println(
+                        "=========================================================\n");
+                System.out.println(
+                        "                     - Make bid fail -                   ");
+                System.out.println(
+                        "\n=========================================================");
+            }
         }
     }
 
@@ -243,8 +277,7 @@ public class UserInterface
         if (IOUtils.getConfirm("Do you want to edit name (yes/no)?: "))
             name = IOUtils.getString("Edit Name: ");
         if (IOUtils.getConfirm("Do you want to edit birth date (yes/no)?: "))
-            birth = IOUtils.getDate("Edit Birth\ndd-mm-yyyy (Ex: 01-10-1998): ",
-                    null, 1);
+            birth = IOUtils.getDate("Edit Birth (dd-mm-yyyy): ", null, false);
         if (IOUtils.getConfirm("Do you want to edit address (yes/no)?: "))
             address = IOUtils.getString("Edit Address: ");
         if (IOUtils.getConfirm("Do you want to edit email (yes/no)?: "))
@@ -289,7 +322,7 @@ public class UserInterface
         clearScreen();
         System.out.println(
                 "=========================================================");
-        System.out.println("\tBalance: " + balance);
+        System.out.println("\tBalance: " + balance + " Baht");
         System.out.println(
                 "=========================================================");
     }
@@ -303,12 +336,12 @@ public class UserInterface
     {
         clearScreen();
         displayBalance(user);
-        int money = IOUtils.getInteger("Deposit: ", 0);
+        int money = IOUtils.getInteger("Deposit (Baht): ", 0);
         boolean ret = AuctionProgram.deposit(money);
         clearScreen();
         displayBalance(user);
         if (ret)
-            System.out.println("Money has been deposit to the accuont.");
+            System.out.println("Money has been deposit to the account.");
         else
             System.out
                     .println("Problem occur, cannot deposit money to the account.");
@@ -325,12 +358,12 @@ public class UserInterface
         clearScreen();
         int balance = user.getBalance();
         displayBalance(user);
-        int money = IOUtils.getInteger("Withdraw: ", 0, balance);
+        int money = IOUtils.getInteger("Withdraw (Baht): ", 0, balance);
         boolean ret = AuctionProgram.withdraw(money);
         clearScreen();
         displayBalance(user);
         if (ret)
-            System.out.println("Money has been withdrawn from the accuont.");
+            System.out.println("Money has been withdrawn from the account.");
         else
             System.out.println(
                     "Problem occur, cannot withdraw money from the account.");
@@ -349,61 +382,122 @@ public class UserInterface
         System.out.println(
                 "=                     Bid History                       =");
         System.out.println(
-                "=========================================================");
+                "=========================================================\n");
         ArrayList<Auction> bidList = user.getBidList();
-        System.out.println("- Bidding");
-        for (Auction auction : bidList)
-            if (auction.getStage() == 1)
-                displayAuction(auction, false);
+        System.out.println(
+                "---------------------------------------------------------");
+        System.out.println("\t\t\tBidding");
+        System.out.println(
+                "---------------------------------------------------------");
 
-        System.out.println("\n---------------------------------------------------------\n");
-        
-        System.out.println("- Offers");
         for (Auction auction : bidList)
-            if (auction.getWinner().getBidder() == user)
+        {
+            Bid bid = auction.getBidByUser(user);
+            if (bid != null && auction.getStage() == 1)
+            {
                 displayAuction(auction, false);
+                displayBid(bid,"Your bid money: ");
+                System.out.println();
+            }
+        }
 
-        System.out.println("\n---------------------------------------------------------\n");
-        
-        System.out.println("- Didn't Win");
+        System.out.println();
+        System.out.println(
+                "---------------------------------------------------------");
+        System.out.println("\t\t\tOffers");
+        System.out.println(
+                "---------------------------------------------------------");
         for (Auction auction : bidList)
-            if (auction.getWinner().getBidder() != user)
+        {
+            Bid winner = auction.getWinner();
+            if (winner != null && winner.getBidder() == user)
+            {
                 displayAuction(auction, false);
+                displayBid(winner, "Your bid money: ");
+                System.out.println();
+            }
+        }
+
+        System.out.println();
+        System.out.println(
+                "---------------------------------------------------------");
+        System.out.println("\t\t\tDidn't Win");
+        System.out.println(
+                "---------------------------------------------------------");
+        for (Auction auction : bidList)
+        {
+            Bid winner = auction.getWinner();
+            if (winner != null && winner.getBidder() != user)
+            {
+                displayAuction(auction, false);
+                System.out.println();
+            }
+        }
 
         System.out.println(
-                "=========================================================");
+                "\n=========================================================");
         System.out.println(
                 "=                 Selling History                       =");
         System.out.println(
-                "=========================================================");
+                "=========================================================\n");
         ArrayList<Auction> sellList = user.getSellingList();
-        System.out.println("- Waiting");
+        System.out.println(
+                "---------------------------------------------------------");
+        System.out.println("\t\t\tWaiting");
+        System.out.println(
+                "---------------------------------------------------------");
         for (Auction auction : sellList)
             if (auction.getStage() == 0)
+            {
                 displayAuction(auction, false);
-        
-        System.out.println("\n---------------------------------------------------------\n");
-        
-        System.out.println("- Active");
+                System.out.println();
+            }
+
+        System.out.println();
+        System.out.println(
+                "---------------------------------------------------------");
+
+        System.out.println("\t\t\tActive");
+        System.out.println(
+                "---------------------------------------------------------");
         for (Auction auction : sellList)
             if (auction.getStage() == 1)
+            {
                 displayAuction(auction, false);
+                System.out.println();
+            }
 
-        System.out.println("\n---------------------------------------------------------\n");
-        
-        System.out.println("- Sold");
+        System.out.println();
+        System.out.println(
+                "---------------------------------------------------------");
+        System.out.println("\t\t\tSold");
+        System.out.println(
+                "---------------------------------------------------------");
         for (Auction auction : sellList)
-            if (auction.getStage() == 2 && auction.getWinner() != null)
+        {
+            Bid winner = auction.getWinner();
+            if (auction.getStage() == 2 && winner != null)
+            {
                 displayAuction(auction, false);
+                displayBid(winner, "Winner bid price: ");
+                System.out.println();
+            }
+        }
 
-        System.out.println("\n---------------------------------------------------------\n");
-        
-        System.out.println("- Unsold");
+        System.out.println();
+        System.out.println(
+                "---------------------------------------------------------");
+        System.out.println("\t\t\tUnsold");
+        System.out.println(
+                "---------------------------------------------------------");
         for (Auction auction : sellList)
             if (auction.getStage() == 2 && auction.getWinner() == null)
+            {
                 displayAuction(auction, false);
+                System.out.println();
+            }
         System.out.println(
-                "=========================================================");
+                "\n=========================================================");
         refresh(false);
     }
 
@@ -416,7 +510,7 @@ public class UserInterface
         System.out.println(
                 "=========================================================");
         System.out.println(
-                "=                         eBuy                          =");
+                "=             Online Auction Program: eBuy              =");
         System.out.println(
                 "=========================================================");
         System.out.println("");
@@ -432,7 +526,7 @@ public class UserInterface
             System.out.println("Uses '/login' to login to the system.");
         }
         System.out.println("");
-        resetAuctionDisplay(null);
+        resetAuctionDisplay();
         displayAuctionList();
     }
 
@@ -441,31 +535,77 @@ public class UserInterface
      */
     public static void displayHelp()
     {
+
         clearScreen();
         System.out.println(
                 "=========================================================");
         System.out.println(
-                "=                    See All Command                    =");
+                "=                       How to use                      =");
         System.out.println(
                 "=========================================================");
-        System.out.println("/help - See all command.\n");
-        System.out.println("/home - Home page of auction program.\n");
-        System.out.println("/next - Go to next page of auction list.\n");
-        System.out.println("/prev - Go back to previous page of auction list.\n");
-        System.out.println("/first - Go to first page of auction list.\n");
-        System.out.println("/search - Search the auction.\n");
-        System.out.println("/auction - Select the auction to display or bid.");
-        System.out.println("The auction program use auction no. to be key\n");
-        System.out.println("/register - Register to be new user.\n");
-        System.out.println("/login - Login to the system.\n");
-        System.out.println("/logout - Logout from the system.\n");
-        System.out.println("/profile - View the profile info.\n");
-        System.out.println("/makeauction - Make the auction.\n");
-        System.out.println("/aboutus - See about us.\n");
-        System.out.println("/exit - Exit from the program.\n");
+        System.out.println("");
+        /* First paragraph */
+        System.out.print("  When start the eBuy, it will display the home page ");
+        System.out.print("first. In the\nhome page will display some of auction ");
+        System.out.print("from auction list. You can\ngo to next page (/next) ");
+        System.out.print("or previous page (/prev) to see all auction\nalong the ");
+        System.out.print("list.\nAuction list will not update until you search, ");
+        System.out.print("or go to home page.\n\n");
 
+        /* Second paragraph */
+        System.out.print("  From the auction that display in a list, there is ");
+        System.out.print("a no. on each\nauction. You can specific auction from ");
+        System.out.print("the list by using no. of\nauction (Use '/auction' and ");
+        System.out.print("then input no. that want to see). And\nwhen seeing each ");
+        System.out.print("auction, you can decide to make a bid but you\nneed to ");
+        System.out.print("login (/login) first. If you don't have any account,\n");
+        System.out.print("you can register to the eBuy ('/register').\n\n");
+
+        /* Third paragraph */
+        System.out
+                .print("  You can see your information, balance account, withdraw,");
+        System.out.print(" deposit,\nhistory bid/selling through the profile ");
+        System.out.print("(/profile).\n\n");
+
+        /* Fourth paragraph */
+        System.out
+                .print("  After seeing the auction list from eBuy, you could want ");
+        System.out.print(
+                "to sell\nsomething on eBuy. So, you can go to make auction ");
+        System.out.print(
+                "page (/makeauction)\nand input item information, start date");
+        System.out.print(", end date, and upload the\npicture.\n\n");
+
+        /* Ending */
         System.out.println(
-                "\nThe auction list that display will not update\n until search or go to home page again");
+                "               Have a good luck with eBuy.               ");
+        System.out.println("");
+        System.out.println(
+                "=========================================================");
+        System.out.println(
+                "=                       All Command                     =");
+        System.out.println(
+                "=========================================================");
+        System.out.println("");
+        System.out.println("/help - See all command.");
+        System.out.println("/home - Home page of auction program.");
+        System.out.println("/next - Go to next page of auction list.");
+        System.out.println("/prev - Go back to previous page of auction list.");
+        System.out.println("/first - Go to first page of auction list.");
+        System.out.println("/search - Search the auction.");
+        System.out.println("/auction - Select the auction to display or bid.");
+        System.out.println("           Uses auction no. that display to be key");
+        System.out.println("/register - Register to be new user.");
+        System.out.println("/login - Login to the system.");
+        System.out.println("/logout - Logout from the system.");
+        System.out.println(
+                "/profile - View the profile, account, and history bid/selling.");
+        System.out.println("/makeauction - Make the auction.");
+        System.out.println("/aboutus - See about us.");
+        System.out.println("/exit - Exit from the program.\n");
+        System.out.println(
+                "=========================================================");
+
     }
 
     /**
@@ -476,7 +616,7 @@ public class UserInterface
         System.out.println(
                 "=========================================================\n");
         System.out.println(
-                "- Command is not correct. Uses '/help' to see all command -");
+                "-     Wrong command. Uses '/help' to see all command    -");
         System.out.println(
                 "\n=========================================================");
 
@@ -612,16 +752,17 @@ public class UserInterface
         System.out
                 .println("will act as a market including many functions which are");
         System.out.println("authentication, create the auction, bid the item, sell");
-        System.out.println("the item, deposit money, and withdraw money.");
-        System.out.println("    In addition, a person who won the auction will ");
-        System.out.println("automatically deduct the money from an account.\n");
+        System.out.println(
+                "the item, deposit money, and withdraw money. In addition,");
+        System.out.println("a person who won the auction will automatically");
+        System.out.println("deduct the money from an account.\n");
         System.out
                 .println("      This program was created by Kla & Tong group      ");
         System.out.println("Group Member: ");
         System.out.println("1) Nathaphop Sundarabhogin  60070503420");
         System.out.println("2) Natthawat Tungruethaipak 60070503426");
         System.out.println(
-                "=========================================================");
+                "\n=========================================================");
         refresh(true);
     }
 
@@ -640,12 +781,13 @@ public class UserInterface
         else
         {
 
-            for (int i = 0 + (page * maxPage); i < maxPage; i++)
+            for (int i = 0 + (page * maxPage), count = 0; i < auctionDisplay.size()
+                    && count < maxPage; i++, count++)
             {
                 Auction auction = auctionDisplay.get(i);
                 if (auction != null)
                 {
-                    System.out.println("\tNo. " + i + 1);
+                    System.out.println("Auction No. " + (i + 1));
                     displayAuction(auction, false);
                     System.out.println();
                 }
@@ -671,7 +813,7 @@ public class UserInterface
             System.out.println(
                     "\n=========================================================");
         }
-        else if ((maxPage * (page + 1)) > auctionDisplay.size())
+        else if ((maxPage * (page + 1)) >= auctionDisplay.size())
         {
             System.out.println(
                     "=========================================================\n");
@@ -753,23 +895,23 @@ public class UserInterface
                 "=========================================================");
         String item = IOUtils.getString("Item name: ");
         String category = IOUtils.getCategory("Select category of item");
+        int minBid = IOUtils.getInteger("Minimum bid money (Baht): ", 1);
+        Date dateStart = IOUtils.getDateTime("Start date (dd-mm-yyyy-hh:mm): ", null,
+                true);
+        Date dateEnd = IOUtils.getDateTime("End date (dd-mm-yyyy-hh:mm): ",
+                dateStart, true);
         String picture = IOUtils.uploadImage();
-        int minBid = IOUtils.getInteger("Minimum bid money: ", 0);
-        Date dateStart = IOUtils.getDateTime("Start date of auction: ", null, 0);
-        Date dateEnd = IOUtils.getDateTime("End date of auction: ", dateStart, 2);
         System.out.println(
                 "=========================================================");
         System.out.println("Item: " + item);
         System.out.println("Category: " + category);
         System.out.println("Minimum bid money: " + minBid);
-        System.out.println("Start date\ndd-mm-yyyy-hh:mm (Ex: 01-10-1998-23:30): "
-                + DateUtils.dateTimeToStr(dateStart));
-        System.out.println("End date\ndd-mm-yyyy-hh:mm (Ex: 01-11-1998-23:30): "
-                + DateUtils.dateTimeToStr(dateEnd));
+        System.out.println("Start date: " + DateUtils.dateTimeToStr(dateStart));
+        System.out.println("End date: " + DateUtils.dateTimeToStr(dateEnd));
         displayImage(picture);
         System.out.println(
                 "=========================================================");
-        if (IOUtils.getConfirm("Confirm create auction: "))
+        if (IOUtils.getConfirm("Confirm create auction (yes/no): "))
         {
             if (AuctionProgram.makeAuction(item, category, picture, minBid,
                     dateStart, dateEnd))
@@ -797,7 +939,7 @@ public class UserInterface
     /**
      * Search auction UI. Let user to select type and input key.
      **/
-    public static void searchAuction()
+    public static void displaySearchAuction()
     {
         int type = 0;
         int keyInt = 0;
@@ -822,7 +964,10 @@ public class UserInterface
 
         type = IOUtils.getInteger("Select type number: ", 0, 6);
         if (type == 0)
+        {
+            displayHomePage();
             return;
+        }
         else if (type == 3)
             keyStr = IOUtils.getString("Search item name: ");
         else if (type == 4)
@@ -831,7 +976,7 @@ public class UserInterface
             keyStr = IOUtils.getString("Search seller name: ");
         else if (type == 6)
             keyInt = IOUtils.getInteger("Start price (Baht): ", 0);
-        resetAuctionDisplay(AuctionProgram.searchAuction(type, keyStr, keyInt));
+        setAuctionDisplay(AuctionProgram.searchAuction(type, keyStr, keyInt));
         clearScreen();
         displayAuctionList();
     }
@@ -856,19 +1001,22 @@ public class UserInterface
         int node = IOUtils.getInteger("Select auction no.: ", 1,
                 auctionDisplay.size()) - 1;
         Auction auction = auctionDisplay.get(node);
+        System.out.println(
+                "=========================================================");
         displayAuction(auction, true);
         displayImage(auction.getPicture());
         System.out.println(
                 "=========================================================");
-        if (AuctionProgram.isLogin())
-        {
-            if (IOUtils.getConfirm("Do you want to make a bid?"))
-                displayMakeBid(auction);
-        }
-        else
-        {
-            System.out.println("Please login to system to bid to the auction.");
-        }
+        if (auction.getStage() == 1)
+            if (AuctionProgram.isLogin())
+            {
+                if (IOUtils.getConfirm("Do you want to make a bid? (yes/no): "))
+                    displayMakeBid(auction);
+            }
+            else
+            {
+                System.out.println("Please login to system to bid to the auction.");
+            }
         refresh(true);
     }
 
@@ -887,8 +1035,7 @@ public class UserInterface
         String username = IOUtils.getUsername("Username: ");
         String password = IOUtils.getPassword("Password: ");
         String name = IOUtils.getString("Name: ");
-        Date birth = IOUtils.getDate("Birth date\ndd-mm-yyyy (Ex: 01-10-1998): ",
-                null, 1);
+        Date birth = IOUtils.getDate("Birth date (dd-mm-yyyy): ", null, false);
         String address = IOUtils.getString("Address: ");
         String email = IOUtils.getEmail("Email: ");
         System.out.println(
@@ -986,7 +1133,7 @@ public class UserInterface
                     break;
             }
         } while (menu != 0);
-        refresh(true);
+        displayHomePage();
     }
 
     /**
@@ -999,18 +1146,15 @@ public class UserInterface
         JFrame f = new JFrame("image");
         String imgDir = IOUtils.getImageDir() + imgFileName;
         BufferedImage img = null;
+        System.out.print("Loading image to display...  ");
         try
         {
             img = ImageIO.read(new File(imgDir));
         }
         catch (IOException e)
         {
-            System.out.println(
-                    "=========================================================\n");
-            System.out.println(
-                    "                  - Cannot load image -                  ");
-            System.out.println(
-                    "\n=========================================================");
+            System.out.println("Fail...");
+            System.out.println("Cannot load image to display");
             return;
         }
         int width = img.getWidth();
@@ -1023,6 +1167,8 @@ public class UserInterface
         f.add(imageLabel);
         f.setBounds(0, 0, width, height);
         f.setVisible(true);
+        System.out.println("Success!");
+        return;
     }
 
 }

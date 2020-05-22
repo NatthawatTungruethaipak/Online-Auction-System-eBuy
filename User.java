@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 /**
- * Represent the user object in auction program. Contain the user detail.
+ * Represent the user object in auction program. Contain the user information.
  * 
  * Created by Kla & Tong 14 April 2020
  */
@@ -158,8 +158,7 @@ public class User
             return false;
         if (IOUtils.isNullStr(address) == true)
             return false;
-        Date currentDate = DateUtils.getCurrentDateTime();
-        if (birth == null || birth.after(currentDate))
+        if (birth == null || DateUtils.isAfterCurrentDateTime(birth))
             return false;
 
         /** Set to user **/
@@ -179,12 +178,15 @@ public class User
      */
     public boolean addSelling(Auction auction)
     {
-        if (auction == null)
-            return false;
-        if (this.sellingList.add(auction))
-            return true;
-        else
-            return false;
+        boolean bCheck = false;
+        if(auction != null )
+        {
+            if (sellingList.contains(auction))
+                bCheck = true;
+            else if (sellingList.add(auction))
+                bCheck = true;
+        }
+        return bCheck;
     }
 
     /**
@@ -195,10 +197,15 @@ public class User
      */
     public boolean addBid(Auction auction)
     {
-        if (this.bidList.add(auction))
-            return true;
-        else
-            return false;
+        boolean bCheck = false;
+        if(auction != null )
+        {
+            if (bidList.contains(auction))
+                bCheck = true;
+            else if (bidList.add(auction))
+                bCheck = true;
+        }
+        return bCheck;
     }
 
     /**
