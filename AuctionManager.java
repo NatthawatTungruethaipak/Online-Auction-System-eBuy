@@ -49,9 +49,9 @@ public class AuctionManager
     }
     
     /**
-     * Initialize auction list for AuctionManager
+     * Initialize auction list for AuctionManager and hash map.
      * 
-     * @param auctionList
+     * @param auctionList List of auction that want to set in the auction manager.
      */
     public void initialAuction(ArrayList<Auction> auctionList)
     {
@@ -63,95 +63,6 @@ public class AuctionManager
             return;
         for (Auction auction : auctionList)
             storeAuction(auction);
-    }
-
-    /**
-     * Validate the auction data, create, and check stage.
-     * 
-     * @param seller    Seller of auction
-     * @param item      Item name
-     * @param category  Category of item
-     * @param picture   Picture of item
-     * @param minBid    Minimum bid money
-     * @param dateStart Start date of auction
-     * @param dateEnd   End date of auction
-     * @return Return auction if the data is valid. Otherwise, false.
-     */
-    private Auction validateAuction(User seller, String item, String categoryStr,
-            Date dateStart, Date dateEnd, int minBid, String picture)
-    {
-        if (seller == null)
-            return null;
-        if (dateStart.after(dateEnd))
-            return null;
-        if (IOUtils.isNullStr(item))
-            return null;
-        if (IOUtils.isNullStr(categoryStr))
-            return null;
-        if (IOUtils.isNullStr(picture))
-            return null;
-        if (minBid < 0)
-            return null;
-        if (DateUtils.isBeforeCurrentDateTime(dateEnd))
-            return null;
-        
-        Category category = Category.findCategory(categoryStr);
-
-        Auction auction = new Auction(seller, item, category, dateStart, dateEnd,
-                minBid, picture);
-
-        /* If date start after current date, open an auction */
-        if (DateUtils.isBeforeCurrentDateTime(dateStart))
-            auction.openAuction();
-        return auction;
-    }
-
-    /**
-     * Store the auction to list and hashmap. Also, put the auction to observer.
-     * 
-     * @param auction Auction that want to keep
-     */
-    private void storeAuction(Auction auction)
-    {
-        /** Add auction to stage list **/
-        if (auction.getStage() == 0)
-            waitedAuction.add(auction);
-        else if (auction.getStage() == 1)
-            openedAuction.add(auction);
-        else if (auction.getStage() == 2)
-            closedAuction.add(auction);
-
-        /** Add auction to hash map of category **/
-        Category category = Category.findCategory(auction.getCategoryStr());
-        ArrayList<Auction> auctionCategoryList = auctionMapCategory.get(category);
-        if (auctionCategoryList != null)
-            auctionCategoryList.add(auction);
-
-        /** Add auction to hash map of item **/
-        ArrayList<Auction> auctionItemList = auctionMapItem.get(auction.getItem());
-        if (auctionItemList != null)
-            auctionItemList.add(auction);
-        else /* If don't have a list in hash map, create new one */
-        {
-            auctionItemList = new ArrayList<Auction>();
-            auctionItemList.add(auction);
-            auctionMapItem.put(auction.getItem(), auctionItemList);
-        }
-
-        /** Add auction to hash map of seller **/
-        ArrayList<Auction> auctionSellerList = auctionMapSeller
-                .get(auction.getSeller());
-        if (auctionSellerList != null)
-            auctionSellerList.add(auction);
-        else /* If don't have a list in hash map, create new one */
-        {
-            auctionSellerList = new ArrayList<Auction>();
-            auctionSellerList.add(auction);
-            auctionMapSeller.put(auction.getSeller(), auctionSellerList);
-        }
-
-        if (auction.getStage() < 2)
-            AuctionTrigger.getSingleInstance().addAuction(auction);
     }
 
     /**
@@ -200,10 +111,9 @@ public class AuctionManager
      * @param category Category of auction
      * @return Array List of auction from requiring category.
      */
-    public ArrayList<Auction> searchAuctionByCat(String category)
+    public ArrayList<Auction> searchAuctionByCategory(String category)
     {
-        ArrayList<Auction> auctionList = auctionMapCategory
-                .get(Category.findCategory(category));
+        ArrayList<Auction> auctionList = auctionMapCategory.get(Category.findCategory(category));
         return auctionList;
     }
 
@@ -225,7 +135,7 @@ public class AuctionManager
      * @param sellerName seller name of auction
      * @return Array List of auction from requiring seller name.
      */
-    public ArrayList<Auction> searchAuctionBySeller(String sellerName)
+    public ArrayList<Auction> searchAuctionBySellerName(String sellerName)
     {
         UserManager userManager = UserManager.getSingletonInstance();
         User seller = userManager.findUserByName(sellerName);
@@ -234,28 +144,18 @@ public class AuctionManager
     }
 
     /**
-     * Get the auction list from lower price to bid of an auction
+     * Get the list of auction that lower than price.
      * 
-     * @param money Min bid money or current highest bid to filter the lower
-     * @return Array List of auction from requiring the lower price.
+     * @param price Min bid money or current highest bid to filter the lower
+     * @return List of auction from requiring the lower price.
      */
-    public ArrayList<Auction> searchAuctionByLowerPrice(int money)
+    public ArrayList<Auction> searchAuctionByLowerPrice(int price)
     {
-        ArrayList<Auction> auctionLists = new ArrayList<Auction>();
+        ArrayList<Auction> retLists = new ArrayList<Auction>();
         for (Auction auction : openedAuction)
-        {
-            if (auction.isBid())
-            {
-                if (auction.getCurrentBidMoney() < money)
-                    auctionLists.add(auction);
-            }
-            else
-            {
-                if (auction.getMinBid() <= money)
-                    auctionLists.add(auction);
-            }
-        }
-        return auctionLists;
+            if (auction.getCurrentBidMoney() <= price)
+                retLists.add(auction);
+        return retLists;
     }
 
     /**
@@ -305,5 +205,94 @@ public class AuctionManager
         allAuction.addAll(openedAuction);
 
         return allAuction;
+    }
+
+    /**
+     * Validate the auction data, create, and check stage.
+     * 
+     * @param seller    Seller of auction
+     * @param item      Item name
+     * @param category  Category of item
+     * @param picture   Picture of item
+     * @param minBid    Minimum bid money
+     * @param dateStart Start date of auction
+     * @param dateEnd   End date of auction
+     * @return Return auction if the data is valid. Otherwise, false.
+     */
+    private Auction validateAuction(User seller, String item, String categoryStr,
+            Date dateStart, Date dateEnd, int minBid, String picture)
+    {
+        if (seller == null)
+            return null;
+        if (dateStart.after(dateEnd))
+            return null;
+        if (IOUtils.isNullStr(item))
+            return null;
+        if (IOUtils.isNullStr(categoryStr))
+            return null;
+        if (IOUtils.isNullStr(picture))
+            return null;
+        if (minBid < 0)
+            return null;
+        if (DateUtils.isBeforeCurrentDateTime(dateEnd))
+            return null;
+        
+        Category category = Category.findCategory(categoryStr);
+    
+        Auction auction = new Auction(seller, item, category, dateStart, dateEnd,
+                minBid, picture);
+    
+        /* If date start after current date, open an auction */
+        if (DateUtils.isBeforeCurrentDateTime(dateStart))
+            auction.openAuction();
+        return auction;
+    }
+
+    /**
+     * Store the auction to list and hashmap. Also, put the auction to observer.
+     * 
+     * @param auction Auction that want to keep
+     */
+    private void storeAuction(Auction auction)
+    {
+        /** Add auction to stage list **/
+        if (auction.getStage() == 0)
+            waitedAuction.add(auction);
+        else if (auction.getStage() == 1)
+            openedAuction.add(auction);
+        else if (auction.getStage() == 2)
+            closedAuction.add(auction);
+    
+        /** Add auction to hash map of category **/
+        Category category = Category.findCategory(auction.getCategoryStr());
+        ArrayList<Auction> auctionCategoryList = auctionMapCategory.get(category);
+        if (auctionCategoryList != null)
+            auctionCategoryList.add(auction);
+    
+        /** Add auction to hash map of item **/
+        ArrayList<Auction> auctionItemList = auctionMapItem.get(auction.getItem());
+        if (auctionItemList != null)
+            auctionItemList.add(auction);
+        else /* If don't have a list in hash map, create new one */
+        {
+            auctionItemList = new ArrayList<Auction>();
+            auctionItemList.add(auction);
+            auctionMapItem.put(auction.getItem(), auctionItemList);
+        }
+    
+        /** Add auction to hash map of seller **/
+        ArrayList<Auction> auctionSellerList = auctionMapSeller.get(auction.getSeller());
+        if (auctionSellerList != null)
+            auctionSellerList.add(auction);
+        else /* If don't have a list in hash map, create new one */
+        {
+            auctionSellerList = new ArrayList<Auction>();
+            auctionSellerList.add(auction);
+            auctionMapSeller.put(auction.getSeller(), auctionSellerList);
+        }
+    
+        /** Add auction to auction trigger **/
+        if (auction.getStage() < 2)
+            AuctionTrigger.getSingleInstance().addAuction(auction);
     }
 }
