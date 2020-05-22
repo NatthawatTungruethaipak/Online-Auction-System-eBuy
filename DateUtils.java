@@ -20,17 +20,6 @@ public class DateUtils
      */
     private static SimpleDateFormat simpleDateTimeFormat = new SimpleDateFormat(
             "dd-MM-yyyy-HH:mm");
-
-    /**
-     * Get current date and time.
-     * 
-     * @return current data and time in term of Date class.
-     */
-    public static Date getCurrentDateTime()
-    {
-        Date dateNow = new Date();
-        return dateNow;
-    }
     
     /**
      * Check the date input that is after current date or not

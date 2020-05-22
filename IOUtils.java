@@ -479,7 +479,7 @@ public class IOUtils
             if (validateEmail(userInput))
                 bOk = true;
             else
-                System.out.print("Wrong email format");
+                System.out.println("Wrong email format");
         }
         return userInput;
     }
@@ -585,5 +585,4 @@ public class IOUtils
                 categoryList.size());
         return categoryList.get(node - 1);
     }
-
 }
