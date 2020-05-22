@@ -16,7 +16,7 @@ public class AuctionProgram
     /** User manager instance **/
     private static UserManager userManager = UserManager.getSingletonInstance();
 
-    /** User manager instance **/
+    /** Auction file handler instance instance **/
     private static AuctionFileHandler fileHandler = AuctionFileHandler
             .getSingletonInstance();
 
@@ -284,8 +284,8 @@ public class AuctionProgram
             case 4:/* Search auction by category */
                 retUserList = auctionManager.searchAuctionByCat(keyStr);
                 break;
-            case 5:/* Search auction by category */
-                retUserList = auctionManager.searchAuctionByCat(keyStr);
+            case 5:/* Search auction by name */
+                retUserList = auctionManager.searchAuctionBySeller(keyStr);
                 break;
             case 6: /* Search auction by lower price */
                 retUserList = auctionManager.searchAuctionByLowerPrice(keyInt);
