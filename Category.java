@@ -110,25 +110,4 @@ public class Category
         else
             return false;
     }
-
-    /**
-     * Check that the string contains in list of category or not.
-     * 
-     * @param categoryStr string to be check
-     * @return True when category contains in the list of category.
-     *         Otherwise false.
-     */
-    public boolean contains(String categoryStr)
-    {
-        boolean contain = false;
-        for (Category eachCategory : categoryList)
-        {
-            if (eachCategory.equals(categoryStr))
-            {
-                contain = true;
-                break;
-            }
-        }
-        return contain;
-    }
 }
