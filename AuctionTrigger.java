@@ -58,7 +58,6 @@ public class AuctionTrigger extends Thread
                 {
                     Auction auction = managedAuction.get(i);
                     int stage = auction.getStage();
-                    Date currentDate = DateUtils.getCurrentDateTime();
 
                     if (stage == 0)
                     {
