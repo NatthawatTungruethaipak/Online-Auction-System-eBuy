@@ -27,7 +27,7 @@ public class Bid
     {
         this.bidder = user;
         this.money = money;
-        this.dateBid = DateUtils.getCurrentDateTime();
+        this.dateBid = new Date();
     }
 
     /**

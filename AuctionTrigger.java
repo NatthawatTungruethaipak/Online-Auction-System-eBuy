@@ -52,7 +52,6 @@ public class AuctionTrigger extends Thread
             {
                 Auction auction = managedAuction.get(i);
                 int stage = auction.getStage();
-                Date currentDate = DateUtils.getCurrentDateTime();
                 /**************** For Testing ****************/
 //                 currentDate = DateUtils.strToDate("1-1-1998"); 
 //                 try
@@ -68,13 +67,13 @@ public class AuctionTrigger extends Thread
                 if (stage == 0)
                 {
                     Date startDate = auction.getDateStart();
-                    if (startDate.before(currentDate))
+                    if (DateUtils.isBeforeCurrentDateTime(startDate))
                         auctionManager.updateAuctionStage(auction);
                 }
                 else if (stage == 1)
                 {
                     Date endDate = auction.getDateEnd();
-                    if (endDate.before(currentDate))
+                    if (DateUtils.isBeforeCurrentDateTime(endDate))
                         auctionManager.updateAuctionStage(auction);
                 }
                 else

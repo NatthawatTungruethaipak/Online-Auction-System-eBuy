@@ -480,7 +480,7 @@ public class IOUtils
             if (validateEmail(userInput))
                 bOk = true;
             else
-                System.out.print("Wrong email format");
+                System.out.println("Wrong email format");
         }
         return userInput;
     }
@@ -568,11 +568,5 @@ public class IOUtils
         int node = IOUtils.getInteger("Select category number: ", 1,
                 categoryList.size());
         return categoryList.get(node - 1);
-    }
-
-    public static void main(String[] args)
-    {
-        System.out.println(getInteger("euei: ", 5));
-        System.out.println(getInteger("ahha: ",5,15));
     }
 }

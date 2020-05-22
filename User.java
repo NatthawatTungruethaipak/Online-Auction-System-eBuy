@@ -158,8 +158,7 @@ public class User
             return false;
         if (IOUtils.isNullStr(address) == true)
             return false;
-        Date currentDate = DateUtils.getCurrentDateTime();
-        if (birth == null || birth.after(currentDate))
+        if (birth == null || DateUtils.isAfterCurrentDateTime(birth))
             return false;
 
         /** Set to user **/
