@@ -70,8 +70,7 @@ public class TextFileWriter
         }
         catch (Exception e)
         {
-            System.out.println(
-                    "System: Cannot close the write file, some error occur.");
+            System.out.println("System: Cannot close the write file, some error occur.");
             writer = null;
         }
         return bCheck;
