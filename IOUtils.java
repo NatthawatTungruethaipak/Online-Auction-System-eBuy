@@ -570,9 +570,4 @@ public class IOUtils
         return categoryList.get(node - 1);
     }
 
-    public static void main(String[] args)
-    {
-        System.out.println(getInteger("euei: ", 5));
-        System.out.println(getInteger("ahha: ",5,15));
-    }
 }
