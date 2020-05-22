@@ -137,25 +137,58 @@ public class IOUtils
      * @param birth    birth date of user
      * @param address  Address of user
      * @param email    Email of user
-     * @return New user if the data is valid.
+     * @return Return false if the data is invalid. Otherwise, true.
      */
     public static boolean validateUser(String username, String password, String name,
             Date birth, String address, String email)
     {
         if (IOUtils.validateUsername(username) == false)
             return false;
-        if (IOUtils.validatePassword(password) == false)
+        else if (IOUtils.validatePassword(password) == false)
             return false;
-        if (IOUtils.isNullStr(name) == true)
+        else if (IOUtils.isNullStr(name) == true)
             return false;
-        if (birth == null || DateUtils.isAfterCurrentDateTime(birth))
+        else if (birth == null || DateUtils.isAfterCurrentDateTime(birth))
             return false;
-        if (IOUtils.isNullStr(address) == true)
+        else if (IOUtils.isNullStr(address) == true)
             return false;
-        if (IOUtils.validateEmail(email) == false)
+        else if (IOUtils.validateEmail(email) == false)
             return false;
-            
-        return true;
+        else
+            return true;
+    }
+    
+    /**
+     * Validate the auction data, create, and check stage.
+     * 
+     * @param seller    Seller of auction
+     * @param item      Item name
+     * @param category  Category of item
+     * @param picture   Picture of item
+     * @param minBid    Minimum bid money
+     * @param dateStart Start date of auction
+     * @param dateEnd   End date of auction
+     * @return  Return false if the data is invalid. Otherwise, true.
+     */
+    public static boolean validateAuction(User seller, String item, Category category,
+            Date dateStart, Date dateEnd, int minBid, String picture)
+    {
+        if (seller == null)
+            return false;
+        else if (IOUtils.isNullStr(item))
+            return false;
+        else if (category == null)
+            return false;
+        else if (dateStart == null || dateEnd == null)
+            return false;
+        else if(dateStart.after(dateEnd))
+            return false;
+        else if (IOUtils.isNullStr(picture))
+            return false;
+        else if (minBid < 0)
+            return false;
+        else
+            return true;
     }
     
     

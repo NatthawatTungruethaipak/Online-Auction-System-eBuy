@@ -321,15 +321,15 @@ public class AuctionFileHandler
             String text = fields[1].trim();
             
             /** Check item name **/
-            if (tag.equals(tagAuction[0]) && IOUtils.isNullStr(text) != true)
+            if (tag.equals(tagAuction[0]))
                 item = text;
 
             /** Check category **/
-            else if (tag.equals(tagAuction[1]) && IOUtils.isNullStr(text) != true)
+            else if (tag.equals(tagAuction[1]))
                 category = Category.findCategory(text);
 
             /** Check picture **/
-            else if (tag.equals(tagAuction[2]) && IOUtils.isNullStr(text) != true)
+            else if (tag.equals(tagAuction[2]))
                 picture = text;
 
             /** Check seller user **/
@@ -341,15 +341,15 @@ public class AuctionFileHandler
             }
 
             /** Check start date **/
-            else if (tag.equals(tagAuction[4]) && DateUtils.validateDateTimeStr(text))
+            else if (tag.equals(tagAuction[4]))
                 dateStart = DateUtils.strToDateTime(text);
 
             /** Check close date **/
-            else if (tag.equals(tagAuction[5]) && DateUtils.validateDateTimeStr(text))
+            else if (tag.equals(tagAuction[5]))
                 dateEnd = DateUtils.strToDateTime(text);
 
             /** Check stage **/
-            else if (tag.equals(tagAuction[6]) && IOUtils.validateInteger(text))
+            else if (tag.equals(tagAuction[6]))
             {
                 stage = Integer.parseInt(text);
                 if (stage < 0 || stage > 2)
@@ -357,7 +357,7 @@ public class AuctionFileHandler
             }
 
             /** Check minimum bid money **/
-            else if (tag.equals(tagAuction[7]) && IOUtils.validateInteger(text))
+            else if (tag.equals(tagAuction[7]))
             {
                 minBid = Integer.parseInt(text);
                 if (minBid < 0)
@@ -367,16 +367,14 @@ public class AuctionFileHandler
                 return null;
         }
         
-        /** Check that start date after end date or not **/
-        if (dateStart.after(dateEnd))
-            return null;
-
-        Auction auction = new Auction(seller, item, category, dateStart, dateEnd,
-                minBid, picture);
-
-        /** Set stage **/
-        if (auction.setStage(stage) == false)
-            return null;
+        Auction auction = null;
+        if(IOUtils.validateAuction(seller, item, category, dateStart, dateEnd, minBid, picture))
+        {
+            auction= new Auction(seller, item, category, dateStart, dateEnd, minBid, picture);
+            /** Set stage **/
+            if (auction.setStage(stage) == false)
+                return null;
+        }
         return auction;
     }
 

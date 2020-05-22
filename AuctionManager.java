@@ -76,14 +76,19 @@ public class AuctionManager
      * @param dateEnd   End date of an auction
      * @return True if can create the auction. Otherwise, false
      */
-    public boolean createAuction(User seller, String item, String category,
+    public boolean createAuction(User seller, String item, String categoryStr,
             String picture, int minBid, Date dateStart, Date dateEnd)
     {
-        Auction newAuction = validateAuction(seller, item, category, dateStart, dateEnd, minBid, picture);
-        if (newAuction == null)
-            return false;
-        storeAuction(newAuction);
-        return true;
+        boolean bCheck = false;
+        Auction auction = null;
+        Category category = Category.findCategory(categoryStr);
+        if(IOUtils.validateAuction(seller, item, category, dateStart, dateEnd, minBid, picture))
+        {
+            auction = new Auction(seller, item, category, dateStart, dateEnd, minBid, picture);
+            storeAuction(auction);
+            bCheck = true;
+        }
+        return bCheck;
     }
 
     /**
@@ -207,46 +212,7 @@ public class AuctionManager
         return allAuction;
     }
 
-    /**
-     * Validate the auction data, create, and check stage.
-     * 
-     * @param seller    Seller of auction
-     * @param item      Item name
-     * @param category  Category of item
-     * @param picture   Picture of item
-     * @param minBid    Minimum bid money
-     * @param dateStart Start date of auction
-     * @param dateEnd   End date of auction
-     * @return Return auction if the data is valid. Otherwise, false.
-     */
-    private Auction validateAuction(User seller, String item, String categoryStr,
-            Date dateStart, Date dateEnd, int minBid, String picture)
-    {
-        if (seller == null)
-            return null;
-        if (dateStart.after(dateEnd))
-            return null;
-        if (IOUtils.isNullStr(item))
-            return null;
-        if (IOUtils.isNullStr(categoryStr))
-            return null;
-        if (IOUtils.isNullStr(picture))
-            return null;
-        if (minBid < 0)
-            return null;
-        if (DateUtils.isBeforeCurrentDateTime(dateEnd))
-            return null;
-        
-        Category category = Category.findCategory(categoryStr);
     
-        Auction auction = new Auction(seller, item, category, dateStart, dateEnd,
-                minBid, picture);
-    
-        /* If date start after current date, open an auction */
-        if (DateUtils.isBeforeCurrentDateTime(dateStart))
-            auction.openAuction();
-        return auction;
-    }
 
     /**
      * Store the auction to list and hashmap. Also, put the auction to observer.
