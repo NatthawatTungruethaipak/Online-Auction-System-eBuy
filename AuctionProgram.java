@@ -284,7 +284,10 @@ public class AuctionProgram
             case 4:/* Search auction by category */
                 retUserList = auctionManager.searchAuctionByCat(keyStr);
                 break;
-            case 5: /* Search auction by lower price */
+            case 5:/* Search auction by category */
+                retUserList = auctionManager.searchAuctionByCat(keyStr);
+                break;
+            case 6: /* Search auction by lower price */
                 retUserList = auctionManager.searchAuctionByLowerPrice(keyInt);
                 break;
         }

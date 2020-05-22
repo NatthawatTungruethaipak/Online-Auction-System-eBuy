@@ -771,7 +771,7 @@ public class UserInterface
             System.out.println(
                     "\n=========================================================");
         }
-        else if ((maxPage * (page + 1)) > auctionDisplay.size())
+        else if ((maxPage * (page + 1)) >= auctionDisplay.size())
         {
             System.out.println(
                     "=========================================================\n");
