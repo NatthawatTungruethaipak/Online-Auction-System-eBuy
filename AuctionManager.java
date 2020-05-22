@@ -251,7 +251,7 @@ public class AuctionManager
             }
             else
             {
-                if (auction.getMinBid() < money)
+                if (auction.getMinBid() <= money)
                     auctionLists.add(auction);
             }
         }
