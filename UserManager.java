@@ -96,7 +96,7 @@ public class UserManager
      * @param password Password that want to check
      * @return User if username and password are same. Otherwise, null.
      */
-    public User checkLogin(String username, String password)
+    public User getLogin(String username, String password)
     {
         User findUser = null;
         for (User user : userList)
