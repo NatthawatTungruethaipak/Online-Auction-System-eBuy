@@ -745,7 +745,7 @@ public class UserInterface
                 Auction auction = auctionDisplay.get(i);
                 if (auction != null)
                 {
-                    System.out.println("\tNo. " + i + 1);
+                    System.out.println("Auction No. " + (i + 1));
                     displayAuction(auction, false);
                     System.out.println();
                 }
