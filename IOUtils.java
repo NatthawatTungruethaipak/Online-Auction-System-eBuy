@@ -495,6 +495,34 @@ public class IOUtils
         return System.getProperty("user.dir") + "/" + imgDirectory + "/";
     }
 
+    private static String getAvailableFileName(String uploadedFileName)
+    {
+        int count = 0;
+        
+        /** Split file name into suffix and prefix and prepare directory path **/
+        String[] fileSplit = uploadedFileName.split("\\.(?=[^\\.]+$)");
+        String directory = getImageDir();
+        String fileName = uploadedFileName;
+
+        /** Check that file exists or not, If exists, change file name **/
+        File temp = null;
+        boolean bLoop = true;
+        do
+        {
+            temp = new File(directory + uploadedFileName);
+            if (!temp.exists())
+            {
+                System.out.println("I'm out this shit");
+                bLoop = false;
+            }
+            else
+            {
+                count++;
+                fileName = fileSplit[0] + "-" + count + "." + fileSplit[1];
+            }
+        } while (bLoop);
+        return fileName;
+    }
     /**
      * Upload the image to the system.
      * 
@@ -502,7 +530,7 @@ public class IOUtils
      */
     public static String uploadImage()
     {
-        int count = 0;
+        
         /** Upload image **/
         JFileChooser frameChooseFile = new JFileChooser(
                 FileSystemView.getFileSystemView());
@@ -511,45 +539,32 @@ public class IOUtils
         FileNameExtensionFilter filter = new FileNameExtensionFilter(
                 "jpg/png images", "png", "jpg");
         frameChooseFile.addChoosableFileFilter(filter);
-
+        
+        System.out.print("Selecting image... ");
         /** If user doesn't upload image, reset to default **/
-        try
+        int ret = JFileChooser.CANCEL_OPTION;
+        ret = frameChooseFile.showOpenDialog(null);
+        if (ret != JFileChooser.APPROVE_OPTION)
         {
-            int ret = frameChooseFile.showOpenDialog(null);
-            if (ret != JFileChooser.APPROVE_OPTION)
-                return imgDefault;
-        }
-        catch(Exception e)
-        {
-            System.out.println("Error, can't open file chooser box");
+            System.out.println("No image uploaded");
             return imgDefault;
         }
-
-        /** Split file name into suffix and prefix and prepare directory path **/
-        String fileName = frameChooseFile.getSelectedFile().getName();
+        else
+            System.out.println("Image uploaded");
+        
+        /** Prepare file name and directory **/
+        String uploadedFileName = frameChooseFile.getSelectedFile().getName();
+        System.out.println(uploadedFileName);
+        String fileName = getAvailableFileName(uploadedFileName);
+        System.out.println(fileName);
         String directory = getImageDir();
-        String[] fileSplit = fileName.split("\\.(?=[^\\.]+$)");
-
-        /** Check that file exists or not, If exists, change file name **/
-        File temp = null;
-        boolean bLoop = true;
-        do
-        {
-            temp = new File(directory + fileName);
-            if (!temp.exists())
-                bLoop = false;
-            else
-            {
-                count++;
-                fileName = fileSplit[0] + "-" + count + "." + fileSplit[1];
-            }
-        } while (bLoop);
-
+        System.out.println(directory);
+            
         /** Copy file to the image directory of online auction program **/
-        File src = frameChooseFile.getSelectedFile();
-        File dest = new File(directory + fileName);
         try
         {
+            File src = frameChooseFile.getSelectedFile();
+            File dest = new File(directory + fileName);
             Files.copy(src.toPath(), dest.toPath());
         }
         catch (IOException e)
