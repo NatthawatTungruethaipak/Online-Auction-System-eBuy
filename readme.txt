@@ -14,7 +14,7 @@ need to use command that we provide to use the program such as '/help' or '/logi
 
 ## Files ##
 
-  # Java file (14 Files)
+  # Source file (14 Files)
     1. AuctionProgram.java 
         Facade of auction program. Contain main method in this class.
     2. AuctionFileHandler.java
@@ -88,7 +88,19 @@ need to use command that we provide to use the program such as '/help' or '/logi
       *Note* The program will not save until close program successfully.
       *Note 2* There are some dummy data. You can see dummy user through userData.txt or UserDummy.pdf
 
+  # External file (2 files, 1 Document)
+    1. README.txt
+        File read me (Or this file). Explaination of the program.
 
+    2. UserDummy.pdf
+        Dummy user that we add in the system. There are some auction and bid in system too. But we don't have 
+      the aggregrate file like user data. So, we can privide only UserDummy file.
+
+    3. Java Document
+        Java document. We've seen your post in Facebook group about JavaDoc. But we're not sure that we need to
+      put to the project or not. So, we try to generate the javaDoc and attach with the project.
+
+    
 ## How to run? ##
 
   1) Go to 'src' folder.
@@ -177,6 +189,7 @@ need to use command that we provide to use the program such as '/help' or '/logi
   - The terminal needs to have a graphic display. Because there are some part to upload and display picture.
 If the terminal doesn't have graphic display, it will occur the throw exception X10 (Cause from
 don't have a gui from system).
+
 
 ## Creator ##
 Created by Kla & Tong group
