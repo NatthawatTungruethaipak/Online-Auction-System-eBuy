@@ -5,6 +5,7 @@ import java.util.HashMap;
 /**
  * Manage, control, and keep all auction.
  * This is test Git 1.
+ * This is test Git 2.
  * 
  * Created by Kla & Tong 14 April 2020
  */
